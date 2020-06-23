@@ -1,0 +1,36 @@
+{
+  "name": "iotagent-isoxml",
+  "license": "AGPL-3.0-only",
+  "description": "IoT Agent for ADAPT",
+  "version": "0.0.1",
+  "main": "lib/iotagent-isoxml",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "node ./bin/iotagent-isoxml",
+    "lint": "eslint bin/iotagent-isoxml lib/ --cache --fix",
+    "prettier": "prettier --parser flow --single-quote --write **/**/*.js  **/*.js *.js"
+  },
+  "dependencies": {
+    "amqplib": "~0.5.1",
+    "async": "2.6.1",
+    "xml-parser": "^1.2.1",
+    "express-xml-bodyparser": "^0.3.0",
+    "dateformat": "3.0.3",
+    "express": "~4.16.4",
+    "iotagent-node-lib": "2.11.0",
+    "logops": "2.1.0",
+    "mqtt": "3.0.0",
+    "request": "2.88.0",
+    "underscore": "1.9.1"
+  },
+  "devDependencies": {
+    "prettier": "~1.14.2",
+    "eslint": "~5.16.0",
+    "eslint-config-tamia": "~6.2.1",
+    "eslint-plugin-prettier": "~3.1.2",
+    "husky": "~1.1.0"
+  },
+  "keywords": []
+}

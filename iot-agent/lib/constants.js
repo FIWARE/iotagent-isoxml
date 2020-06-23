@@ -1,0 +1,60 @@
+/*
+ * Copyright 2016 Telefonica Investigación y Desarrollo, S.A.U
+ *
+ * This file is part of iotagent-mqtt
+ *
+ * iotagent-mqtt is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * iotagent-mqtt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with iotagent-mqtt.
+ * If not, see http://www.gnu.org/licenses/.
+ *
+ * For those usages not covered by the GNU Affero General Public License
+ * please contact with::[contacto@tid.es]
+ *
+ * Modified by: Fernando Méndez, Daniel Calvo - ATOS Research & Innovation
+ */
+
+module.exports = {
+  MEASURES_SUFIX: "attrs",
+  CONFIGURATION_SUFIX: "configuration",
+  CONFIGURATION_COMMAND_SUFIX: "commands",
+  CONFIGURATION_COMMAND_UPDATE: "cmdexe",
+  CONFIGURATION_VALUES_SUFIX: "values",
+
+  /*jshint quotmark: double */
+  DATE_FORMAT: "yyyymmdd'T'HHMMss'Z'",
+  /*jshint quotmark: single */
+
+  TIMESTAMP_ATTRIBUTE: "TimeInstant",
+  TIMESTAMP_TYPE: "ISO8601",
+  TIMESTAMP_TYPE_NGSI2: "DateTime",
+
+  HTTP_MEASURE_PATH: "/iot/xml",
+
+  DEFAULT_ATTRIBUTE_TYPE: "string",
+
+  COMMAND_STATUS_PENDING: "PENDING",
+  COMMAND_STATUS_ERROR: "ERROR",
+  COMMAND_STATUS_COMPLETED: "OK",
+
+  MQTTB_ALARM: "MQTTB-ALARM",
+  MQTT_DEFAULT_RETRIES: 5,
+  MQTT_DEFAULT_RETRY_TIME: 5,
+  MQTT_SHARE_SUBSCRIPTION_GROUP: "$share/xml/",
+  MQTT_TOPIC_PROTOCOL: "/xml",
+
+  AMQP_DEFAULT_EXCHANGE: "amq.topic",
+  AMQP_DEFAULT_QUEUE: "iotaqueue",
+  AMQP_DEFAULT_DURABLE: true,
+  AMQP_DEFAULT_RETRIES: 5,
+  AMQP_DEFAULT_RETRY_TIME: 5
+};
