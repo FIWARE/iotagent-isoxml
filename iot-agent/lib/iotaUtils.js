@@ -21,17 +21,17 @@
  * please contact with::[iot_support@tid.es]
  */
 
-const iotAgentLib = require("iotagent-node-lib");
-const errors = require("./errors");
-const dateFormat = require("dateformat");
-const _ = require("underscore");
+const iotAgentLib = require('iotagent-node-lib');
+const errors = require('./errors');
+const dateFormat = require('dateformat');
+const _ = require('underscore');
 const context = {
-  op: "IOTA.ISOXML.IoTUtils"
+    op: 'IOTA.ISOXML.IoTUtils'
 };
-const async = require("async");
+const async = require('async');
 const apply = async.apply;
-const constants = require("./constants");
-const config = require("./configService");
+const constants = require('./constants');
+const config = require('./configService');
 
 /**
  * Get the API Key for the selected service if there is any, or the default API Key if a specific one does not exist.
@@ -41,85 +41,75 @@ const config = require("./configService");
  * @param {Json} device             Device object.
  */
 function getEffectiveApiKey(service, subservice, device, callback) {
-  config.getLogger().debug(context, "Getting effective API Key");
+    config.getLogger().debug(context, 'Getting effective API Key');
 
-  if (device && device.apikey) {
-    config.getLogger().debug("Using device apikey: %s", device.apikey);
-    callback(null, device.apikey);
-  } else {
-    iotAgentLib.findConfiguration(service, subservice, function(error, group) {
-      if (group) {
-        config.getLogger().debug("Using found group: %j", group);
-        callback(null, group.apikey);
-      } else if (config.getConfig().defaultKey) {
-        config
-          .getLogger()
-          .debug("Using default API Key: %s", config.getConfig().defaultKey);
-        callback(null, config.getConfig().defaultKey);
-      } else {
-        config
-          .getLogger()
-          .error(
-            context,
-            "COMMANDS-002: Could not find any API Key information for device."
-          );
-        callback(new errors.GroupNotFound(service, subservice));
-      }
-    });
-  }
+    if (device && device.apikey) {
+        config.getLogger().debug('Using device apikey: %s', device.apikey);
+        callback(null, device.apikey);
+    } else {
+        iotAgentLib.findConfiguration(service, subservice, function(error, group) {
+            if (group) {
+                config.getLogger().debug('Using found group: %j', group);
+                callback(null, group.apikey);
+            } else if (config.getConfig().defaultKey) {
+                config.getLogger().debug('Using default API Key: %s', config.getConfig().defaultKey);
+                callback(null, config.getConfig().defaultKey);
+            } else {
+                config.getLogger().error(context, 'COMMANDS-002: Could not find any API Key information for device.');
+                callback(new errors.GroupNotFound(service, subservice));
+            }
+        });
+    }
 }
 
 function findOrCreate(deviceId, transport, group, callback) {
-  iotAgentLib.getDevice(deviceId, group.service, group.subservice, function(
-    error,
-    device
-  ) {
-    if (!error && device) {
-      callback(null, device, group);
-    } else if (error.name === "DEVICE_NOT_FOUND") {
-      const newDevice = {
-        id: deviceId,
-        service: group.service,
-        subservice: group.subservice,
-        type: group.type
-      };
+    iotAgentLib.getDevice(deviceId, group.service, group.subservice, function(error, device) {
+        if (!error && device) {
+            callback(null, device, group);
+        } else if (error.name === 'DEVICE_NOT_FOUND') {
+            const newDevice = {
+                id: deviceId,
+                service: group.service,
+                subservice: group.subservice,
+                type: group.type
+            };
 
-      if (
-        config.getConfig().iota &&
-        config.getConfig().iota.iotManager &&
-        config.getConfig().iota.iotManager.protocol
-      ) {
-        newDevice.protocol = config.getConfig().iota.iotManager.protocol;
-      }
+            if (
+                config.getConfig().iota &&
+                config.getConfig().iota.iotManager &&
+                config.getConfig().iota.iotManager.protocol
+            ) {
+                newDevice.protocol = config.getConfig().iota.iotManager.protocol;
+            }
 
-      // Fix transport depending on binding
-      if (!newDevice.transport) {
-        newDevice.transport = transport;
-      }
+            // Fix transport depending on binding
+            if (!newDevice.transport) {
+                newDevice.transport = transport;
+            }
 
-      if ("timestamp" in group) {
-        newDevice.timestamp = group.timestamp;
-      }
+            if ('timestamp' in group) {
+                newDevice.timestamp = group.timestamp;
+            }
 
-      iotAgentLib.register(newDevice, function(error, device) {
-        callback(error, device, group);
-      });
-    } else {
-      callback(error);
-    }
-  });
+            iotAgentLib.register(newDevice, function(error, device) {
+                callback(error, device, group);
+            });
+        } else {
+            callback(error);
+        }
+    });
 }
 
 function mergeArrays(original, newArray) {
-  /* jshint camelcase: false */
-  const originalKeys = _.pluck(original, "object_id");
-  const newKeys = _.pluck(newArray, "object_id");
-  const addedKeys = _.difference(newKeys, originalKeys);
-  const differenceArray = newArray.filter(function(item) {
-    return addedKeys.indexOf(item.object_id) >= 0;
-  });
+    /* jshint camelcase: false */
+    const originalKeys = _.pluck(original, 'object_id');
+    const newKeys = _.pluck(newArray, 'object_id');
+    const addedKeys = _.difference(newKeys, originalKeys);
+    const differenceArray = newArray.filter(function(item) {
+        return addedKeys.indexOf(item.object_id) >= 0;
+    });
 
-  return original.concat(differenceArray);
+    return original.concat(differenceArray);
 }
 
 /**
@@ -129,17 +119,17 @@ function mergeArrays(original, newArray) {
  * @return {*}                          Completed attribute
  */
 function setDefaultAttributeIds(attribute) {
-  /* jshint camelcase: false */
+    /* jshint camelcase: false */
 
-  if (!attribute.object_id && attribute.name) {
-    attribute.object_id = attribute.name;
-  }
+    if (!attribute.object_id && attribute.name) {
+        attribute.object_id = attribute.name;
+    }
 
-  if (!attribute.name && attribute.object_id) {
-    attribute.name = attribute.object_id;
-  }
+    if (!attribute.name && attribute.object_id) {
+        attribute.name = attribute.object_id;
+    }
 
-  return attribute;
+    return attribute;
 }
 
 /**
@@ -150,46 +140,26 @@ function setDefaultAttributeIds(attribute) {
  * @param {Object} configuration        Configuration data.
  */
 function mergeDeviceWithConfiguration(deviceData, configuration, callback) {
-  const fields = [
-    "lazy",
-    "internalAttributes",
-    "active",
-    "staticAttributes",
-    "commands",
-    "subscriptions"
-  ];
-  const defaults = [null, null, [], [], [], [], []];
+    const fields = ['lazy', 'internalAttributes', 'active', 'staticAttributes', 'commands', 'subscriptions'];
+    const defaults = [null, null, [], [], [], [], []];
 
-  for (let i = 0; i < fields.length; i++) {
-    const confField = fields[i] === "active" ? "attributes" : fields[i];
+    for (let i = 0; i < fields.length; i++) {
+        const confField = fields[i] === 'active' ? 'attributes' : fields[i];
 
-    if (deviceData[fields[i]] && configuration && configuration[confField]) {
-      deviceData[fields[i]] = mergeArrays(
-        deviceData[fields[i]],
-        configuration[confField]
-      );
-    } else if (
-      !deviceData[fields[i]] &&
-      configuration &&
-      configuration[confField]
-    ) {
-      deviceData[fields[i]] = configuration[confField];
-    } else if (
-      !deviceData[fields[i]] &&
-      (!configuration || !configuration[confField])
-    ) {
-      deviceData[fields[i]] = defaults[i];
+        if (deviceData[fields[i]] && configuration && configuration[confField]) {
+            deviceData[fields[i]] = mergeArrays(deviceData[fields[i]], configuration[confField]);
+        } else if (!deviceData[fields[i]] && configuration && configuration[confField]) {
+            deviceData[fields[i]] = configuration[confField];
+        } else if (!deviceData[fields[i]] && (!configuration || !configuration[confField])) {
+            deviceData[fields[i]] = defaults[i];
+        }
+
+        if (deviceData[fields[i]] && ['active', 'lazy', 'commands'].indexOf(fields[i]) >= 0) {
+            deviceData[fields[i]] = deviceData[fields[i]].map(setDefaultAttributeIds);
+        }
     }
 
-    if (
-      deviceData[fields[i]] &&
-      ["active", "lazy", "commands"].indexOf(fields[i]) >= 0
-    ) {
-      deviceData[fields[i]] = deviceData[fields[i]].map(setDefaultAttributeIds);
-    }
-  }
-
-  callback(null, deviceData);
+    callback(null, deviceData);
 }
 
 /**
@@ -200,45 +170,35 @@ function mergeDeviceWithConfiguration(deviceData, configuration, callback) {
  * @param {String} apiKey           APIKey of the Device Group (or default APIKey).
  */
 function retrieveDevice(deviceId, apiKey, transport, callback) {
-  if (apiKey === config.getConfig().defaultKey) {
-    iotAgentLib.getDevicesByAttribute(
-      "id",
-      deviceId,
-      undefined,
-      undefined,
-      function(error, devices) {
-        if (error) {
-          callback(error);
-        } else if (devices && devices.length === 1) {
-          callback(null, devices[0]);
-        } else {
-          config.getLogger().error(
-            context,
-            /*jshint quotmark: double */
-            "MEASURES-001: Couldn't find device data for APIKey [%s] and DeviceId[%s]",
-            /*jshint quotmark: single */
-            apiKey,
-            deviceId
-          );
+    if (apiKey === config.getConfig().defaultKey) {
+        iotAgentLib.getDevicesByAttribute('id', deviceId, undefined, undefined, function(error, devices) {
+            if (error) {
+                callback(error);
+            } else if (devices && devices.length === 1) {
+                callback(null, devices[0]);
+            } else {
+                config.getLogger().error(
+                    context,
+                    /*jshint quotmark: double */
+                    "MEASURES-001: Couldn't find device data for APIKey [%s] and DeviceId[%s]",
+                    /*jshint quotmark: single */
+                    apiKey,
+                    deviceId
+                );
 
-          callback(new errors.DeviceNotFound(deviceId));
-        }
-      }
-    );
-  } else {
-    async.waterfall(
-      [
-        apply(
-          iotAgentLib.getConfiguration,
-          config.getConfig().iota.defaultResource,
-          apiKey
-        ),
-        apply(findOrCreate, deviceId, transport),
-        mergeDeviceWithConfiguration
-      ],
-      callback
-    );
-  }
+                callback(new errors.DeviceNotFound(deviceId));
+            }
+        });
+    } else {
+        async.waterfall(
+            [
+                apply(iotAgentLib.getConfiguration, config.getConfig().iota.defaultResource, apiKey),
+                apply(findOrCreate, deviceId, transport),
+                mergeDeviceWithConfiguration
+            ],
+            callback
+        );
+    }
 }
 
 /**
@@ -251,158 +211,129 @@ function retrieveDevice(deviceId, apiKey, transport, callback) {
  * @param {String} status           End status of the command.
  */
 function updateCommand(apiKey, device, message, command, status, callback) {
-  iotAgentLib.setCommandResult(
-    device.name,
-    config.getConfig().iota.defaultResource,
-    apiKey,
-    command,
-    message,
-    status,
-    device,
-    function(error) {
-      if (error) {
-        config.getLogger().error(
-          context,
-          /*jshint quotmark: double */
-          "COMMANDS-003: Couldn't update command status in the Context broker for device [%s]" +
-            /*jshint quotmark: single */
-            " with apiKey [%s]: %s",
-          device.id,
-          apiKey,
-          error
-        );
+    iotAgentLib.setCommandResult(
+        device.name,
+        config.getConfig().iota.defaultResource,
+        apiKey,
+        command,
+        message,
+        status,
+        device,
+        function(error) {
+            if (error) {
+                config.getLogger().error(
+                    context,
+                    /*jshint quotmark: double */
+                    "COMMANDS-003: Couldn't update command status in the Context broker for device [%s]" +
+                        /*jshint quotmark: single */
+                        ' with apiKey [%s]: %s',
+                    device.id,
+                    apiKey,
+                    error
+                );
 
-        callback(error);
-      } else {
-        config
-          .getLogger()
-          .debug(
-            context,
-            "Single measure for device [%s] with apiKey [%s] successfully updated",
-            device.id,
-            apiKey
-          );
+                callback(error);
+            } else {
+                config
+                    .getLogger()
+                    .debug(
+                        context,
+                        'Single measure for device [%s] with apiKey [%s] successfully updated',
+                        device.id,
+                        apiKey
+                    );
 
-        callback();
-      }
-    }
-  );
+                callback();
+            }
+        }
+    );
 }
 
-function manageConfiguration(
-  apiKey,
-  deviceId,
-  device,
-  objMessage,
-  sendFunction,
-  callback
-) {
-  /* eslint-disable-next-line no-unused-vars */
-  function handleSendConfigurationError(error, results) {
-    if (error) {
-      config.getLogger().error(
-        context,
-        /*jshint quotmark: double */
-        "CONFIG-001: Couldn't get the requested values from the Context Broker: %s",
-        /*jshint quotmark: single */
-        error
-      );
-    } else {
-      config
-        .getLogger()
-        .debug(
-          context,
-          "Configuration attributes sent to the device successfully.",
-          deviceId,
-          apiKey
-        );
-    }
-
-    callback(error);
-  }
-
-  function extractAttributes(results, callback) {
-    if (
-      results.contextResponses &&
-      results.contextResponses[0] &&
-      results.contextResponses[0].contextElement.attributes
-    ) {
-      callback(null, results.contextResponses[0].contextElement.attributes);
-    } else {
-      /*jshint quotmark: double */
-      callback("Couldn't find any information in Context Broker response");
-      /*jshint quotmark: single */
-    }
-  }
-
-  if (objMessage.type === "configuration") {
-    async.waterfall(
-      [
-        apply(
-          iotAgentLib.query,
-          device.name,
-          device.type,
-          "",
-          objMessage.attributes,
-          device
-        ),
-        extractAttributes,
-        apply(sendFunction, apiKey, deviceId)
-      ],
-      handleSendConfigurationError
-    );
-  } else if (objMessage.type === "subscription") {
-    iotAgentLib.subscribe(
-      device,
-      objMessage.attributes,
-      objMessage.attributes,
-      function(error) {
+function manageConfiguration(apiKey, deviceId, device, objMessage, sendFunction, callback) {
+    /* eslint-disable-next-line no-unused-vars */
+    function handleSendConfigurationError(error, results) {
         if (error) {
-          config
-            .getLogger()
-            .error(
-              context,
-              "CONFIG-002: There was an error subscribing device [%s] to attributes [%j]",
-              device.name,
-              objMessage.attributes
+            config.getLogger().error(
+                context,
+                /*jshint quotmark: double */
+                "CONFIG-001: Couldn't get the requested values from the Context Broker: %s",
+                /*jshint quotmark: single */
+                error
             );
         } else {
-          config
-            .getLogger()
-            .debug(
-              context,
-              "Successfully subscribed device [%s] to attributes[%j]",
-              device.name,
-              objMessage.fields
-            );
+            config
+                .getLogger()
+                .debug(context, 'Configuration attributes sent to the device successfully.', deviceId, apiKey);
         }
 
         callback(error);
-      }
-    );
-  } else {
-    config
-      .getLogger()
-      .error(
-        context,
-        "CONFIG-003: Unknown command type from device [%s]: %s",
-        device.name,
-        objMessage.type
-      );
-    callback();
-  }
+    }
+
+    function extractAttributes(results, callback) {
+        if (
+            results.contextResponses &&
+            results.contextResponses[0] &&
+            results.contextResponses[0].contextElement.attributes
+        ) {
+            callback(null, results.contextResponses[0].contextElement.attributes);
+        } else {
+            /*jshint quotmark: double */
+            callback("Couldn't find any information in Context Broker response");
+            /*jshint quotmark: single */
+        }
+    }
+
+    if (objMessage.type === 'configuration') {
+        async.waterfall(
+            [
+                apply(iotAgentLib.query, device.name, device.type, '', objMessage.attributes, device),
+                extractAttributes,
+                apply(sendFunction, apiKey, deviceId)
+            ],
+            handleSendConfigurationError
+        );
+    } else if (objMessage.type === 'subscription') {
+        iotAgentLib.subscribe(device, objMessage.attributes, objMessage.attributes, function(error) {
+            if (error) {
+                config
+                    .getLogger()
+                    .error(
+                        context,
+                        'CONFIG-002: There was an error subscribing device [%s] to attributes [%j]',
+                        device.name,
+                        objMessage.attributes
+                    );
+            } else {
+                config
+                    .getLogger()
+                    .debug(
+                        context,
+                        'Successfully subscribed device [%s] to attributes[%j]',
+                        device.name,
+                        objMessage.fields
+                    );
+            }
+
+            callback(error);
+        });
+    } else {
+        config
+            .getLogger()
+            .error(context, 'CONFIG-003: Unknown command type from device [%s]: %s', device.name, objMessage.type);
+        callback();
+    }
 }
 
 function createConfigurationNotification(results) {
-  const configurations = {};
-  const now = new Date();
+    const configurations = {};
+    const now = new Date();
 
-  for (let i = 0; i < results.length; i++) {
-    configurations[results[i].name] = results[i].value;
-  }
+    for (let i = 0; i < results.length; i++) {
+        configurations[results[i].name] = results[i].value;
+    }
 
-  configurations.dt = dateFormat(now, constants.DATE_FORMAT);
-  return configurations;
+    configurations.dt = dateFormat(now, constants.DATE_FORMAT);
+    return configurations;
 }
 
 exports.createConfigurationNotification = createConfigurationNotification;

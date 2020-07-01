@@ -21,10 +21,10 @@
  * please contact with::[iot_support@tid.es]
  */
 
-const path = require("path");
-const fs = require("fs");
-const config = require("./configService");
-const async = require("async");
+const path = require('path');
+const fs = require('fs');
+const config = require('./configService');
+const async = require('async');
 let transportBindings = [];
 
 /**
@@ -33,28 +33,28 @@ let transportBindings = [];
  * @param {Object} newConfig        Configuration object to start the bindings
  */
 function startTransportBindings(newConfig, callback) {
-  function invokeBinding(binding, callback) {
-    binding.start(callback);
-  }
+    function invokeBinding(binding, callback) {
+        binding.start(callback);
+    }
 
-  const bindings = fs.readdirSync(path.join(__dirname, "./bindings"));
+    const bindings = fs.readdirSync(path.join(__dirname, './bindings'));
 
-  transportBindings = bindings.map(function(item) {
-    return require("./bindings/" + item);
-  });
+    transportBindings = bindings.map(function(item) {
+        return require('./bindings/' + item);
+    });
 
-  async.map(transportBindings, invokeBinding, callback);
+    async.map(transportBindings, invokeBinding, callback);
 }
 
 /**
  * Stop all the transport protocol bindings of the agent.
  */
 function stopTransportBindings(callback) {
-  function invokeBinding(binding, callback) {
-    binding.stop(callback);
-  }
+    function invokeBinding(binding, callback) {
+        binding.stop(callback);
+    }
 
-  async.map(transportBindings, invokeBinding, callback);
+    async.map(transportBindings, invokeBinding, callback);
 }
 
 /**
@@ -67,37 +67,22 @@ function stopTransportBindings(callback) {
  * @param {String} protocol         Transport protocol where the function must be executed.
  */
 function applyFunctionFromBinding(argument, functionName, protocol, callback) {
-  config
-    .getLogger()
-    .debug(
-      "Looking for bindings for the function [%s] and protocol [%s]",
-      functionName,
-      protocol
-    );
+    config.getLogger().debug('Looking for bindings for the function [%s] and protocol [%s]', functionName, protocol);
 
-  function addHandler(current, binding) {
-    if (binding[functionName] && (!protocol || binding.protocol === protocol)) {
-      const args = [binding[functionName]].concat(argument);
-      /* eslint-disable-next-line prefer-spread */
-      const boundFunction = binding[functionName].bind.apply(
-        binding[functionName],
-        args
-      );
+    function addHandler(current, binding) {
+        if (binding[functionName] && (!protocol || binding.protocol === protocol)) {
+            const args = [binding[functionName]].concat(argument);
+            /* eslint-disable-next-line prefer-spread */
+            const boundFunction = binding[functionName].bind.apply(binding[functionName], args);
 
-      config
-        .getLogger()
-        .debug(
-          "Binding found for function [%s] and protocol [%s]",
-          functionName,
-          protocol
-        );
-      current.push(boundFunction);
+            config.getLogger().debug('Binding found for function [%s] and protocol [%s]', functionName, protocol);
+            current.push(boundFunction);
+        }
+
+        return current;
     }
 
-    return current;
-  }
-
-  async.series(transportBindings.reduce(addHandler, []), callback);
+    async.series(transportBindings.reduce(addHandler, []), callback);
 }
 
 exports.startTransportBindings = startTransportBindings;

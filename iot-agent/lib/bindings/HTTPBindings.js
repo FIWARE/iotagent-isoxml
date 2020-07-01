@@ -21,126 +21,126 @@
  * please contact with::[iot_support@tid.es]
  */
 
-const http = require("http");
-const async = require("async");
+const http = require('http');
+const async = require('async');
 const apply = async.apply;
-const iotAgentLib = require("iotagent-node-lib");
-const _ = require("underscore");
+const iotAgentLib = require('iotagent-node-lib');
+const _ = require('underscore');
 const intoTrans = iotAgentLib.intoTrans;
-const express = require("express");
-const utils = require("../iotaUtils");
-const xmlBodyParser = require("express-xml-bodyparser");
-const constants = require("../constants");
-const commonBindings = require("./../commonBindings");
-const errors = require("../errors");
-const xmlParser = require("../xmlParser");
+const express = require('express');
+const utils = require('../iotaUtils');
+const xmlBodyParser = require('express-xml-bodyparser');
+const constants = require('../constants');
+const commonBindings = require('./../commonBindings');
+const errors = require('../errors');
+const xmlParser = require('../xmlParser');
 let httpBindingServer;
-const request = require("request");
-const config = require("../configService");
+const request = require('request');
+const config = require('../configService');
 const context = {
-  op: "IOTA.ISOXML.HTTP.Binding"
+    op: 'IOTA.ISOXML.HTTP.Binding'
 };
-const transport = "HTTP";
+const transport = 'HTTP';
 
 /* eslint-disable-next-line no-unused-vars */
 function handleError(error, req, res, next) {
-  let code = 500;
+    let code = 500;
 
-  config
-    .getLogger()
-    .debug(
-      context,
-      "Error [%s] handing request: %s",
-      error.name,
-      error.message
-    );
+    config.getLogger().debug(context, 'Error [%s] handing request: %s', error.name, error.message);
 
-  if (error.code && String(error.code).match(/^[2345]\d\d$/)) {
-    code = error.code;
-  }
+    if (error.code && String(error.code).match(/^[2345]\d\d$/)) {
+        code = error.code;
+    }
 
-  res.status(code).json({
-    name: error.name,
-    message: error.message
-  });
+    res.status(code).json({
+        name: error.name,
+        message: error.message
+    });
 }
 
 function parseData(req, res, next) {
-  let data;
-  let error;
-  let payload;
+    const data = [];
+    let error;
+    const payload = req.iso11783_taskdata;
 
-  if (req.body) {
-    payload = req.body;
-  } else {
-    payload = req.query.d;
-  }
+    config.getLogger().debug(context, 'Parsing payload [%s]', JSON.stringify(payload, null, 4));
 
-  config.getLogger().debug(context, "Parsing payload [%s]", payload);
-
-  try {
-    if (payload) {
-      data = xmlParser.parse(payload);
+    try {
+        Object.keys(payload).forEach((key) => {
+            if (key === '$') {
+                return;
+            }
+            const obj = {};
+            obj[key] = xmlParser.parse(payload[key]);
+            data.push(obj);
+        });
+    } catch (e) {
+        error = e;
     }
-  } catch (e) {
-    error = e;
-  }
 
-  if (error) {
-    next(error);
-  } else {
-    req.ulPayload = data;
+    if (error) {
+        next(error);
+    } else {
+        req.isoxmlData = data;
 
-    config.getLogger().debug(context, "Parsed data: [%j]", data);
-    next();
-  }
+        config.getLogger().debug(context, 'Parsed data: [%j]', JSON.stringify(data));
+        next();
+    }
 }
 
 function addTimestamp(req, res, next) {
-  if (req.query.t && req.ulPayload) {
-    for (let i = 0; i < req.ulPayload.length; i++) {
-      req.ulPayload[i][constants.TIMESTAMP_ATTRIBUTE] = req.query.t;
+    if (req.query.t && req.ulPayload) {
+        for (let i = 0; i < req.ulPayload.length; i++) {
+            req.ulPayload[i][constants.TIMESTAMP_ATTRIBUTE] = req.query.t;
+        }
     }
-  }
 
-  next();
+    next();
 }
 /////////////////////////////////////////////////////////////////////////
 //
 // Amended Function - checks the XML for key and device in payload
 //
-function checkMandatoryParams(queryPayload) {
-  return function(req, res, next) {
+function checkMandatoryParams(req, res, next) {
     const notFoundParams = [];
     let error;
+    req.iso11783_taskdata = req.body.iso11783_taskdata;
 
-    req.apiKey = req.body.measure.$.key;
-    req.deviceId = req.body.measure.$.device;
-
-    if (!req.apiKey) {
-      notFoundParams.push("API Key");
+    if (!req.iso11783_taskdata) {
+        notFoundParams.push('ISOXML Task');
+    } else {
+        Object.keys(req.iso11783_taskdata).forEach((key) => {
+            if (key === '$') {
+                return;
+            }
+            const entity = req.iso11783_taskdata[key];
+            if (Array.isArray(entity)) {
+                entity.forEach((element) => {
+                    const entityId = element.$ ? element.$.A : null;
+                    if (!entityId) {
+                        notFoundParams.push('Id for Entity: ' + key);
+                    }
+                });
+            } else {
+                const entityId = entity.$ ? entity.$.A : null;
+                if (!entityId) {
+                    notFoundParams.push('Id for Entity: ' + key);
+                }
+            }
+        });
     }
 
-    if (!req.deviceId) {
-      notFoundParams.push("Device Id");
-    }
-
-    // CHeck if retrievingParam
-    if (queryPayload && !req.query.d && req.query.getCmd !== "1") {
-      notFoundParams.push("Payload");
-    }
-
-    if (req.method === "POST" && !req.is("application/xml")) {
-      error = new errors.UnsupportedType("application/xml");
+    if (req.method === 'POST' && !req.is('application/xml')) {
+        error = new errors.UnsupportedType('application/xml');
     }
 
     if (notFoundParams.length !== 0) {
-      next(new errors.MandatoryParamsNotFound(notFoundParams));
+        next(new errors.MandatoryParamsNotFound(notFoundParams));
     } else {
-      next(error);
+        next(error);
     }
-  };
 }
+
 /////////////////////////////////////////////////////////////////////////
 
 /**
@@ -150,149 +150,126 @@ function checkMandatoryParams(queryPayload) {
 
 /* eslint-disable-next-line no-unused-vars */
 function returnCommands(req, res, next) {
-  function updateCommandStatus(device, commandList) {
-    function createCommandUpdate(command) {
-      return apply(
-        iotAgentLib.setCommandResult,
-        device.name,
-        device.resource,
-        req.query.k,
-        command.name,
-        " ",
-        "DELIVERED",
-        device
-      );
-    }
+    function updateCommandStatus(device, commandList) {
+        function createCommandUpdate(command) {
+            return apply(
+                iotAgentLib.setCommandResult,
+                device.name,
+                device.resource,
+                req.query.k,
+                command.name,
+                ' ',
+                'DELIVERED',
+                device
+            );
+        }
 
-    function cleanCommand(command) {
-      return apply(
-        iotAgentLib.removeCommand,
-        device.service,
-        device.subservice,
-        device.id,
-        command.name
-      );
-    }
+        function cleanCommand(command) {
+            return apply(iotAgentLib.removeCommand, device.service, device.subservice, device.id, command.name);
+        }
 
-    const updates = commandList.map(createCommandUpdate);
-    const cleanCommands = commandList.map(cleanCommand);
+        const updates = commandList.map(createCommandUpdate);
+        const cleanCommands = commandList.map(cleanCommand);
 
-    /* eslint-disable-next-line no-unused-vars */
-    async.parallel(updates.concat(cleanCommands), function(error, results) {
-      if (error) {
-        // prettier-ignore
-        config.getLogger().error(
+        /* eslint-disable-next-line no-unused-vars */
+        async.parallel(updates.concat(cleanCommands), function(error, results) {
+            if (error) {
+                // prettier-ignore
+                config.getLogger().error(
                     context,
                     'Error updating command status after delivering commands for device [%s]',
                     device.id
                 );
-      } else {
-        // prettier-ignore
-        config.getLogger().debug(
+            } else {
+                // prettier-ignore
+                config.getLogger().debug(
                     context,
                     'Command status updated successfully after delivering command list to device [%s]',
                     device.id
                 );
-      }
-    });
-  }
-
-  function parseCommand(item) {
-    return xmlParser.createCommandPayload(req.device, item.name, item.value);
-  }
-
-  function concatCommand(previous, current) {
-    if (previous === "") {
-      return current;
+            }
+        });
     }
-    return previous + "|" + current;
-  }
 
-  if (req.query && req.query.getCmd === "1") {
-    iotAgentLib.commandQueue(
-      req.device.service,
-      req.device.subservice,
-      req.deviceId,
-      function(error, list) {
-        if (error || !list || list.count === 0) {
-          res.status(200).send("");
-        } else {
-          res
-            .status(200)
-            .send(list.commands.map(parseCommand).reduce(concatCommand, ""));
+    function parseCommand(item) {
+        return xmlParser.createCommandPayload(req.device, item.name, item.value);
+    }
 
-          process.nextTick(
-            updateCommandStatus.bind(null, req.device, list.commands)
-          );
+    function concatCommand(previous, current) {
+        if (previous === '') {
+            return current;
         }
-      }
-    );
-  } else {
-    res.status(200).send("");
-  }
+        return previous + '|' + current;
+    }
+
+    if (req.query && req.query.getCmd === '1') {
+        iotAgentLib.commandQueue(req.device.service, req.device.subservice, req.deviceId, function(error, list) {
+            if (error || !list || list.count === 0) {
+                res.status(200).send('');
+            } else {
+                res.status(200).send(list.commands.map(parseCommand).reduce(concatCommand, ''));
+
+                process.nextTick(updateCommandStatus.bind(null, req.device, list.commands));
+            }
+        });
+    } else {
+        res.status(200).send('');
+    }
 }
 
 function handleIncomingMeasure(req, res, next) {
-  let updates = [];
+    let updates = [];
 
-  // prettier-ignore
-  config.getLogger().debug('Processing multiple HTTP measures for device [%s] with apiKey [%j]', 
+    // prettier-ignore
+    config.getLogger().debug('Processing multiple HTTP measures for device [%s] with apiKey [%j]', 
         req.deviceId, req.apiKey);
 
-  function processHTTPWithDevice(device) {
-    if (req.ulPayload) {
-      updates = req.ulPayload.reduce(
-        commonBindings.processMeasureGroup.bind(null, device, req.apiKey),
-        []
-      );
-    }
+    function processHTTPWithDevice(device) {
+        if (req.ulPayload) {
+            updates = req.ulPayload.reduce(commonBindings.processMeasureGroup.bind(null, device, req.apiKey), []);
+        }
 
-    async.series(updates, function(error) {
-      if (error) {
-        next(error);
-        // prettier-ignore
-        config.getLogger().error(
+        async.series(updates, function(error) {
+            if (error) {
+                next(error);
+                // prettier-ignore
+                config.getLogger().error(
                     context,
                     /*jshint quotmark: double */
                     "MEASURES-002: Couldn't send the updated values to the Context Broker due to an error: %s",
                     /*jshint quotmark: single */
                     error
                 );
-      } else {
-        // prettier-ignore
-        config.getLogger().debug(
+            } else {
+                // prettier-ignore
+                config.getLogger().debug(
                     context,
                     'Multiple measures for device [%s] with apiKey [%s] successfully updated',
                     req.deviceId,
                     req.apiKey
                 );
 
-        next();
-      }
-    });
-  }
-
-  function processDeviceMeasure(error, device) {
-    if (error) {
-      next(error);
-    } else {
-      const localContext = _.clone(context);
-
-      req.device = device;
-
-      localContext.service = device.service;
-      localContext.subservice = device.subservice;
-
-      intoTrans(localContext, processHTTPWithDevice)(device);
+                next();
+            }
+        });
     }
-  }
 
-  utils.retrieveDevice(
-    req.deviceId,
-    req.apiKey,
-    transport,
-    processDeviceMeasure
-  );
+    function processDeviceMeasure(error, device) {
+        if (error) {
+            next(error);
+        } else {
+            const localContext = _.clone(context);
+
+            req.device = device;
+
+            localContext.service = device.service;
+            localContext.subservice = device.subservice;
+
+            intoTrans(localContext, processHTTPWithDevice)(device);
+        }
+    }
+
+    utils.retrieveDevice(req.deviceId, req.apiKey, transport, processDeviceMeasure);
 }
 
 /**
@@ -304,64 +281,58 @@ function handleIncomingMeasure(req, res, next) {
  * @return {Function}               Command execution function ready to be called with async.series.
  */
 function generateCommandExecution(apiKey, device, attribute) {
-  const cmdName = attribute.name;
-  const cmdAttributes = attribute.value;
-  const options = {
-    url: device.endpoint,
-    method: "POST",
-    body: xmlParser.createCommandPayload(device, cmdName, cmdAttributes),
-    headers: {
-      "fiware-service": device.service,
-      "fiware-servicepath": device.subservice
-    }
-  };
-
-  if (config.getConfig().http.timeout) {
-    options.timeout = config.getConfig().http.timeout;
-  }
-
-  return function sendXMLCommandHTTP(callback) {
-    let commandObj;
-
-    request(options, function(error, response, body) {
-      if (error) {
-        callback(new errors.HTTPCommandResponseError("", error, cmdName));
-      } else if (response.statusCode !== 200) {
-        let errorMsg;
-
-        try {
-          commandObj = xmlParser.result(body);
-          errorMsg = commandObj.result;
-        } catch (e) {
-          errorMsg = body;
+    const cmdName = attribute.name;
+    const cmdAttributes = attribute.value;
+    const options = {
+        url: device.endpoint,
+        method: 'POST',
+        body: xmlParser.createCommandPayload(device, cmdName, cmdAttributes),
+        headers: {
+            'fiware-service': device.service,
+            'fiware-servicepath': device.subservice
         }
+    };
 
-        callback(
-          new errors.HTTPCommandResponseError(
-            response.statusCode,
-            errorMsg,
-            cmdName
-          )
-        );
-      } else if (apiKey) {
-        commandObj = xmlParser.result(body);
+    if (config.getConfig().http.timeout) {
+        options.timeout = config.getConfig().http.timeout;
+    }
 
-        process.nextTick(
-          utils.updateCommand.bind(
-            null,
-            apiKey,
-            device,
-            commandObj.result,
-            commandObj.command,
-            constants.COMMAND_STATUS_COMPLETED,
-            callback
-          )
-        );
-      } else {
-        callback();
-      }
-    });
-  };
+    return function sendXMLCommandHTTP(callback) {
+        let commandObj;
+
+        request(options, function(error, response, body) {
+            if (error) {
+                callback(new errors.HTTPCommandResponseError('', error, cmdName));
+            } else if (response.statusCode !== 200) {
+                let errorMsg;
+
+                try {
+                    commandObj = xmlParser.result(body);
+                    errorMsg = commandObj.result;
+                } catch (e) {
+                    errorMsg = body;
+                }
+
+                callback(new errors.HTTPCommandResponseError(response.statusCode, errorMsg, cmdName));
+            } else if (apiKey) {
+                commandObj = xmlParser.result(body);
+
+                process.nextTick(
+                    utils.updateCommand.bind(
+                        null,
+                        apiKey,
+                        device,
+                        commandObj.result,
+                        commandObj.command,
+                        constants.COMMAND_STATUS_COMPLETED,
+                        callback
+                    )
+                );
+            } else {
+                callback();
+            }
+        });
+    };
 }
 
 /**
@@ -375,51 +346,42 @@ function generateCommandExecution(apiKey, device, attribute) {
  * @param {String} attributes       Command attributes (in NGSIv1 format).
  */
 function commandHandler(device, attributes, callback) {
-  utils.getEffectiveApiKey(device.service, device.subservice, device, function(
-    error,
-    apiKey
-  ) {
-    async.series(
-      attributes.map(generateCommandExecution.bind(null, apiKey, device)),
-      function(error) {
-        if (error) {
-          // prettier-ignore
-          config.getLogger().error(context, 
+    utils.getEffectiveApiKey(device.service, device.subservice, device, function(error, apiKey) {
+        async.series(attributes.map(generateCommandExecution.bind(null, apiKey, device)), function(error) {
+            if (error) {
+                // prettier-ignore
+                config.getLogger().error(context, 
                     'COMMANDS-004: Error handling incoming command for device [%s]', device.id);
 
-          utils.updateCommand(
-            apiKey,
-            device,
-            error.message,
-            error.command,
-            constants.COMMAND_STATUS_ERROR,
-            function(error) {
-              if (error) {
-                // prettier-ignore
-                config.getLogger().error(
+                utils.updateCommand(
+                    apiKey,
+                    device,
+                    error.message,
+                    error.command,
+                    constants.COMMAND_STATUS_ERROR,
+                    function(error) {
+                        if (error) {
+                            // prettier-ignore
+                            config.getLogger().error(
                                 context,
                                 ' COMMANDS-005: Error updating error information for device [%s]',
                                 device.id
                             );
-              }
+                        }
+                    }
+                );
+            } else {
+                config.getLogger().debug('Incoming command for device [%s]', device.id);
             }
-          );
-        } else {
-          config
-            .getLogger()
-            .debug("Incoming command for device [%s]", device.id);
-        }
-      }
-    );
-  });
+        });
+    });
 
-  callback();
+    callback();
 }
 
 function addDefaultHeader(req, res, next) {
-  req.headers["content-type"] =
-    req.headers["content-type"] || "application/xml";
-  next();
+    req.headers['content-type'] = req.headers['content-type'] || 'application/xml';
+    next();
 }
 
 /**
@@ -428,19 +390,19 @@ function addDefaultHeader(req, res, next) {
  * @param {Object} device           Device object containing all the information about the provisioned device.
  */
 function deviceProvisioningHandler(device, callback) {
-  if (!device.transport) {
-    device.transport = "HTTP";
-  }
-
-  if (device.transport === "HTTP") {
-    if (device.endpoint) {
-      device.polling = false;
-    } else {
-      device.polling = true;
+    if (!device.transport) {
+        device.transport = 'HTTP';
     }
-  }
 
-  callback(null, device);
+    if (device.transport === 'HTTP') {
+        if (device.endpoint) {
+            device.polling = false;
+        } else {
+            device.polling = true;
+        }
+    }
+
+    callback(null, device);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -448,101 +410,72 @@ function deviceProvisioningHandler(device, callback) {
 // Amended Function - uses an XML middleware to preprocess incoming measures
 //
 function start(callback) {
-  const baseRoot = "/";
+    const baseRoot = '/';
 
-  httpBindingServer = {
-    server: null,
-    app: express(),
-    router: express.Router()
-  };
+    httpBindingServer = {
+        server: null,
+        app: express(),
+        router: express.Router()
+    };
 
-  config
-    .getLogger()
-    .info(
-      context,
-      "HTTP Binding listening on port [%s]",
-      config.getConfig().http.port
+    config.getLogger().info(context, 'HTTP Binding listening on port [%s]', config.getConfig().http.port);
+
+    httpBindingServer.app.set('port', config.getConfig().http.port);
+    httpBindingServer.app.set('host', config.getConfig().http.host || '0.0.0.0');
+
+    httpBindingServer.router.post(
+        config.getConfig().iota.defaultResource || constants.HTTP_MEASURE_PATH,
+        addDefaultHeader,
+        xmlBodyParser({ trim: false, explicitArray: false }),
+        checkMandatoryParams,
+        parseData,
+        addTimestamp,
+        handleIncomingMeasure,
+        returnCommands
     );
 
-  httpBindingServer.app.set("port", config.getConfig().http.port);
-  httpBindingServer.app.set("host", config.getConfig().http.host || "0.0.0.0");
+    httpBindingServer.app.use(baseRoot, httpBindingServer.router);
+    httpBindingServer.app.use(handleError);
 
-  httpBindingServer.router.get(
-    config.getConfig().iota.defaultResource || constants.HTTP_MEASURE_PATH,
-    checkMandatoryParams(true),
-    xmlBodyParser({ trim: false, explicitArray: false }),
-    parseData,
-    addTimestamp,
-    handleIncomingMeasure,
-    returnCommands
-  );
+    httpBindingServer.server = http.createServer(httpBindingServer.app);
 
-  httpBindingServer.router.post(
-    config.getConfig().iota.defaultResource || constants.HTTP_MEASURE_PATH,
-    addDefaultHeader,
-    xmlBodyParser({ trim: false, explicitArray: false }),
-    checkMandatoryParams(false),
-    parseData,
-    addTimestamp,
-    handleIncomingMeasure,
-    returnCommands
-  );
-
-  httpBindingServer.app.use(baseRoot, httpBindingServer.router);
-  httpBindingServer.app.use(handleError);
-
-  httpBindingServer.server = http.createServer(httpBindingServer.app);
-
-  httpBindingServer.server.listen(
-    httpBindingServer.app.get("port"),
-    httpBindingServer.app.get("host"),
-    callback
-  );
+    httpBindingServer.server.listen(httpBindingServer.app.get('port'), httpBindingServer.app.get('host'), callback);
 }
 /////////////////////////////////////////////////////////////////////////
 
 function stop(callback) {
-  config.getLogger().info(context, "Stopping XML HTTP Binding: ");
+    config.getLogger().info(context, 'Stopping XML HTTP Binding: ');
 
-  if (httpBindingServer) {
-    httpBindingServer.server.close(function() {
-      config.getLogger().info("HTTP Binding Stopped");
-      callback();
-    });
-  } else {
-    callback();
-  }
+    if (httpBindingServer) {
+        httpBindingServer.server.close(function() {
+            config.getLogger().info('HTTP Binding Stopped');
+            callback();
+        });
+    } else {
+        callback();
+    }
 }
 
 function sendPushNotifications(device, values, callback) {
-  async.series(
-    values.map(generateCommandExecution.bind(null, null, device)),
-    function(error) {
-      callback(error);
-    }
-  );
+    async.series(values.map(generateCommandExecution.bind(null, null, device)), function(error) {
+        callback(error);
+    });
 }
 
 function storePollNotifications(device, values, callback) {
-  function addPollNotification(item, innerCallback) {
-    iotAgentLib.addCommand(
-      device.service,
-      device.subservice,
-      device.id,
-      item,
-      innerCallback
-    );
-  }
+    function addPollNotification(item, innerCallback) {
+        iotAgentLib.addCommand(device.service, device.subservice, device.id, item, innerCallback);
+    }
 
-  async.map(values, addPollNotification, callback);
+    async.map(values, addPollNotification, callback);
 }
 
 function notificationHandler(device, values, callback) {
-  if (device.endpoint) {
-    sendPushNotifications(device, values, callback);
-  } else {
-    storePollNotifications(device, values, callback);
-  }
+    if (device.endpoint) {
+        sendPushNotifications(device, values, callback);
+    } else {
+        storePollNotifications(device, values, callback);
+    }
 }
 
 exports.start = start;
@@ -550,4 +483,4 @@ exports.stop = stop;
 exports.deviceProvisioningHandler = deviceProvisioningHandler;
 exports.notificationHandler = notificationHandler;
 exports.commandHandler = commandHandler;
-exports.protocol = "HTTP";
+exports.protocol = 'HTTP';

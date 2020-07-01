@@ -46,11 +46,11 @@ function start() {
     if (error) {
       logger.error(
         context,
-        "Error starting Ultralight 2.0 IoT Agent: [%s] Exiting process",
+        "Error starting ISOXML IoT Agent: [%s] Exiting process",
         JSON.stringify(error)
       );
     } else {
-      logger.info(context, "Ultralight 2.0 IoT Agent started");
+      logger.info(context, "ISOXML IoT Agent started");
     }
   });
 }

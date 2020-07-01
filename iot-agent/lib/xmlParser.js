@@ -23,14 +23,14 @@
 
 /* eslint-disable no-unused-vars */
 
-const errors = require("./errors");
-const constants = require("./constants");
-const config = require("./configService");
-const xmlToJson = require("xml-parser");
+const errors = require('./errors');
+const constants = require('./constants');
+const config = require('./configService');
+const xmlToJson = require('xml-parser');
 const context = {
-  op: "IOTA.ISOXML.XMLParser"
+    op: 'IOTA.ISOXML.XMLParser'
 };
-const _ = require("underscore");
+const _ = require('underscore');
 
 /**
  * Parse a command execution payload, returning an object containing information about the command. Throws
@@ -45,8 +45,8 @@ const _ = require("underscore");
  * @return {Object}                Object containing the command information
  */
 function command(payload) {
-  config.getLogger().debug(context, "Command ", payload);
-  return {};
+    config.getLogger().debug(context, 'Command ', payload);
+    return {};
 }
 
 /**
@@ -62,23 +62,32 @@ function command(payload) {
 // Amended Function - extracts measure attributes from the XML Payload
 //
 function parse(payload) {
-  const result = [];
-  config.getLogger().debug(context, "parse", payload);
-  const keys = Object.keys(payload.measure);
-  for (let i = 0; i < keys.length; i++) {
-    if (keys[i] !== "$") {
-      const obj = {};
-      obj[keys[i]] = payload.measure[keys[i]].$.value;
-      result.push(obj);
+    config.getLogger().debug(context, 'parse', JSON.stringify(payload, null, 4));
+
+    function removeDollars(payload) {
+        if (Array.isArray(payload)) {
+            return payload.map((elem) => removeDollars(elem));
+        }
+        const keys = Object.keys(payload);
+        const result = payload.$;
+        for (let i = 0; i < keys.length; i++) {
+            if (keys[i] !== '$') {
+                if (Array.isArray(payload[keys[i]])) {
+                    result[keys[i]] = payload[keys[i]].map((elem) => removeDollars(elem));
+                } else {
+                    result[keys[i]] = removeDollars(payload[keys[i]]);
+                }
+            }
+        }
+        return result;
     }
-  }
-  return result;
+    return removeDollars(payload);
 }
 /////////////////////////////////////////////////////////////////////////
 
 function parseConfigurationRequest(payload) {
-  config.getLogger().debug(context, "parseConfigurationRequest", payload);
-  return {};
+    config.getLogger().debug(context, 'parseConfigurationRequest', payload);
+    return {};
 }
 
 /**
@@ -99,15 +108,15 @@ function parseConfigurationRequest(payload) {
 // Amended Function - extracts command result info from the XML
 //
 function result(payload) {
-  const data = xmlToJson(payload);
-  const result = {};
+    const data = xmlToJson(payload);
+    const result = {};
 
-  config.getLogger().debug(context, "result", JSON.stringify(payload));
-  result.deviceId = data.root.attributes.device;
-  result.command = data.root.attributes.command;
-  result.result = data.root.name;
+    config.getLogger().debug(context, 'result', JSON.stringify(payload));
+    result.deviceId = data.root.attributes.device;
+    result.command = data.root.attributes.command;
+    result.result = data.root.name;
 
-  return result;
+    return result;
 }
 /////////////////////////////////////////////////////////////////////////
 
@@ -125,18 +134,18 @@ function result(payload) {
 // Amended Function - creates a custom XML command payload
 //
 function createCommandPayload(device, command, attributes) {
-  config.getLogger().debug(context, "createCommandPayload");
+    config.getLogger().debug(context, 'createCommandPayload');
 
-  if (typeof attributes === "object") {
-    let payload = "<" + command + '  device="' + device.id + '">';
+    if (typeof attributes === 'object') {
+        let payload = '<' + command + '  device="' + device.id + '">';
 
-    Object.keys(attributes).forEach(function(key, value) {
-      payload = payload + "<" + key + ">" + value + "</" + key + ">";
-    });
-    payload = payload + "</" + command + ">";
-    return payload;
-  }
-  return "<" + command + '  device="' + device.id + '"/>';
+        Object.keys(attributes).forEach(function(key, value) {
+            payload = payload + '<' + key + '>' + value + '</' + key + '>';
+        });
+        payload = payload + '</' + command + '>';
+        return payload;
+    }
+    return '<' + command + '  device="' + device.id + '"/>';
 }
 /////////////////////////////////////////////////////////////////////////
 
@@ -148,8 +157,8 @@ function createCommandPayload(device, command, attributes) {
  * @return {String}                 String with the codified command.
  */
 function createConfigurationPayload(deviceId, attributes) {
-  config.getLogger().debug(context, "createConfigurationPayload");
-  return "createConfigurationPayload";
+    config.getLogger().debug(context, 'createConfigurationPayload');
+    return 'createConfigurationPayload';
 }
 
 exports.parse = parse;

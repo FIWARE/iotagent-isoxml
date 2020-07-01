@@ -21,15 +21,15 @@
  * please contact with::[iot_support@tid.es]
  */
 
-const iotAgentLib = require("iotagent-node-lib");
-const async = require("async");
+const iotAgentLib = require('iotagent-node-lib');
+const async = require('async');
 const apply = async.apply;
 const context = {
-  op: "IoTA-ISOXML.Agent"
+    op: 'IoTA-ISOXML.Agent'
 };
-const config = require("./configService");
-const iotaUtils = require("./iotaUtils");
-const transportSelector = require("./transportSelector");
+const config = require('./configService');
+const iotaUtils = require('./iotaUtils');
+const transportSelector = require('./transportSelector');
 
 /**
  * Calls all the device provisioning handlers for each transport protocol binding whenever a new device is provisioned
@@ -38,18 +38,13 @@ const transportSelector = require("./transportSelector");
  * @param {Object} device           Device provisioning information.
  */
 function deviceProvisioningHandler(device, callback) {
-  transportSelector.applyFunctionFromBinding(
-    [device],
-    "deviceProvisioningHandler",
-    null,
-    function(error, devices) {
-      if (error) {
-        callback(error);
-      } else {
-        callback(null, devices[0]);
-      }
-    }
-  );
+    transportSelector.applyFunctionFromBinding([device], 'deviceProvisioningHandler', null, function(error, devices) {
+        if (error) {
+            callback(error);
+        } else {
+            callback(null, devices[0]);
+        }
+    });
 }
 
 /**
@@ -59,12 +54,7 @@ function deviceProvisioningHandler(device, callback) {
  * @param {Object} configuration     Configuration provisioning information.
  */
 function configurationHandler(configuration, callback) {
-  transportSelector.applyFunctionFromBinding(
-    [configuration],
-    "configurationHandler",
-    null,
-    callback
-  );
+    transportSelector.applyFunctionFromBinding([configuration], 'configurationHandler', null, callback);
 }
 
 /**
@@ -76,26 +66,26 @@ function configurationHandler(configuration, callback) {
  * @param {Array} attributes        List of NGSI attributes of type command to execute.
  */
 function commandHandler(id, type, service, subservice, attributes, callback) {
-  iotAgentLib.getDeviceByName(id, service, subservice, function(error, device) {
-    if (error) {
-      config.getLogger().error(
-        context,
-        /*jshint quotmark: double */
-        "COMMANDS-001: Command execution could not be handled, as device for entity [%s] [%s] wasn't found",
-        /*jshint quotmark: single */
-        id,
-        type
-      );
-      callback(error);
-    } else {
-      transportSelector.applyFunctionFromBinding(
-        [device, attributes],
-        "commandHandler",
-        device.transport || config.getConfig().defaultTransport,
-        callback
-      );
-    }
-  });
+    iotAgentLib.getDeviceByName(id, service, subservice, function(error, device) {
+        if (error) {
+            config.getLogger().error(
+                context,
+                /*jshint quotmark: double */
+                "COMMANDS-001: Command execution could not be handled, as device for entity [%s] [%s] wasn't found",
+                /*jshint quotmark: single */
+                id,
+                type
+            );
+            callback(error);
+        } else {
+            transportSelector.applyFunctionFromBinding(
+                [device, attributes],
+                'commandHandler',
+                device.transport || config.getConfig().defaultTransport,
+                callback
+            );
+        }
+    });
 }
 
 /**
@@ -106,27 +96,19 @@ function commandHandler(id, type, service, subservice, attributes, callback) {
 
  */
 function configurationNotificationHandler(device, updates, callback) {
-  function invokeConfiguration(apiKey, callback) {
-    transportSelector.applyFunctionFromBinding(
-      [apiKey, device.id, updates],
-      "sendConfigurationToDevice",
-      device.transport || config.getConfig().defaultTransport,
-      callback
-    );
-  }
+    function invokeConfiguration(apiKey, callback) {
+        transportSelector.applyFunctionFromBinding(
+            [apiKey, device.id, updates],
+            'sendConfigurationToDevice',
+            device.transport || config.getConfig().defaultTransport,
+            callback
+        );
+    }
 
-  async.waterfall(
-    [
-      apply(
-        iotaUtils.getEffectiveApiKey,
-        device.service,
-        device.subservice,
-        device
-      ),
-      invokeConfiguration
-    ],
-    callback
-  );
+    async.waterfall(
+        [apply(iotaUtils.getEffectiveApiKey, device.service, device.subservice, device), invokeConfiguration],
+        callback
+    );
 }
 
 /**
@@ -137,12 +119,12 @@ function configurationNotificationHandler(device, updates, callback) {
  * @param {Array} values                Values recieved in the notification.
  */
 function notificationHandler(device, values, callback) {
-  transportSelector.applyFunctionFromBinding(
-    [device, values],
-    "notificationHandler",
-    device.transport || config.getConfig().defaultTransport,
-    callback
-  );
+    transportSelector.applyFunctionFromBinding(
+        [device, values],
+        'notificationHandler',
+        device.transport || config.getConfig().defaultTransport,
+        callback
+    );
 }
 
 /**
@@ -154,7 +136,7 @@ function notificationHandler(device, values, callback) {
  * @param {Array} attributes        List of NGSI attributes to update.
  */
 function updateHandler(id, type, attributes, service, subservice, callback) {
-  callback();
+    callback();
 }
 
 /**
@@ -163,67 +145,49 @@ function updateHandler(id, type, attributes, service, subservice, callback) {
  * @param {Object} newConfig        New configuration object.
  */
 function start(newConfig, callback) {
-  const options = {
-    keepalive: 0,
-    connectTimeout: 60 * 60 * 1000
-  };
+    const options = {
+        keepalive: 0,
+        connectTimeout: 60 * 60 * 1000
+    };
 
-  config.setLogger(iotAgentLib.logModule);
-  config.setConfig(newConfig);
+    config.setLogger(iotAgentLib.logModule);
+    config.setConfig(newConfig);
 
-  if (
-    config.getConfig().mqtt &&
-    config.getConfig().mqtt.username &&
-    config.getConfig().mqtt.password
-  ) {
-    options.username = config.getConfig().mqtt.username;
-    options.password = config.getConfig().mqtt.password;
-  }
-
-  iotAgentLib.activate(config.getConfig().iota, function(error) {
-    if (error) {
-      callback(error);
-    } else {
-      config.getLogger().info(context, "IoT Agent services activated");
-
-      iotAgentLib.setProvisioningHandler(deviceProvisioningHandler);
-      iotAgentLib.setConfigurationHandler(configurationHandler);
-      iotAgentLib.setCommandHandler(commandHandler);
-      iotAgentLib.setDataUpdateHandler(updateHandler);
-
-      iotAgentLib.addUpdateMiddleware(
-        iotAgentLib.dataPlugins.attributeAlias.update
-      );
-      iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.addEvents.update);
-      iotAgentLib.addUpdateMiddleware(
-        iotAgentLib.dataPlugins.expressionTransformation.update
-      );
-      iotAgentLib.addUpdateMiddleware(
-        iotAgentLib.dataPlugins.multiEntity.update
-      );
-      iotAgentLib.addUpdateMiddleware(
-        iotAgentLib.dataPlugins.timestampProcess.update
-      );
-
-      iotAgentLib.addDeviceProvisionMiddleware(
-        iotAgentLib.dataPlugins.bidirectionalData.deviceProvision
-      );
-      iotAgentLib.addConfigurationProvisionMiddleware(
-        iotAgentLib.dataPlugins.bidirectionalData.groupProvision
-      );
-      iotAgentLib.addNotificationMiddleware(
-        iotAgentLib.dataPlugins.bidirectionalData.notification
-      );
-
-      if (config.getConfig().configRetrieval) {
-        iotAgentLib.setNotificationHandler(configurationNotificationHandler);
-      } else {
-        iotAgentLib.setNotificationHandler(notificationHandler);
-      }
-
-      transportSelector.startTransportBindings(newConfig, callback);
+    if (config.getConfig().mqtt && config.getConfig().mqtt.username && config.getConfig().mqtt.password) {
+        options.username = config.getConfig().mqtt.username;
+        options.password = config.getConfig().mqtt.password;
     }
-  });
+
+    iotAgentLib.activate(config.getConfig().iota, function(error) {
+        if (error) {
+            callback(error);
+        } else {
+            config.getLogger().info(context, 'IoT Agent services activated');
+
+            iotAgentLib.setProvisioningHandler(deviceProvisioningHandler);
+            iotAgentLib.setConfigurationHandler(configurationHandler);
+            iotAgentLib.setCommandHandler(commandHandler);
+            iotAgentLib.setDataUpdateHandler(updateHandler);
+
+            iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
+            iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.addEvents.update);
+            iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
+            iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
+            iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
+
+            iotAgentLib.addDeviceProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
+            iotAgentLib.addConfigurationProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
+            iotAgentLib.addNotificationMiddleware(iotAgentLib.dataPlugins.bidirectionalData.notification);
+
+            if (config.getConfig().configRetrieval) {
+                iotAgentLib.setNotificationHandler(configurationNotificationHandler);
+            } else {
+                iotAgentLib.setNotificationHandler(notificationHandler);
+            }
+
+            transportSelector.startTransportBindings(newConfig, callback);
+        }
+    });
 }
 
 /**
@@ -231,18 +195,14 @@ function start(newConfig, callback) {
  *
  */
 function stop(callback) {
-  config.getLogger().info(context, "Stopping IoT Agent: ");
-  async.series(
-    [
-      transportSelector.stopTransportBindings,
-      iotAgentLib.resetMiddlewares,
-      iotAgentLib.deactivate
-    ],
-    function() {
-      config.getLogger().info("Agent stopped");
-      callback();
-    }
-  );
+    config.getLogger().info(context, 'Stopping IoT Agent: ');
+    async.series(
+        [transportSelector.stopTransportBindings, iotAgentLib.resetMiddlewares, iotAgentLib.deactivate],
+        function() {
+            config.getLogger().info('Agent stopped');
+            callback();
+        }
+    );
 }
 
 exports.start = start;

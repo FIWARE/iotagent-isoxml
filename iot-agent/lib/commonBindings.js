@@ -23,17 +23,17 @@
  * Modified by: Fernando Méndez, Daniel Calvo - ATOS Research & Innovation
  */
 
-const iotAgentLib = require("iotagent-node-lib");
-const config = require("./configService");
-const transportSelector = require("./transportSelector");
+const iotAgentLib = require('iotagent-node-lib');
+const config = require('./configService');
+const transportSelector = require('./transportSelector');
 const intoTrans = iotAgentLib.intoTrans;
-const _ = require("underscore");
-const utils = require("./iotaUtils");
-const async = require("async");
-const xmlParser = require("./xmlParser");
-const constants = require("./constants");
+const _ = require('underscore');
+const utils = require('./iotaUtils');
+const async = require('async');
+const xmlParser = require('./xmlParser');
+const constants = require('./constants');
 const context = {
-  op: "IOTA.ISOXML.Common.Binding"
+    op: 'IOTA.ISOXML.Common.Binding'
 };
 
 /**
@@ -45,34 +45,28 @@ const context = {
  * @return {String}                 String identifier of the attribute type.
  */
 function guessType(attribute, device) {
-  for (let i = 0; i < device.active.length; i++) {
-    if (device.active[i].name === attribute) {
-      return device.active[i].type;
+    for (let i = 0; i < device.active.length; i++) {
+        if (device.active[i].name === attribute) {
+            return device.active[i].type;
+        }
     }
-  }
 
-  if (attribute === constants.TIMESTAMP_ATTRIBUTE) {
-    if (iotAgentLib.configModule.checkNgsi2()) {
-      return constants.TIMESTAMP_TYPE_NGSI2;
+    if (attribute === constants.TIMESTAMP_ATTRIBUTE) {
+        if (iotAgentLib.configModule.checkNgsi2()) {
+            return constants.TIMESTAMP_TYPE_NGSI2;
+        }
+        return constants.TIMESTAMP_TYPE;
     }
-    return constants.TIMESTAMP_TYPE;
-  }
-  return constants.DEFAULT_ATTRIBUTE_TYPE;
+    return constants.DEFAULT_ATTRIBUTE_TYPE;
 }
 
-function sendConfigurationToDevice(
-  device,
-  apiKey,
-  deviceId,
-  results,
-  callback
-) {
-  transportSelector.applyFunctionFromBinding(
-    [apiKey, deviceId, results],
-    "sendConfigurationToDevice",
-    device.transport,
-    callback
-  );
+function sendConfigurationToDevice(device, apiKey, deviceId, results, callback) {
+    transportSelector.applyFunctionFromBinding(
+        [apiKey, deviceId, results],
+        'sendConfigurationToDevice',
+        device.transport,
+        callback
+    );
 }
 
 /**
@@ -86,28 +80,23 @@ function sendConfigurationToDevice(
  * @param {Object} objMessage          JSON object received.
  */
 function manageConfigurationRequest(apiKey, deviceId, device, objMessage) {
-  utils.manageConfiguration(
-    apiKey,
-    deviceId,
-    device,
-    objMessage,
-    async.apply(sendConfigurationToDevice, device),
-    function(error) {
-      if (error) {
-        iotAgentLib.alarms.raise(constants.MQTTB_ALARM, error);
-      } else {
-        iotAgentLib.alarms.release(constants.MQTTB_ALARM);
-        config
-          .getLogger()
-          .debug(
-            context,
-            "Configuration request finished for APIKey [%s] and Device [%s]",
-            apiKey,
-            deviceId
-          );
-      }
-    }
-  );
+    utils.manageConfiguration(
+        apiKey,
+        deviceId,
+        device,
+        objMessage,
+        async.apply(sendConfigurationToDevice, device),
+        function(error) {
+            if (error) {
+                iotAgentLib.alarms.raise(constants.MQTTB_ALARM, error);
+            } else {
+                iotAgentLib.alarms.release(constants.MQTTB_ALARM);
+                config
+                    .getLogger()
+                    .debug(context, 'Configuration request finished for APIKey [%s] and Device [%s]', apiKey, deviceId);
+            }
+        }
+    );
 }
 
 /**
@@ -125,46 +114,37 @@ function manageConfigurationRequest(apiKey, deviceId, device, objMessage) {
 
 /* eslint-disable-next-line no-unused-vars */
 function processMeasureGroup(device, apikey, previous, current, index) {
-  const values = [];
+    const values = [];
 
-  if (current.command) {
-    previous.push(
-      iotAgentLib.setCommandResult.bind(
-        null,
-        device.name,
-        config.getConfig().iota.defaultResource,
-        apikey,
-        current.command,
-        current.value,
-        constants.COMMAND_STATUS_COMPLETED,
-        device
-      )
-    );
-  } else {
-    for (const i in current) {
-      /* eslint-disable-next-line no-prototype-builtins */
-      if (current.hasOwnProperty(i)) {
-        values.push({
-          name: i,
-          type: guessType(i, device),
-          value: current[i]
-        });
-      }
+    if (current.command) {
+        previous.push(
+            iotAgentLib.setCommandResult.bind(
+                null,
+                device.name,
+                config.getConfig().iota.defaultResource,
+                apikey,
+                current.command,
+                current.value,
+                constants.COMMAND_STATUS_COMPLETED,
+                device
+            )
+        );
+    } else {
+        for (const i in current) {
+            /* eslint-disable-next-line no-prototype-builtins */
+            if (current.hasOwnProperty(i)) {
+                values.push({
+                    name: i,
+                    type: guessType(i, device),
+                    value: current[i]
+                });
+            }
+        }
+
+        previous.push(iotAgentLib.update.bind(null, device.name, device.type, '', values, device));
     }
 
-    previous.push(
-      iotAgentLib.update.bind(
-        null,
-        device.name,
-        device.type,
-        "",
-        values,
-        device
-      )
-    );
-  }
-
-  return previous;
+    return previous;
 }
 
 /**
@@ -176,55 +156,40 @@ function processMeasureGroup(device, apikey, previous, current, index) {
  * @param {String} message          UL payload.
  */
 function multipleMeasures(apiKey, device, message) {
-  let updates = [];
-  const messageStr = message.toString();
-  let parsedMessage;
+    let updates = [];
+    const messageStr = message.toString();
+    let parsedMessage;
 
-  config
-    .getLogger()
-    .debug(
-      "Processing multiple measures for device [%s] with apiKey [%s]",
-      device.id,
-      apiKey
-    );
+    config.getLogger().debug('Processing multiple measures for device [%s] with apiKey [%s]', device.id, apiKey);
 
-  try {
-    parsedMessage = xmlParser.parse(messageStr);
-  } catch (e) {
-    config
-      .getLogger()
-      .error(
-        context,
-        "MEASURES-003: Parse error parsing incoming message [%]",
-        messageStr
-      );
-    return;
-  }
+    try {
+        parsedMessage = xmlParser.parse(messageStr);
+    } catch (e) {
+        config.getLogger().error(context, 'MEASURES-003: Parse error parsing incoming message [%]', messageStr);
+        return;
+    }
 
-  updates = parsedMessage.reduce(
-    processMeasureGroup.bind(null, device, apiKey),
-    []
-  );
+    updates = parsedMessage.reduce(processMeasureGroup.bind(null, device, apiKey), []);
 
-  async.series(updates, function(error) {
-    if (error) {
-      config.getLogger().error(
-        context,
-        /*jshint quotmark: double */
-        " MEASURES-002: Couldn't send the updated values to the Context Broker due to an error: %s",
-        /*jshint quotmark: single */
-        error
-      );
-    } else {
-      // prettier-ignore
-      config.getLogger().debug(
+    async.series(updates, function(error) {
+        if (error) {
+            config.getLogger().error(
+                context,
+                /*jshint quotmark: double */
+                " MEASURES-002: Couldn't send the updated values to the Context Broker due to an error: %s",
+                /*jshint quotmark: single */
+                error
+            );
+        } else {
+            // prettier-ignore
+            config.getLogger().debug(
                 context,
                 'Multiple measures for device [%s] with apiKey [%s] successfully updated',
                 device.id,
                 apiKey
             );
-    }
-  });
+        }
+    });
 }
 
 /**
@@ -237,43 +202,35 @@ function multipleMeasures(apiKey, device, message) {
  * @param {Buffer} message          Raw message coming from the client.
  */
 function singleMeasure(apiKey, attribute, device, message) {
-  config
-    .getLogger()
-    .debug(
-      "Processing single measure for device [%s] with apiKey [%s]",
-      device.id,
-      apiKey
-    );
+    config.getLogger().debug('Processing single measure for device [%s] with apiKey [%s]', device.id, apiKey);
 
-  const values = [
-    {
-      name: attribute,
-      type: guessType(attribute, device),
-      value: message.toString()
-    }
-  ];
+    const values = [
+        {
+            name: attribute,
+            type: guessType(attribute, device),
+            value: message.toString()
+        }
+    ];
 
-  iotAgentLib.update(device.name, device.type, "", values, device, function(
-    error
-  ) {
-    if (error) {
-      config.getLogger().error(
-        context,
-        /*jshint quotmark: double */
-        " MEASURES-002: Couldn't send the updated values to the Context Broker due to an error: %s",
-        /*jshint quotmark: single */
-        error
-      );
-    } else {
-      // prettier-ignore
-      config.getLogger().debug(
+    iotAgentLib.update(device.name, device.type, '', values, device, function(error) {
+        if (error) {
+            config.getLogger().error(
+                context,
+                /*jshint quotmark: double */
+                " MEASURES-002: Couldn't send the updated values to the Context Broker due to an error: %s",
+                /*jshint quotmark: single */
+                error
+            );
+        } else {
+            // prettier-ignore
+            config.getLogger().debug(
                 context,
                 'Single measure for device [%s] with apiKey [%s] successfully updated',
                 device.id,
                 apiKey
             );
-    }
-  });
+        }
+    });
 }
 
 /**
@@ -284,77 +241,67 @@ function singleMeasure(apiKey, attribute, device, message) {
  * @param {Object} message      message body (Object or Buffer, depending on the value).
  */
 function messageHandler(topic, message, protocol) {
-  const topicInformation = topic.split("/");
-  let parsedMessage;
+    const topicInformation = topic.split('/');
+    let parsedMessage;
 
-  if (topicInformation[1].toLowerCase() === "ul") {
-    topicInformation.splice(1, 1);
-  }
-  const apiKey = topicInformation[1];
-  const deviceId = topicInformation[2];
-  const messageStr = message.toString();
+    if (topicInformation[1].toLowerCase() === 'ul') {
+        topicInformation.splice(1, 1);
+    }
+    const apiKey = topicInformation[1];
+    const deviceId = topicInformation[2];
+    const messageStr = message.toString();
 
-  function processMessageForDevice(device, apiKey, topicInformation) {
-    iotAgentLib.alarms.release(constants.MQTTB_ALARM);
+    function processMessageForDevice(device, apiKey, topicInformation) {
+        iotAgentLib.alarms.release(constants.MQTTB_ALARM);
 
-    if (
-      topicInformation[3] === constants.CONFIGURATION_SUFIX &&
-      topicInformation[4] === constants.CONFIGURATION_COMMAND_SUFIX &&
-      message
-    ) {
-      parsedMessage = xmlParser.parseConfigurationRequest(messageStr);
-      manageConfigurationRequest(apiKey, deviceId, device, parsedMessage);
-    } else if (topicInformation[3] === constants.CONFIGURATION_COMMAND_UPDATE) {
-      const commandObj = xmlParser.result(message.toString());
-      utils.updateCommand(
-        apiKey,
-        device,
-        commandObj.result,
-        commandObj.command,
-        constants.COMMAND_STATUS_COMPLETED,
-        function(error) {
-          config.getLogger().debug("Command updated with result: %s", error);
+        if (
+            topicInformation[3] === constants.CONFIGURATION_SUFIX &&
+            topicInformation[4] === constants.CONFIGURATION_COMMAND_SUFIX &&
+            message
+        ) {
+            parsedMessage = xmlParser.parseConfigurationRequest(messageStr);
+            manageConfigurationRequest(apiKey, deviceId, device, parsedMessage);
+        } else if (topicInformation[3] === constants.CONFIGURATION_COMMAND_UPDATE) {
+            const commandObj = xmlParser.result(message.toString());
+            utils.updateCommand(
+                apiKey,
+                device,
+                commandObj.result,
+                commandObj.command,
+                constants.COMMAND_STATUS_COMPLETED,
+                function(error) {
+                    config.getLogger().debug('Command updated with result: %s', error);
+                }
+            );
+        } else if (topicInformation[4]) {
+            singleMeasure(apiKey, topicInformation[4], device, message);
+        } else if (topicInformation[3] === constants.MEASURES_SUFIX) {
+            multipleMeasures(apiKey, device, message.toString());
+        } else {
+            config.getLogger().error(
+                context,
+                /*jshint quotmark: double */
+                "MEASURES-004: Couldn't process message [%s] due to format issues.",
+                /*jshint quotmark: single */
+                message
+            );
         }
-      );
-    } else if (topicInformation[4]) {
-      singleMeasure(apiKey, topicInformation[4], device, message);
-    } else if (topicInformation[3] === constants.MEASURES_SUFIX) {
-      multipleMeasures(apiKey, device, message.toString());
-    } else {
-      config.getLogger().error(
-        context,
-        /*jshint quotmark: double */
-        "MEASURES-004: Couldn't process message [%s] due to format issues.",
-        /*jshint quotmark: single */
-        message
-      );
     }
-  }
 
-  function processDeviceMeasure(error, device) {
-    if (error) {
-      config
-        .getLogger()
-        .error(
-          context,
-          "MEASURES-005: Error before processing device measures [%s]",
-          topic
-        );
-    } else {
-      const localContext = _.clone(context);
+    function processDeviceMeasure(error, device) {
+        if (error) {
+            config.getLogger().error(context, 'MEASURES-005: Error before processing device measures [%s]', topic);
+        } else {
+            const localContext = _.clone(context);
 
-      localContext.service = device.service;
-      localContext.subservice = device.subservice;
+            localContext.service = device.service;
+            localContext.subservice = device.subservice;
 
-      intoTrans(localContext, processMessageForDevice)(
-        device,
-        apiKey,
-        topicInformation
-      );
+            intoTrans(localContext, processMessageForDevice)(device, apiKey, topicInformation);
+        }
     }
-  }
 
-  utils.retrieveDevice(deviceId, apiKey, protocol, processDeviceMeasure);
+    utils.retrieveDevice(deviceId, apiKey, protocol, processDeviceMeasure);
 }
 
 /**
@@ -365,7 +312,7 @@ function messageHandler(topic, message, protocol) {
  * @param {Object} message      AMQP message body (Object or Buffer, depending on the value).
  */
 function amqpMessageHandler(topic, message) {
-  messageHandler(topic, message, "AMQP");
+    messageHandler(topic, message, 'AMQP');
 }
 
 /**
@@ -376,8 +323,8 @@ function amqpMessageHandler(topic, message) {
  * @param {Object} message      MQTT message body (Object or Buffer, depending on the value).
  */
 function mqttMessageHandler(topic, message) {
-  config.getLogger().debug(context, "message topic: %s", topic);
-  messageHandler(topic, message, "MQTT");
+    config.getLogger().debug(context, 'message topic: %s', topic);
+    messageHandler(topic, message, 'MQTT');
 }
 
 exports.amqpMessageHandler = amqpMessageHandler;
