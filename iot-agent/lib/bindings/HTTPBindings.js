@@ -97,10 +97,7 @@ function addTimestamp(req, res, next) {
 
     next();
 }
-/////////////////////////////////////////////////////////////////////////
-//
-// Amended Function - checks the XML for key and device in payload
-//
+
 function checkMandatoryParams(req, res, next) {
     const notFoundParams = [];
     let error;
@@ -217,59 +214,77 @@ function returnCommands(req, res, next) {
     }
 }
 
-function handleIncomingMeasure(req, res, next) {
+async function handleIncomingMeasure(req, res, next) {
     let updates = [];
+    let errors = [];
 
     // prettier-ignore
-    config.getLogger().debug('Processing multiple HTTP measures for device [%s] with apiKey [%j]', 
-        req.deviceId, req.apiKey);
+    config.getLogger().debug('Processing ISOXML data');
 
     function processHTTPWithDevice(device) {
-        if (req.ulPayload) {
-            updates = req.ulPayload.reduce(commonBindings.processMeasureGroup.bind(null, device, req.apiKey), []);
-        }
 
-        async.series(updates, function(error) {
+        const attributes = [];
+        Object.keys(req.data).forEach(key => {
+          attributes.push({name: key, value: req.data[key], type: 'string'})
+        });
+
+        //console.log("!" + JSON.stringify(attributes , null, 4));
+        iotAgentLib.update(device.id, device.type, req.apiKey, attributes, function(error) {
             if (error) {
-                next(error);
+                errors.push(error);
                 // prettier-ignore
                 config.getLogger().error(
                     context,
-                    /*jshint quotmark: double */
                     "MEASURES-002: Couldn't send the updated values to the Context Broker due to an error: %s",
-                    /*jshint quotmark: single */
-                    error
+                    JSON.stringify(error)
                 );
             } else {
                 // prettier-ignore
                 config.getLogger().debug(
                     context,
                     'Multiple measures for device [%s] with apiKey [%s] successfully updated',
-                    req.deviceId,
-                    req.apiKey
+                    device.id,
+                    apiKey
                 );
-
-                next();
             }
         });
     }
 
     function processDeviceMeasure(error, device) {
+
         if (error) {
-            next(error);
+            errors.push(error);
         } else {
             const localContext = _.clone(context);
-
-            req.device = device;
-
             localContext.service = device.service;
             localContext.subservice = device.subservice;
-
             intoTrans(localContext, processHTTPWithDevice)(device);
         }
+        return;
     }
 
-    utils.retrieveDevice(req.deviceId, req.apiKey, transport, processDeviceMeasure);
+    async function iterateMeasure(deviceId, apiKey) {
+      await utils.retrieveDevice(deviceId, apiKey, null, processDeviceMeasure);
+    }
+
+    req.isoxmlData.forEach(async function(element) {
+        apiKey = _.keys(element)[0];
+        req.apiKey = apiKey;
+        if (Array.isArray(element[apiKey])) {
+            element[apiKey].map(async function(item) {
+              req.data = item;
+              await iterateMeasure(item.A, apiKey);
+            });
+        } else {
+            req.data = element[apiKey];
+            await iterateMeasure(element[apiKey].A, apiKey);
+        }
+    });
+
+    if (errors){
+      console.log(errors)
+    }
+    next();
 }
 
 /**

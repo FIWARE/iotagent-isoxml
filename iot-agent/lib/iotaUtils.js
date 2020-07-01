@@ -169,36 +169,15 @@ function mergeDeviceWithConfiguration(deviceData, configuration, callback) {
  * @param {String} deviceId         Device ID of the device that wants to be retrieved or created.
  * @param {String} apiKey           APIKey of the Device Group (or default APIKey).
  */
-function retrieveDevice(deviceId, apiKey, transport, callback) {
-    if (apiKey === config.getConfig().defaultKey) {
-        iotAgentLib.getDevicesByAttribute('id', deviceId, undefined, undefined, function(error, devices) {
-            if (error) {
-                callback(error);
-            } else if (devices && devices.length === 1) {
-                callback(null, devices[0]);
-            } else {
-                config.getLogger().error(
-                    context,
-                    /*jshint quotmark: double */
-                    "MEASURES-001: Couldn't find device data for APIKey [%s] and DeviceId[%s]",
-                    /*jshint quotmark: single */
-                    apiKey,
-                    deviceId
-                );
-
-                callback(new errors.DeviceNotFound(deviceId));
-            }
-        });
-    } else {
-        async.waterfall(
-            [
-                apply(iotAgentLib.getConfiguration, config.getConfig().iota.defaultResource, apiKey),
-                apply(findOrCreate, deviceId, transport),
-                mergeDeviceWithConfiguration
-            ],
-            callback
-        );
-    }
+async function retrieveDevice(deviceId, apiKey, transport, callback) {
+    async.waterfall(
+        [
+            apply(iotAgentLib.getConfiguration, config.getConfig().iota.defaultResource, apiKey),
+            apply(findOrCreate, deviceId, transport),
+            mergeDeviceWithConfiguration
+        ],
+        callback
+    );
 }
 
 /**
