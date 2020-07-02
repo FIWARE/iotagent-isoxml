@@ -63,7 +63,7 @@ function parseData(req, res, next) {
     let error;
     const payload = req.iso11783_taskdata;
 
-    config.getLogger().debug(context, 'Parsing payload [%s]', JSON.stringify(payload, null, 4));
+    config.getLogger().debug(context, 'Parsing payload [%s]', JSON.stringify(payload));
 
     try {
         Object.keys(payload).forEach((key) => {
@@ -225,11 +225,11 @@ async function handleIncomingMeasure(req, res, next) {
 
         const attributes = [];
         Object.keys(req.data).forEach(key => {
-          attributes.push({name: key, value: req.data[key], type: 'string'})
+            if (key !== 'A') {
+                attributes.push({name: key, value: req.data[key], type: 'string'});
+            }  
         });
-
-        //console.log("!" + JSON.stringify(attributes , null, 4));
-        iotAgentLib.update(device.id, device.type, req.apiKey, attributes, function(error) {
+        iotAgentLib.update(device.name, device.type, req.apiKey, attributes, device, function(error) {
             if (error) {
                 errors.push(error);
                 // prettier-ignore
@@ -264,7 +264,7 @@ async function handleIncomingMeasure(req, res, next) {
     }
 
     async function iterateMeasure(deviceId, apiKey) {
-      await utils.retrieveDevice(deviceId, apiKey, null, processDeviceMeasure);
+      await utils.retrieveDevice(deviceId, apiKey, transport, processDeviceMeasure);
     }
 
     req.isoxmlData.forEach(async function(element) {

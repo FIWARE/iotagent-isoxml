@@ -56,13 +56,8 @@ function command(payload) {
  * @param {String} payload         XML measure reporting payload
  * @return {Array}                 Array containing an object per measure group
  */
-
-/////////////////////////////////////////////////////////////////////////
-//
-// Amended Function - extracts measure attributes from the XML Payload
-//
 function parse(payload) {
-    config.getLogger().debug(context, 'parse', JSON.stringify(payload, null, 4));
+    config.getLogger().debug(context, 'parse', JSON.stringify(payload));
 
     function removeDollars(payload) {
         if (Array.isArray(payload)) {
@@ -83,7 +78,6 @@ function parse(payload) {
     }
     return removeDollars(payload);
 }
-/////////////////////////////////////////////////////////////////////////
 
 function parseConfigurationRequest(payload) {
     config.getLogger().debug(context, 'parseConfigurationRequest', payload);
