@@ -214,24 +214,21 @@ function returnCommands(req, res, next) {
     }
 }
 
-async function handleIncomingMeasure(req, res, next) {
-    let updates = [];
-    let errors = [];
-
+function handleIncomingMeasure(req, res, next) {
+    res.locals.errors = [];
     // prettier-ignore
     config.getLogger().debug('Processing ISOXML data');
 
-    function processHTTPWithDevice(device) {
-
+    function processHTTPWithDevice(device, data, apiKey, callback) {
         const attributes = [];
-        Object.keys(req.data).forEach(key => {
+        Object.keys(data).forEach((key) => {
             if (key !== 'A') {
-                attributes.push({name: key, value: req.data[key], type: 'string'});
-            }  
+                attributes.push({ name: key, value: data[key], type: 'string' });
+            }
         });
-        iotAgentLib.update(device.name, device.type, req.apiKey, attributes, device, function(error) {
+        iotAgentLib.update(device.name, device.type, apiKey, attributes, device, function(error) {
             if (error) {
-                errors.push(error);
+                res.locals.errors.push(error);
                 // prettier-ignore
                 config.getLogger().error(
                     context,
@@ -247,44 +244,48 @@ async function handleIncomingMeasure(req, res, next) {
                     apiKey
                 );
             }
+            callback();
         });
     }
 
-    function processDeviceMeasure(error, device) {
-
-        if (error) {
-            errors.push(error);
-        } else {
-            const localContext = _.clone(context);
-            localContext.service = device.service;
-            localContext.subservice = device.subservice;
-            intoTrans(localContext, processHTTPWithDevice)(device);
-        }
-        return;
+    function processDeviceMeasure(item, callback) {
+        utils.retrieveDevice(item.id, item.apiKey, transport, (error, device) => {
+            if (error) {
+                error.message += ': ' + item.apiKey;
+                res.locals.errors.push(error);
+                callback();
+            } else {
+                const localContext = _.clone(context);
+                localContext.service = device.service;
+                localContext.subservice = device.subservice;
+                intoTrans(localContext, processHTTPWithDevice)(device, item.data, item.apiKey, callback);
+            }
+        });
     }
 
-    async function iterateMeasure(deviceId, apiKey) {
-      await utils.retrieveDevice(deviceId, apiKey, transport, processDeviceMeasure);
-    }
-
-    req.isoxmlData.forEach(async function(element) {
-        apiKey = _.keys(element)[0];
-        req.apiKey = apiKey;
+    const measures = [];
+    req.isoxmlData.forEach((element) => {
+        const apiKey = _.keys(element)[0];
         if (Array.isArray(element[apiKey])) {
-            element[apiKey].map(async function(item) {
-              req.data = item;
-              await iterateMeasure(item.A, apiKey);
+            element[apiKey].forEach((item) => {
+                measures.push({ id: item.A, data: item, apiKey });
             });
         } else {
-            req.data = element[apiKey];
-            await iterateMeasure(element[apiKey].A, apiKey);
+            measures.push({ id: element[apiKey].A, data: element[apiKey], apiKey });
         }
     });
 
-    if (errors){
-      console.log(errors)
-    }
-    next();
+    async.map(measures, processDeviceMeasure, (error) => {
+        if (res.locals.errors.length === 0) {
+            return next();
+        } if (res.locals.errors.length === 1 && measures.length === 1) {
+            return next(res.locals.errors[0]);
+        } else if (res.locals.errors.length  === measures.length){
+            return res.status(400).send(res.locals.errors);
+        }
+        // Partial success...
+        return res.status(202).send(res.locals.errors);
+    });
 }
 
 /**

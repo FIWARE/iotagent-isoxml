@@ -169,7 +169,7 @@ function mergeDeviceWithConfiguration(deviceData, configuration, callback) {
  * @param {String} deviceId         Device ID of the device that wants to be retrieved or created.
  * @param {String} apiKey           APIKey of the Device Group (or default APIKey).
  */
-async function retrieveDevice(deviceId, apiKey, transport, callback) {
+function retrieveDevice(deviceId, apiKey, transport, callback) {
     async.waterfall(
         [
             apply(iotAgentLib.getConfiguration, config.getConfig().iota.defaultResource, apiKey),
