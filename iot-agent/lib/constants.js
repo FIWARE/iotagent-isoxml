@@ -38,7 +38,7 @@ module.exports = {
     TIMESTAMP_TYPE: 'ISO8601',
     TIMESTAMP_TYPE_NGSI2: 'DateTime',
 
-    HTTP_MEASURE_PATH: '/iot/xml',
+    HTTP_MEASURE_PATH: '/iot/isoxml',
 
     DEFAULT_ATTRIBUTE_TYPE: 'string',
 
@@ -49,8 +49,8 @@ module.exports = {
     MQTTB_ALARM: 'MQTTB-ALARM',
     MQTT_DEFAULT_RETRIES: 5,
     MQTT_DEFAULT_RETRY_TIME: 5,
-    MQTT_SHARE_SUBSCRIPTION_GROUP: '$share/xml/',
-    MQTT_TOPIC_PROTOCOL: '/xml',
+    MQTT_SHARE_SUBSCRIPTION_GROUP: '$share/isoxml/',
+    MQTT_TOPIC_PROTOCOL: '/isoxml',
 
     AMQP_DEFAULT_EXCHANGE: 'amq.topic',
     AMQP_DEFAULT_QUEUE: 'iotaqueue',

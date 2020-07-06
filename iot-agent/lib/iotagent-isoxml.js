@@ -31,6 +31,9 @@ const config = require('./configService');
 const iotaUtils = require('./iotaUtils');
 const transportSelector = require('./transportSelector');
 
+const stringToObject = require('./plugins/stringToObjectPlugin');
+const attributeDelete = require('./plugins/attributeDeletePlugin');
+
 /**
  * Calls all the device provisioning handlers for each transport protocol binding whenever a new device is provisioned
  * in the Agent.
@@ -174,6 +177,8 @@ function start(newConfig, callback) {
             iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
             iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
             iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
+            iotAgentLib.addUpdateMiddleware(stringToObject.update);
+            iotAgentLib.addUpdateMiddleware(attributeDelete.update);
 
             iotAgentLib.addDeviceProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
             iotAgentLib.addConfigurationProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.groupProvision);

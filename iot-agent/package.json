@@ -7,21 +7,23 @@
   "engines": {
     "node": ">=10"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jason-fox/iotagent-ADAPT.git"
+  },
   "scripts": {
     "start": "node ./bin/iotagent-isoxml",
     "lint": "eslint bin/iotagent-isoxml lib/ --cache --fix",
     "prettier": "prettier --config .prettierrc.json --write **/**/*.js  **/*.js *.js"
   },
   "dependencies": {
-    "amqplib": "~0.5.1",
     "async": "2.6.1",
     "xml-parser": "^1.2.1",
     "express-xml-bodyparser": "^0.3.0",
     "dateformat": "3.0.3",
     "express": "~4.16.4",
-    "iotagent-node-lib": "2.11.0",
+    "iotagent-node-lib": "git://github.com/telefonicaid/iotagent-node-lib.git#master",
     "logops": "2.1.0",
-    "mqtt": "3.0.0",
     "request": "2.88.0",
     "underscore": "1.9.1"
   },

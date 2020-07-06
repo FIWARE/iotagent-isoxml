@@ -66,6 +66,7 @@ services:
       - IOTA_MONGO_PORT=${MONGO_DB_PORT} # The port mongoDB is listening on
       - IOTA_MONGO_DB=iotagentisoxml # The name of the database used in mongoDB
       - IOTA_HTTP_PORT=${IOTA_SOUTH_PORT} # The port used for device traffic over HTTP
+      - IOTA_HTTP_DEFAULT_MICS_ENDPOINT=http://context-provider:3001/iot/isoxml
       - IOTA_PROVIDER_URL=http://iot-agent:${IOTA_NORTH_PORT}
       - IOTA_DEFAULT_RESOURCE=/iot/isoxml
     healthcheck:

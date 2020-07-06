@@ -22,65 +22,6 @@
  */
 let config = {};
 
-/**
- * Configuration for the MQTT binding.
- */
-config.mqtt = {
-    /**
-     * Host where the MQTT Broker is located.
-     */
-    host: 'localhost',
-
-    /**
-     * Port where the MQTT Broker is listening
-     */
-    port: 1883,
-
-    /**
-     * User name for the IoTAgent in the MQTT broker, if authentication is activated.
-     */
-    //username: ''
-
-    /**
-     * Password for the IoTAgent in the MQTT broker, if authentication is activated.
-     */
-    //password: ''
-
-    /**
-     * QoS Level: at most once (0), at least once (1), exactly once (2). (default is 2).
-     */
-    qos: 0,
-
-    /**
-     * Retain flag. (default is true).
-     */
-    retain: false,
-
-    /**
-     * Number of MQTT connection error retries (default is 5).
-     */
-    retries: 5,
-
-    /**
-     * Time between MQTT connection retries (default is 5 seconds).
-     */
-    retryTime: 5,
-
-    /**
-     * Time to keep connection open between client and MQTT broker (default is 0 seconds)
-     */
-    keepalive: 0
-};
-
-config.amqp = {
-    host: 'localhost',
-    port: 5672,
-    // username: 'guest',
-    // password: 'guest',
-    exchange: 'iota-exchange',
-    queue: 'iotaqueue',
-    options: { durable: true }
-};
 
 /**
  * Configuration for the HTTP transport binding.
@@ -94,6 +35,11 @@ config.http = {
      * HTTP Timeout for the http command endpoint (in milliseconds).
      */
     //timeout: 1000
+
+    /**
+     * HTTP Timeout for the http command endpoint (in milliseconds).
+     */
+    //mics_endpoint; 'http://context-provider:3001/iot/bell001'
 };
 
 config.iota = {
@@ -320,12 +266,12 @@ config.configRetrieval = false;
 /**
  * Default API Key, to use with device that have been provisioned without a Configuration Group.
  */
-config.defaultKey = 'TEF';
+config.defaultKey = '';
 
 /**
  * Default transport protocol when no transport is provisioned through the Device Provisioning API.
  */
-config.defaultTransport = 'MQTT';
+config.defaultTransport = 'HTTP';
 
 /**
  * flag indicating whether the node server will be executed in multi-core option (true) or it will be a

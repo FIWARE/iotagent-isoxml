@@ -220,12 +220,15 @@ function handleIncomingMeasure(req, res, next) {
     config.getLogger().debug('Processing ISOXML data');
 
     function processHTTPWithDevice(device, data, apiKey, callback) {
+
         const attributes = [];
         Object.keys(data).forEach((key) => {
             if (key !== 'A') {
-                attributes.push({ name: key, value: data[key], type: 'string' });
+                attributes.push({ name: key, value: data[key], type: 'String'});
             }
         });
+
+        console.log(attributes);
         iotAgentLib.update(device.name, device.type, apiKey, attributes, device, function(error) {
             if (error) {
                 res.locals.errors.push(error);
@@ -297,10 +300,13 @@ function handleIncomingMeasure(req, res, next) {
  * @return {Function}               Command execution function ready to be called with async.series.
  */
 function generateCommandExecution(apiKey, device, attribute) {
+
+
+    
     const cmdName = attribute.name;
     const cmdAttributes = attribute.value;
     const options = {
-        url: device.endpoint,
+        url: device.endpoint || config.getConfig().http.mics_endpoint,
         method: 'POST',
         body: xmlParser.createCommandPayload(device, cmdName, cmdAttributes),
         headers: {
@@ -331,15 +337,13 @@ function generateCommandExecution(apiKey, device, attribute) {
 
                 callback(new errors.HTTPCommandResponseError(response.statusCode, errorMsg, cmdName));
             } else if (apiKey) {
-                commandObj = xmlParser.result(body);
-
                 process.nextTick(
                     utils.updateCommand.bind(
                         null,
                         apiKey,
                         device,
-                        commandObj.result,
-                        commandObj.command,
+                        '',
+                        cmdName,
                         constants.COMMAND_STATUS_COMPLETED,
                         callback
                     )
@@ -362,7 +366,13 @@ function generateCommandExecution(apiKey, device, attribute) {
  * @param {String} attributes       Command attributes (in NGSIv1 format).
  */
 function commandHandler(device, attributes, callback) {
+
+
+    console.log("commandHandler")
+
     utils.getEffectiveApiKey(device.service, device.subservice, device, function(error, apiKey) {
+
+        console.log("apiKey is" , apiKey)
         async.series(attributes.map(generateCommandExecution.bind(null, apiKey, device)), function(error) {
             if (error) {
                 // prettier-ignore

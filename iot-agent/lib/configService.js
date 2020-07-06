@@ -36,51 +36,13 @@ function anyIsSet(variableSet) {
 
 function processEnvironmentVariables() {
     const environmentVariables = [
-        'IOTA_MQTT_HOST',
-        'IOTA_MQTT_PORT',
-        'IOTA_MQTT_USERNAME',
-        'IOTA_MQTT_PASSWORD',
-        'IOTA_MQTT_QOS',
-        'IOTA_MQTT_RETAIN',
-        'IOTA_MQTT_RETRIES',
-        'IOTA_MQTT_RETRY_TIME',
-        'IOTA_MQTT_KEEPALIVE',
-        'IOTA_AMQP_HOST',
-        'IOTA_AMQP_PORT',
-        'IOTA_AMQP_USERNAME',
-        'IOTA_AMQP_PASSWORD',
-        'IOTA_AMQP_EXCHANGE',
-        'IOTA_AMQP_QUEUE',
-        'IOTA_AMQP_DURABLE',
-        'IOTA_AMQP_RETRIES',
-        'IOTA_AMQP_RETRY_TIME',
         'IOTA_HTTP_HOST',
         'IOTA_HTTP_PORT',
-        'IOTA_HTTP_TIMEOUT'
+        'IOTA_HTTP_TIMEOUT',
+        'IOTA_HTTP_DEFAULT_MICS_ENDPOINT'
     ];
-    const mqttVariables = [
-        'IOTA_MQTT_HOST',
-        'IOTA_MQTT_PORT',
-        'IOTA_MQTT_USERNAME',
-        'IOTA_MQTT_PASSWORD',
-        'IOTA_MQTT_QOS',
-        'IOTA_MQTT_RETAIN',
-        'IOTA_MQTT_RETRIES',
-        'IOTA_MQTT_RETRY_TIME',
-        'IOTA_MQTT_KEEPALIVE'
-    ];
-    const amqpVariables = [
-        'IOTA_AMQP_HOST',
-        'IOTA_AMQP_PORT',
-        'IOTA_AMQP_USERNAME',
-        'IOTA_AMQP_PASSWORD',
-        'IOTA_AMQP_EXCHANGE',
-        'IOTA_AMQP_QUEUE',
-        'IOTA_AMQP_DURABLE',
-        'IOTA_AMQP_RETRIES',
-        'IOTA_AMQP_RETRY_TIME'
-    ];
-    const httpVariables = ['IOTA_HTTP_HOST', 'IOTA_HTTP_PORT', 'IOTA_HTTP_TIMEOUT'];
+
+    const httpVariables = ['IOTA_HTTP_HOST', 'IOTA_HTTP_PORT', 'IOTA_HTTP_TIMEOUT', 'IOTA_HTTP_DEFAULT_MICS_ENDPOINT'];
 
     for (let i = 0; i < environmentVariables.length; i++) {
         if (process.env[environmentVariables[i]]) {
@@ -90,87 +52,6 @@ function processEnvironmentVariables() {
                 process.env[environmentVariables[i]]
             );
         }
-    }
-
-    if (anyIsSet(mqttVariables)) {
-        config.mqtt = {};
-    }
-
-    if (process.env.IOTA_MQTT_HOST) {
-        config.mqtt.host = process.env.IOTA_MQTT_HOST;
-    }
-
-    if (process.env.IOTA_MQTT_PORT) {
-        config.mqtt.port = process.env.IOTA_MQTT_PORT;
-    }
-
-    if (process.env.IOTA_MQTT_USERNAME) {
-        config.mqtt.username = process.env.IOTA_MQTT_USERNAME;
-    }
-
-    if (process.env.IOTA_MQTT_PASSWORD) {
-        config.mqtt.password = process.env.IOTA_MQTT_PASSWORD;
-    }
-
-    if (process.env.IOTA_MQTT_QOS) {
-        config.mqtt.qos = process.env.IOTA_MQTT_QOS;
-    }
-
-    if (process.env.IOTA_MQTT_RETAIN) {
-        config.mqtt.retain = process.env.IOTA_MQTT_RETAIN === 'true';
-    }
-
-    if (process.env.IOTA_MQTT_RETRIES) {
-        config.mqtt.retries = process.env.IOTA_MQTT_RETRIES;
-    }
-
-    if (process.env.IOTA_MQTT_RETRY_TIME) {
-        config.mqtt.retryTime = process.env.IOTA_MQTT_RETRY_TIME;
-    }
-
-    if (process.env.IOTA_MQTT_KEEPALIVE) {
-        config.mqtt.keepalive = process.env.IOTA_MQTT_KEEPALIVE;
-    }
-
-    if (anyIsSet(amqpVariables)) {
-        config.amqp = {};
-    }
-
-    if (process.env.IOTA_AMQP_HOST) {
-        config.amqp.host = process.env.IOTA_AMQP_HOST;
-    }
-
-    if (process.env.IOTA_AMQP_PORT) {
-        config.amqp.port = process.env.IOTA_AMQP_PORT;
-    }
-
-    if (process.env.IOTA_AMQP_USERNAME) {
-        config.amqp.username = process.env.IOTA_AMQP_USERNAME;
-    }
-
-    if (process.env.IOTA_AMQP_PASSWORD) {
-        config.amqp.password = process.env.IOTA_AMQP_PASSWORD;
-    }
-
-    if (process.env.IOTA_AMQP_EXCHANGE) {
-        config.amqp.exchange = process.env.IOTA_AMQP_EXCHANGE;
-    }
-
-    if (process.env.IOTA_AMQP_QUEUE) {
-        config.amqp.queue = process.env.IOTA_AMQP_QUEUE;
-    }
-
-    if (process.env.IOTA_AMQP_DURABLE) {
-        config.amqp.options = {};
-        config.amqp.options.durable = process.env.IOTA_AMQP_DURABLE === 'true';
-    }
-
-    if (process.env.IOTA_AMQP_RETRIES) {
-        config.amqp.retries = process.env.IOTA_AMQP_RETRIES;
-    }
-
-    if (process.env.IOTA_AMQP_RETRY_TIME) {
-        config.amqp.retryTime = process.env.IOTA_AMQP_RETRY_TIME;
     }
 
     if (anyIsSet(httpVariables)) {
@@ -187,6 +68,10 @@ function processEnvironmentVariables() {
 
     if (process.env.IOTA_HTTP_TIMEOUT) {
         config.http.timeout = process.env.IOTA_HTTP_TIMEOUT;
+    }
+
+    if (process.env.IOTA_HTTP_DEFAULT_MICS_ENDPOINT) {
+        config.http.mics_endpoint = process.env.IOTA_HTTP_DEFAULT_MICS_ENDPOINT;
     }
 }
 
