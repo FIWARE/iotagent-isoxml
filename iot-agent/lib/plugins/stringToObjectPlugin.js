@@ -11,8 +11,6 @@ function update(entity, typeInformation, callback) {
             }
         }
     });
-
-    console.log(entity);
     return callback(null, entity, typeInformation);
 }
 

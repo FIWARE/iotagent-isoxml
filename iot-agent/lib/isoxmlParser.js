@@ -27,8 +27,9 @@ const errors = require('./errors');
 const constants = require('./constants');
 const config = require('./configService');
 const xmlToJson = require('xml-parser');
+const JsonToXml = require('xml');
 const context = {
-    op: 'IOTA.ISOXML.XMLParser'
+    op: 'IOTA.ISOXML.Parser'
 };
 const _ = require('underscore');
 

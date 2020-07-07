@@ -30,7 +30,7 @@ const intoTrans = iotAgentLib.intoTrans;
 const _ = require('underscore');
 const utils = require('./iotaUtils');
 const async = require('async');
-const xmlParser = require('./xmlParser');
+const isoxmlParser = require('./isoxmlParser');
 const constants = require('./constants');
 const context = {
     op: 'IOTA.ISOXML.Common.Binding'
@@ -163,7 +163,7 @@ function multipleMeasures(apiKey, device, message) {
     config.getLogger().debug('Processing multiple measures for device [%s] with apiKey [%s]', device.id, apiKey);
 
     try {
-        parsedMessage = xmlParser.parse(messageStr);
+        parsedMessage = isoxmlParser.parse(messageStr);
     } catch (e) {
         config.getLogger().error(context, 'MEASURES-003: Parse error parsing incoming message [%]', messageStr);
         return;
@@ -259,10 +259,10 @@ function messageHandler(topic, message, protocol) {
             topicInformation[4] === constants.CONFIGURATION_COMMAND_SUFIX &&
             message
         ) {
-            parsedMessage = xmlParser.parseConfigurationRequest(messageStr);
+            parsedMessage = isoxmlParser.parseConfigurationRequest(messageStr);
             manageConfigurationRequest(apiKey, deviceId, device, parsedMessage);
         } else if (topicInformation[3] === constants.CONFIGURATION_COMMAND_UPDATE) {
-            const commandObj = xmlParser.result(message.toString());
+            const commandObj = isoxmlParser.result(message.toString());
             utils.updateCommand(
                 apiKey,
                 device,

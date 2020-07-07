@@ -33,7 +33,7 @@ const xmlBodyParser = require('express-xml-bodyparser');
 const constants = require('../constants');
 const commonBindings = require('./../commonBindings');
 const errors = require('../errors');
-const xmlParser = require('../xmlParser');
+const isoxmlParser = require('../isoxmlParser');
 let httpBindingServer;
 const request = require('request');
 const config = require('../configService');
@@ -71,7 +71,7 @@ function parseData(req, res, next) {
                 return;
             }
             const obj = {};
-            obj[key] = xmlParser.parse(payload[key]);
+            obj[key] = isoxmlParser.parse(payload[key]);
             data.push(obj);
         });
     } catch (e) {
@@ -189,7 +189,7 @@ function returnCommands(req, res, next) {
     }
 
     function parseCommand(item) {
-        return xmlParser.createCommandPayload(req.device, item.name, item.value);
+        return isoxmlParser.createCommandPayload(req.device, item.name, item.value);
     }
 
     function concatCommand(previous, current) {
@@ -220,15 +220,12 @@ function handleIncomingMeasure(req, res, next) {
     config.getLogger().debug('Processing ISOXML data');
 
     function processHTTPWithDevice(device, data, apiKey, callback) {
-
         const attributes = [];
         Object.keys(data).forEach((key) => {
             if (key !== 'A') {
-                attributes.push({ name: key, value: data[key], type: 'String'});
+                attributes.push({ name: key, value: data[key], type: 'String' });
             }
         });
-
-        console.log(attributes);
         iotAgentLib.update(device.name, device.type, apiKey, attributes, device, function(error) {
             if (error) {
                 res.locals.errors.push(error);
@@ -281,13 +278,93 @@ function handleIncomingMeasure(req, res, next) {
     async.map(measures, processDeviceMeasure, (error) => {
         if (res.locals.errors.length === 0) {
             return next();
-        } if (res.locals.errors.length === 1 && measures.length === 1) {
+        }
+        if (res.locals.errors.length === 1 && measures.length === 1) {
             return next(res.locals.errors[0]);
-        } else if (res.locals.errors.length  === measures.length){
+        } else if (res.locals.errors.length === measures.length) {
             return res.status(400).send(res.locals.errors);
         }
         // Partial success...
         return res.status(202).send(res.locals.errors);
+    });
+}
+
+
+
+
+
+/**
+ * Generate a function that retrieves all entities to be used in the payload.
+ *
+ * @param {String} apiKey           APIKey of the device's service or default APIKey.
+ * @param {Object} device           Object containing all the information about a device.
+ * @param {Object} attribute        Attribute in NGSI format.
+ * @return {Function}               Command execution function ready to be called with async.series.
+ */
+function getContextEntities(apiKey, device, attribute, callback) {
+    const cmdAttributes = attribute.value;
+    const entities = {};
+
+
+
+    function retrieveSingleEntity(item, callback) {
+        const version = config.getConfig().contextBroker.ngsiVersion
+        const cbHost = config.getConfig().contextBroker.url;
+        let path = '/v2/entities/';
+
+        if (version === 'ld'){
+            path = '/ngsi-ld/v1/entities/'
+        }
+        const options = {
+          method: 'GET',
+          url: cbHost + path + item, qs: {"options": "keyValues"},
+          headers: {
+                'fiware-service': device.service,
+                'fiware-servicepath': device.subservice
+            }
+        };
+
+        console.log(JSON.stringify(options));
+        request(options, function (error, response) { 
+            if (error) {
+                return callback(error);
+            }
+            const result = {
+                id: item,
+                entity: response.body
+            };
+            return callback(null, result);
+        });
+    }
+
+    function retrieveEntities(ids, entities, callback) {
+        async.map(ids, retrieveSingleEntity, function(err, results) {
+            const refIds = [];
+            results.forEach(function(result) {
+                entities[result.id] = result.entity;
+                if (result.refids) {
+                    result.refids.forEach(function(refid) {
+                        if (!entities[refid]) {
+                            refIds.push(refid);
+                        }
+                    });
+                }
+            });
+            return refIds.length === 0 ? callback() : retrieveEntities(refIds, entities, callback);
+        });
+    }
+
+    // Start by checking the entity which has pushed the command.
+    const entityIds = [device.name];
+    // Add any additional entities found within the command
+    if (cmdAttributes && cmdAttributes.entities) {
+        cmdAttributes.entities.forEach((id) => {
+            entityIds.push(id);
+        });
+    }
+    // Get each entity and recursively check for any references.
+    retrieveEntities(entityIds, entities, function(err) {
+        callback(null, entities);
     });
 }
 
@@ -299,16 +376,14 @@ function handleIncomingMeasure(req, res, next) {
  * @param {Object} attribute        Attribute in NGSI format.
  * @return {Function}               Command execution function ready to be called with async.series.
  */
-function generateCommandExecution(apiKey, device, attribute) {
-
-
-    
+function generateCommandExecution(apiKey, device, attribute, entities, callback) {
     const cmdName = attribute.name;
     const cmdAttributes = attribute.value;
+
     const options = {
         url: device.endpoint || config.getConfig().http.mics_endpoint,
         method: 'POST',
-        body: xmlParser.createCommandPayload(device, cmdName, cmdAttributes),
+        body: isoxmlParser.createCommandPayload(device, cmdName, cmdAttributes, entities),
         headers: {
             'fiware-service': device.service,
             'fiware-servicepath': device.subservice
@@ -319,40 +394,40 @@ function generateCommandExecution(apiKey, device, attribute) {
         options.timeout = config.getConfig().http.timeout;
     }
 
-    return function sendXMLCommandHTTP(callback) {
-        let commandObj;
 
-        request(options, function(error, response, body) {
-            if (error) {
-                callback(new errors.HTTPCommandResponseError('', error, cmdName));
-            } else if (response.statusCode !== 200) {
-                let errorMsg;
+    let commandObj;
 
-                try {
-                    commandObj = xmlParser.result(body);
-                    errorMsg = commandObj.result;
-                } catch (e) {
-                    errorMsg = body;
-                }
+    request(options, function(error, response, body) {
+        if (error) {
+            callback(new errors.HTTPCommandResponseError('', error, cmdName));
+        } else if (response.statusCode !== 200) {
+            let errorMsg;
 
-                callback(new errors.HTTPCommandResponseError(response.statusCode, errorMsg, cmdName));
-            } else if (apiKey) {
-                process.nextTick(
-                    utils.updateCommand.bind(
-                        null,
-                        apiKey,
-                        device,
-                        '',
-                        cmdName,
-                        constants.COMMAND_STATUS_COMPLETED,
-                        callback
-                    )
-                );
-            } else {
-                callback();
+            try {
+                commandObj = isoxmlParser.result(body);
+                errorMsg = commandObj.result;
+            } catch (e) {
+                errorMsg = body;
             }
-        });
-    };
+
+            callback(new errors.HTTPCommandResponseError(response.statusCode, errorMsg, cmdName));
+        } else if (apiKey) {
+            process.nextTick(
+                utils.updateCommand.bind(
+                    null,
+                    apiKey,
+                    device,
+                    '',
+                    cmdName,
+                    constants.COMMAND_STATUS_COMPLETED,
+                    callback
+                )
+            );
+        } else {
+            callback();
+        }
+    });
+  
 }
 
 /**
@@ -366,39 +441,35 @@ function generateCommandExecution(apiKey, device, attribute) {
  * @param {String} attributes       Command attributes (in NGSIv1 format).
  */
 function commandHandler(device, attributes, callback) {
-
-
-    console.log("commandHandler")
-
     utils.getEffectiveApiKey(device.service, device.subservice, device, function(error, apiKey) {
+        getContextEntities(apiKey, device, attributes[0], function(error, entities) {            
+            generateCommandExecution(apiKey, device, attributes[0], entities, function(error) {
+                if (error) {
+                    // prettier-ignore
+                    config.getLogger().error(context, 
+                        'COMMANDS-004: Error handling incoming command for device [%s]', device.id);
 
-        console.log("apiKey is" , apiKey)
-        async.series(attributes.map(generateCommandExecution.bind(null, apiKey, device)), function(error) {
-            if (error) {
-                // prettier-ignore
-                config.getLogger().error(context, 
-                    'COMMANDS-004: Error handling incoming command for device [%s]', device.id);
-
-                utils.updateCommand(
-                    apiKey,
-                    device,
-                    error.message,
-                    error.command,
-                    constants.COMMAND_STATUS_ERROR,
-                    function(error) {
-                        if (error) {
-                            // prettier-ignore
-                            config.getLogger().error(
-                                context,
-                                ' COMMANDS-005: Error updating error information for device [%s]',
-                                device.id
-                            );
+                    utils.updateCommand(
+                        apiKey,
+                        device,
+                        error.message,
+                        error.command,
+                        constants.COMMAND_STATUS_ERROR,
+                        function(error) {
+                            if (error) {
+                                // prettier-ignore
+                                config.getLogger().error(
+                                    context,
+                                    ' COMMANDS-005: Error updating error information for device [%s]',
+                                    device.id
+                                );
+                            }
                         }
-                    }
-                );
-            } else {
-                config.getLogger().debug('Incoming command for device [%s]', device.id);
-            }
+                    );
+                } else {
+                    config.getLogger().debug('Incoming command for device [%s]', device.id);
+                }
+            });
         });
     });
 

@@ -13,19 +13,20 @@
   },
   "scripts": {
     "start": "node ./bin/iotagent-isoxml",
-    "lint": "eslint bin/iotagent-isoxml lib/ --cache --fix",
+    "lint": "eslint bin/iotagent-isoxml lib/ conf/ --cache --fix",
     "prettier": "prettier --config .prettierrc.json --write **/**/*.js  **/*.js *.js"
   },
   "dependencies": {
     "async": "2.6.1",
-    "xml-parser": "^1.2.1",
-    "express-xml-bodyparser": "^0.3.0",
     "dateformat": "3.0.3",
     "express": "~4.16.4",
+    "express-xml-bodyparser": "^0.3.0",
     "iotagent-node-lib": "git://github.com/telefonicaid/iotagent-node-lib.git#master",
     "logops": "2.1.0",
     "request": "2.88.0",
-    "underscore": "1.9.1"
+    "underscore": "1.9.1",
+    "xml": "^1.0.1",
+    "xml-parser": "^1.2.1"
   },
   "devDependencies": {
     "prettier": "~1.14.2",

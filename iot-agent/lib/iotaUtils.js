@@ -32,6 +32,7 @@ const async = require('async');
 const apply = async.apply;
 const constants = require('./constants');
 const config = require('./configService');
+const micsAdapter = require('../conf/micsAdapter');
 
 /**
  * Get the API Key for the selected service if there is any, or the default API Key if a specific one does not exist.
@@ -71,7 +72,8 @@ function findOrCreate(deviceId, transport, group, callback) {
                 id: deviceId,
                 service: group.service,
                 subservice: group.subservice,
-                type: group.type
+                type: group.type,
+                name: micsAdapter.generateURI(deviceId, group.type)
             };
 
             if (
