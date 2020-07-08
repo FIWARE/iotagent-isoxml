@@ -27,9 +27,10 @@ const config = require('./configService');
 const context = {
     op: 'IOTA.ISOXML.CBUtils'
 };
+const relationshipAdapter = require('../conf/relationshipAdapter');
 
 /**
- * Generate a function that retrieves all entities to be used in the MICS payload.
+ * Generate a function that retrieves all the Context Broker entities to be used in the MICS payload.
  *
  * @param {String} apiKey           APIKey of the device's service or default APIKey.
  * @param {Object} device           Object containing all the information about a device.
@@ -40,6 +41,10 @@ function getContextEntities(apiKey, device, attribute, callback) {
     const cmdAttributes = attribute.value;
     const entities = {};
 
+    /**
+     * Make a request to the context broker and database in turn to find
+     * the complete list of entities to send as a "command".
+     */
     function retrieveSingleEntity(item, callback) {
         const version = config.getConfig().contextBroker.ngsiVersion;
         const cbHost = config.getConfig().contextBroker.url;
@@ -62,14 +67,25 @@ function getContextEntities(apiKey, device, attribute, callback) {
             if (error) {
                 return callback(error);
             }
+            const entity = JSON.parse(response.body);
             const result = {
                 id: item,
-                entity: response.body
+                entity
             };
+
+            if (entity.isoxml_type) {
+                const getRelationships = relationshipAdapter[entity.isoxml_type];
+                if (typeof getRelationships === 'function') {
+                    result.refids = getRelationships(entity);
+                }
+            }
             return callback(null, result);
         });
     }
 
+    /**
+     * Recursively iterate through all required entities and their dependencies.
+     */
     function retrieveEntities(ids, entities, callback) {
         async.map(ids, retrieveSingleEntity, function(err, results) {
             if (err) {
@@ -78,6 +94,7 @@ function getContextEntities(apiKey, device, attribute, callback) {
             const refIds = [];
             results.forEach(function(result) {
                 entities[result.id] = result.entity;
+                console.log('d: '+ JSON.stringify(result));
                 if (result.refids) {
                     result.refids.forEach(function(refid) {
                         if (!entities[refid]) {
@@ -90,9 +107,9 @@ function getContextEntities(apiKey, device, attribute, callback) {
         });
     }
 
-    // Start by checking the entity which has pushed the command.
+    // Start by loading the entity which has pushed the command.
     const entityIds = [device.name];
-    // Add any additional entities found within the command
+    // Add any additional entities found within the command payload
     if (cmdAttributes && cmdAttributes.entities) {
         cmdAttributes.entities.forEach((id) => {
             entityIds.push(id);

@@ -1,10 +1,16 @@
 const micsAdapter = require('../../conf/micsAdapter');
 
 function update(entity, typeInformation, callback) {
-    const internals = typeInformation.internalAttributes;
-    if (internals && Array.isArray(internals) && internals.length > 0) {
-        const isoxmlElement = internals[0].isoxml_element;
-        entity = micsAdapter[isoxmlElement](entity, typeInformation);
+    const statics = typeInformation.staticAttributes;
+    if (statics && Array.isArray(statics) && statics.length > 0) {
+        statics.forEach((attr) => {
+            if (attr.name === 'isoxml_type') {
+                const transform = micsAdapter[attr.value];
+                if (typeof transform === 'function') {
+                    entity = transform(entity, typeInformation);
+                }
+            }
+        });
     }
     return callback(null, entity, typeInformation);
 }
