@@ -29,9 +29,9 @@ const _ = require('underscore');
 const intoTrans = iotAgentLib.intoTrans;
 const express = require('express');
 const utils = require('../iotaUtils');
+const contextBroker = require('../contextBrokerUtils');
 const xmlBodyParser = require('express-xml-bodyparser');
 const constants = require('../constants');
-const commonBindings = require('./../commonBindings');
 const errors = require('../errors');
 const isoxmlParser = require('../isoxmlParser');
 let httpBindingServer;
@@ -275,7 +275,7 @@ function handleIncomingMeasure(req, res, next) {
         }
     });
 
-    async.map(measures, processDeviceMeasure, (error) => {
+    async.map(measures, processDeviceMeasure, () => {
         if (res.locals.errors.length === 0) {
             return next();
         }
@@ -286,85 +286,6 @@ function handleIncomingMeasure(req, res, next) {
         }
         // Partial success...
         return res.status(202).send(res.locals.errors);
-    });
-}
-
-
-
-
-
-/**
- * Generate a function that retrieves all entities to be used in the payload.
- *
- * @param {String} apiKey           APIKey of the device's service or default APIKey.
- * @param {Object} device           Object containing all the information about a device.
- * @param {Object} attribute        Attribute in NGSI format.
- * @return {Function}               Command execution function ready to be called with async.series.
- */
-function getContextEntities(apiKey, device, attribute, callback) {
-    const cmdAttributes = attribute.value;
-    const entities = {};
-
-
-
-    function retrieveSingleEntity(item, callback) {
-        const version = config.getConfig().contextBroker.ngsiVersion
-        const cbHost = config.getConfig().contextBroker.url;
-        let path = '/v2/entities/';
-
-        if (version === 'ld'){
-            path = '/ngsi-ld/v1/entities/'
-        }
-        const options = {
-          method: 'GET',
-          url: cbHost + path + item, qs: {"options": "keyValues"},
-          headers: {
-                'fiware-service': device.service,
-                'fiware-servicepath': device.subservice
-            }
-        };
-
-        console.log(JSON.stringify(options));
-        request(options, function (error, response) { 
-            if (error) {
-                return callback(error);
-            }
-            const result = {
-                id: item,
-                entity: response.body
-            };
-            return callback(null, result);
-        });
-    }
-
-    function retrieveEntities(ids, entities, callback) {
-        async.map(ids, retrieveSingleEntity, function(err, results) {
-            const refIds = [];
-            results.forEach(function(result) {
-                entities[result.id] = result.entity;
-                if (result.refids) {
-                    result.refids.forEach(function(refid) {
-                        if (!entities[refid]) {
-                            refIds.push(refid);
-                        }
-                    });
-                }
-            });
-            return refIds.length === 0 ? callback() : retrieveEntities(refIds, entities, callback);
-        });
-    }
-
-    // Start by checking the entity which has pushed the command.
-    const entityIds = [device.name];
-    // Add any additional entities found within the command
-    if (cmdAttributes && cmdAttributes.entities) {
-        cmdAttributes.entities.forEach((id) => {
-            entityIds.push(id);
-        });
-    }
-    // Get each entity and recursively check for any references.
-    retrieveEntities(entityIds, entities, function(err) {
-        callback(null, entities);
     });
 }
 
@@ -393,7 +314,6 @@ function generateCommandExecution(apiKey, device, attribute, entities, callback)
     if (config.getConfig().http.timeout) {
         options.timeout = config.getConfig().http.timeout;
     }
-
 
     let commandObj;
 
@@ -427,7 +347,6 @@ function generateCommandExecution(apiKey, device, attribute, entities, callback)
             callback();
         }
     });
-  
 }
 
 /**
@@ -442,7 +361,7 @@ function generateCommandExecution(apiKey, device, attribute, entities, callback)
  */
 function commandHandler(device, attributes, callback) {
     utils.getEffectiveApiKey(device.service, device.subservice, device, function(error, apiKey) {
-        getContextEntities(apiKey, device, attributes[0], function(error, entities) {            
+        contextBroker.getContextEntities(apiKey, device, attributes[0], function(error, entities) {
             generateCommandExecution(apiKey, device, attributes[0], entities, function(error) {
                 if (error) {
                     // prettier-ignore
@@ -535,10 +454,8 @@ function start(callback) {
     httpBindingServer.app.use(handleError);
 
     httpBindingServer.server = http.createServer(httpBindingServer.app);
-
     httpBindingServer.server.listen(httpBindingServer.app.get('port'), httpBindingServer.app.get('host'), callback);
 }
-/////////////////////////////////////////////////////////////////////////
 
 function stop(callback) {
     config.getLogger().info(context, 'Stopping XML HTTP Binding: ');

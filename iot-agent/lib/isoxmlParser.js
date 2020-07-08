@@ -128,8 +128,10 @@ function result(payload) {
 //
 // Amended Function - creates a custom XML command payload
 //
-function createCommandPayload(device, command, attributes) {
+function createCommandPayload(device, command, attributes, entities) {
     config.getLogger().debug(context, 'createCommandPayload');
+
+    console.log(entities);
 
     if (typeof attributes === 'object') {
         let payload = '<' + command + '  device="' + device.id + '">';

@@ -156,11 +156,6 @@ function start(newConfig, callback) {
     config.setLogger(iotAgentLib.logModule);
     config.setConfig(newConfig);
 
-    if (config.getConfig().mqtt && config.getConfig().mqtt.username && config.getConfig().mqtt.password) {
-        options.username = config.getConfig().mqtt.username;
-        options.password = config.getConfig().mqtt.password;
-    }
-
     iotAgentLib.activate(config.getConfig().iota, function(error) {
         if (error) {
             callback(error);
@@ -174,15 +169,7 @@ function start(newConfig, callback) {
 
             iotAgentLib.addUpdateMiddleware(dynamicFunctions.update);
             iotAgentLib.addUpdateMiddleware(attributeDelete.update);
-            iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.attributeAlias.update);
-            iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.addEvents.update);
-            iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.expressionTransformation.update);
-            iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.multiEntity.update);
             iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
-
-            iotAgentLib.addDeviceProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.deviceProvision);
-            iotAgentLib.addConfigurationProvisionMiddleware(iotAgentLib.dataPlugins.bidirectionalData.groupProvision);
-            iotAgentLib.addNotificationMiddleware(iotAgentLib.dataPlugins.bidirectionalData.notification);
 
             if (config.getConfig().configRetrieval) {
                 iotAgentLib.setNotificationHandler(configurationNotificationHandler);

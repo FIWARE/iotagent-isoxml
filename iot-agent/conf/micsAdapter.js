@@ -66,6 +66,7 @@ L CustomerFax
 M CustomerEMail
 */
 
+/* eslint-disable-next-line no-unused-vars */
 function ctr(entity, typeInformation) {
     addProperty(entity, 'B', 'familyName', 'Text');
     addProperty(entity, 'C', 'givenName', 'Text');
@@ -88,6 +89,8 @@ G FarmState
 H FarmCountry
 I CustomerIdRef
 */
+
+/* eslint-disable-next-line no-unused-vars */
 function frm(entity, typeInformation) {
     addProperty(entity, 'B', 'name', 'Text');
     addAddressProperty(entity, 'C', 'address', 'PostalAddress');
@@ -111,6 +114,7 @@ L WorkerLicenseNumber
 M WorkerEmail
 */
 
+/* eslint-disable-next-line no-unused-vars */
 function wkr(entity, typeInformation) {
     addProperty(entity, 'B', 'familyName', 'Text');
     addProperty(entity, 'C', 'givenName', 'Text');
