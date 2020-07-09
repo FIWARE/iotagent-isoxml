@@ -5,10 +5,7 @@ function addRef(refs, entity, attr) {
 }
 
 /*
-
-Mapping from Building DataModel to FRM
-
-I CustomerIdRef = owner
+	Building.owner = FRM.I  - CustomerIdRef 
 */
 function frm(entity) {
     const refs = [];

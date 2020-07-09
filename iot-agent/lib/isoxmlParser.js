@@ -28,6 +28,7 @@ const constants = require('./constants');
 const config = require('./configService');
 const xmlToJson = require('xml-parser');
 const JsonToXml = require('xml');
+const fmisAdapter = require('../conf/fmisAdapter');
 const context = {
     op: 'IOTA.ISOXML.Parser'
 };
@@ -123,28 +124,23 @@ function result(payload) {
  * @param {Object} attributes       Object containing the command parameters as attributes of the object.
  * @return {String}                 String with the codified command.
  */
-
-/////////////////////////////////////////////////////////////////////////
-//
-// Amended Function - creates a custom XML command payload
-//
 function createCommandPayload(device, command, attributes, entities) {
     config.getLogger().debug(context, 'createCommandPayload');
 
-    console.log(entities);
+    const root = { isoxml: [] };
 
-    if (typeof attributes === 'object') {
-        let payload = '<' + command + '  device="' + device.id + '">';
-
-        Object.keys(attributes).forEach(function(key, value) {
-            payload = payload + '<' + key + '>' + value + '</' + key + '>';
-        });
-        payload = payload + '</' + command + '>';
-        return payload;
-    }
-    return '<' + command + '  device="' + device.id + '"/>';
+    Object.keys(entities).forEach((key) => {
+        const entity = entities[key];
+        if (entity[config.getConfig().isoxmlType]) {
+            fmisAdapter.resetIndex();
+            const transform = fmisAdapter[entity[config.getConfig().isoxmlType]];
+            if (typeof transform === 'function') {
+                root.isoxml.push(transform(entity));
+            }
+        }
+    });
+    return JsonToXml(root);
 }
-/////////////////////////////////////////////////////////////////////////
 
 /**
  * Creates the configuration payload string, based on the device information.

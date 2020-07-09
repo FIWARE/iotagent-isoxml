@@ -73,8 +73,8 @@ function getContextEntities(apiKey, device, attribute, callback) {
                 entity
             };
 
-            if (entity.isoxml_type) {
-                const getRelationships = relationshipAdapter[entity.isoxml_type];
+            if (entity[config.getConfig().isoxmlType]) {
+                const getRelationships = relationshipAdapter[entity[config.getConfig().isoxmlType]];
                 if (typeof getRelationships === 'function') {
                     result.refids = getRelationships(entity);
                 }
@@ -94,7 +94,7 @@ function getContextEntities(apiKey, device, attribute, callback) {
             const refIds = [];
             results.forEach(function(result) {
                 entities[result.id] = result.entity;
-                console.log('d: '+ JSON.stringify(result));
+                console.log('d: ' + JSON.stringify(result));
                 if (result.refids) {
                     result.refids.forEach(function(refid) {
                         if (!entities[refid]) {

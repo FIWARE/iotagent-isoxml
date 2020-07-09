@@ -23,6 +23,7 @@
 
 let config = {};
 let logger = require('logops');
+const constants = require('./constants');
 
 function anyIsSet(variableSet) {
     for (let i = 0; i < variableSet.length; i++) {
@@ -72,6 +73,13 @@ function processEnvironmentVariables() {
 
     if (process.env.IOTA_HTTP_DEFAULT_MICS_ENDPOINT) {
         config.http.mics_endpoint = process.env.IOTA_HTTP_DEFAULT_MICS_ENDPOINT;
+    }
+
+    if (process.env.IOTA_DEFAULT_ISOXML_TYPE) {
+        config.isoxmlType = process.env.IOTA_DEFAULT_ISOXML_TYPE;
+    }
+    if (!config.isoxmlType) {
+        config.isoxmlType = constants.DEFAULT_ISOXML_TYPE;
     }
 }
 
