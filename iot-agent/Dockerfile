@@ -14,7 +14,6 @@ WORKDIR /opt/iotISOXML
 
 RUN \
 	# Ensure that Git is installed prior to running npm install
-	rm -rf node_modules && \
 	apt-get update && \
 	apt-get install -y git && \
 	npm install pm2@3.2.2 -g && \
