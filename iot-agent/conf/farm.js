@@ -2,8 +2,6 @@ const transforms = require('../lib/adapters/transforms');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-
-
 /*
 A FarmId
 B FarmDesignator - designator/name
@@ -17,8 +15,8 @@ I CustomerIdRef
 */
 
 /**
-* This function map a smart-data-models Building to ISOXML FRM
-*/
+ * This function maps a smart-data-models Building to ISOXML FRM
+ */
 function transformFMIS(entity) {
     const xml = { FRM: { _attr: {} } };
     const attr = xml.FRM._attr;
@@ -30,8 +28,8 @@ function transformFMIS(entity) {
 }
 
 /**
-* This function map an ISOXML FRM to a smart-data-models Building
-*/
+ * This function maps an ISOXML FRM to a smart-data-models Building
+ */
 function transformMICS(entity) {
     MICS.addProperty(entity, 'B', 'name', 'Text');
     MICS.addAddressProperty(entity, 'C', 'address', 'PostalAddress');

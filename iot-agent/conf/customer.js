@@ -18,10 +18,9 @@ L CustomerFax
 M CustomerEMail
 */
 
-
 /**
-* This function map a Schema.org Person to an ISOXML CTR
-*/
+ * This function maps a Schema.org Person to an ISOXML CTR
+ */
 function transformFMIS(entity) {
     const xml = { CTR: { _attr: {} } };
     const attr = xml.CTR._attr;
@@ -37,8 +36,8 @@ function transformFMIS(entity) {
 }
 
 /**
-* This function map an ISOXML CTR to a Schema.org Person
-*/
+ * This function maps an ISOXML CTR to a Schema.org Person
+ */
 function transformMICS(entity) {
     MICS.addProperty(entity, 'B', 'familyName', 'Text');
     MICS.addProperty(entity, 'C', 'givenName', 'Text');

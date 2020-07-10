@@ -19,8 +19,8 @@ M WorkerEmail
 */
 
 /**
-* This function map a Schema.org Person to an ISOXML WKR
-*/
+ * This function maps a Schema.org Person to an ISOXML WKR
+ */
 function transformFMIS(entity) {
     const xml = { WKR: { _attr: {} } };
     const attr = xml.WKR._attr;
@@ -36,8 +36,8 @@ function transformFMIS(entity) {
 }
 
 /**
-* This function map an ISOXML WKR to a Schema.org Person
-*/
+ * This function maps an ISOXML WKR to a Schema.org Person
+ */
 function transformMICS(entity) {
     MICS.addProperty(entity, 'B', 'familyName', 'Text');
     MICS.addProperty(entity, 'C', 'givenName', 'Text');
@@ -48,8 +48,6 @@ function transformMICS(entity) {
     MICS.addProperty(entity, 'M', 'eMail', 'Text');
     return entity;
 }
-
-
 
 module.exports = {
     transformFMIS,

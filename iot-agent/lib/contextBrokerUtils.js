@@ -27,7 +27,7 @@ const config = require('./configService');
 const context = {
     op: 'IOTA.ISOXML.CBUtils'
 };
-const relationshipAdapter = require('../adapters/relationshipAdapter');
+const relationshipAdapter = require('./adapters/adapter').Relationships;
 
 /**
  * Generate a function that retrieves all the Context Broker entities to be used in the MICS payload.

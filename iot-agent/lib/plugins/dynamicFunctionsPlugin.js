@@ -1,4 +1,4 @@
-const micsAdapter = require('../adapters/micsAdapter');
+const micsAdapter = require('../adapters/adapter').MICS;
 const config = require('../configService');
 
 function update(entity, typeInformation, callback) {
@@ -8,7 +8,7 @@ function update(entity, typeInformation, callback) {
             if (attr.name === config.getConfig().isoxmlType) {
                 const transform = micsAdapter[attr.value];
                 if (typeof transform === 'function') {
-                    entity = transform(entity, typeInformation);
+                    entity = transform(entity);
                 }
             }
         });

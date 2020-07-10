@@ -28,7 +28,7 @@ const constants = require('./constants');
 const config = require('./configService');
 const xmlToJson = require('xml-parser');
 const JsonToXml = require('xml');
-const fmisAdapter = require('../adapters/fmisAdapter');
+const fmisAdapter = require('./adapters/adapter').FMIS;
 const context = {
     op: 'IOTA.ISOXML.Parser'
 };
