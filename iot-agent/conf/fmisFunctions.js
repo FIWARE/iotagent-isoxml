@@ -18,11 +18,11 @@ function resetIndex(){
 }
 
 function addAddressAttribute(attr, entity, to, from) {
-    const attrs = allAttrs.slice(allAttrs.indexOf(from), allAttrs.indexOf(from + 5));
+    const toAttrs = allAttrs.slice(allAttrs.indexOf(to), allAttrs.indexOf(to) + 6);
     if (entity[from]) {
-        attrs.forEach((attr, index) => {
+        toAttrs.forEach((toAttr, index) => {
             if (entity[from][addressAttrs[index]]) {
-                attr[to] = entity[from][addressAttrs[index]];
+                attr[toAttr] = entity[from][addressAttrs[index]];
             }
         });
     }

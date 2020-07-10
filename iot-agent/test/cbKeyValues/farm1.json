@@ -1,0 +1,20 @@
+{
+    "id": "urn:ngsi-ld:Farm:FRM3",
+    "type": "Farm",
+    "TimeInstant": "2020-07-10T13:18:47.00Z",
+    "address": {
+        "streetAddress": "Street2",
+        "postOfficeBoxNumber": "PO Box2",
+        "postalCode": "PostalCode2",
+        "addressLocality": "City2",
+        "addressRegion": "State2",
+        "addressCountry": "Country2"
+    },
+    "category": "farm",
+    "isoxml_type": "frm",
+    "name": "Animal Farm",
+    "owner": "urn:ngsi-ld:Person:CTR2",
+    "send_info": " ",
+    "send_status": "UNKNOWN",
+    "send": ""
+}

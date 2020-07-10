@@ -32,6 +32,7 @@ pids
 node_modules/
 iot-agent/node_modules/
 iot-agent/package-lock.json
+iot-agent/coverage
 jspm_packages/
 .npm
 .eslintcache

@@ -1,0 +1,21 @@
+{
+    "name": {
+        "type": "Text",
+        "value": "Animal Farm"
+    },
+    "address": {
+        "type": "PostalAddress",
+        "value": {
+            "streetAddress": "Street2",
+            "postOfficeBoxNumber": "PO Box2",
+            "postalCode": "PostalCode2",
+            "addressLocality": "City2",
+            "addressRegion": "State2",
+            "addressCountry": "Country2"
+        }
+    },
+    "owner": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Person:CTR2"
+    }
+}

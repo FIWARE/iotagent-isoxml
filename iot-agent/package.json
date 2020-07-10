@@ -13,6 +13,8 @@
   },
   "scripts": {
     "start": "node ./bin/iotagent-isoxml",
+    "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
+    "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
     "lint": "eslint bin/iotagent-isoxml lib/ conf/ --cache --fix",
     "prettier": "prettier --config .prettierrc.json --write **/**/*.js  **/*.js *.js"
   },
@@ -29,11 +31,14 @@
     "xml-parser": "^1.2.1"
   },
   "devDependencies": {
+    "istanbul": "~0.4.5",
+    "mocha": "5.2.0",
     "prettier": "~1.14.2",
     "eslint": "~5.16.0",
     "eslint-config-tamia": "~6.2.1",
     "eslint-plugin-prettier": "~3.1.2",
-    "husky": "~1.1.0"
+    "husky": "~1.1.0",
+    "should": "13.2.3"
   },
   "keywords": [],
   "husky": {

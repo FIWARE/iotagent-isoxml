@@ -1,0 +1,14 @@
+{
+    "id": "XXX",
+    "type": "Farm",
+    "TimeInstant": "2020-07-10T13:18:47.00Z",
+    "address": {
+        "streetAddress": "Street3",
+        "postOfficeBoxNumber": "PO Box3",
+        "postalCode": "PostalCode3",
+        "addressLocality": "City3"
+    },
+    "category": "farm",
+    "isoxml_type": "frm",
+    "name": "Animal Farm"
+}
