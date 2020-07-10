@@ -1,4 +1,4 @@
-const micsAdapter = require('../../conf/micsAdapter');
+const micsAdapter = require('../adapters/micsAdapter');
 const config = require('../configService');
 
 function update(entity, typeInformation, callback) {
