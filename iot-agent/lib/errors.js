@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2020 FIWARE Foundation e.V.
  *
  * This file is part of iotagent-isoxml
  *
@@ -17,8 +17,6 @@
  * License along with iotagent-isoxml.
  * If not, see http://www.gnu.org/licenses/.
  *
- * For those usages not covered by the GNU Affero General Public License
- * please contact with::[iot_support@tid.es]
  */
 
 class ParseError {
