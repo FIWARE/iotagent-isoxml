@@ -1,0 +1,17 @@
+<DVC A="DVC1" B="Tiller" C="1.02*" D="A00484000B2CAF13" F="32A0FE34A56F00" G="FF000000006E65">
+	<DET A="DET1" B="1" C="1" E="0" F="0">
+		<DOR A="2"/>
+		<DOR A="3"/>
+		<DOR A="4"/>
+		<DOR A="5"/>
+		<DOR A="6"/> 
+	</DET>
+	<DPD A="2" B="0074" C="2" D="16" E="Area" F="9"/>
+	<DPD A="3" B="0077" C="2" D="16" E="Time ON" F="7"/> 
+	<DPD A="4" B="008D" C="1" D="3" E="Work ON/OFF"/> 
+	<DPD A="5" B="0043" C="1" D="3" E="Width" F="8"/> 
+	<DPD A="6" B="DFFF" C="0" D="31"/>
+	<DVP A="7" B="0" C="2.777778E-04" D="2" E="hr"/> 
+	<DVP A="8" B="0" C="1.000000E-03" D="1" E="m"/> 
+	<DVP A="9" B="0" C="1.000000E-04" D="2" E="ha"/>
+</DVC>

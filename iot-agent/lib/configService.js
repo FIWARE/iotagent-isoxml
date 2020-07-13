@@ -35,23 +35,47 @@ function anyIsSet(variableSet) {
     return false;
 }
 
+/**
+ * For a parameter pointing to a file, check the file exists
+ *
+ * @param {string} path        Path to the file
+ */
+function fileExists(path) {
+    try {
+        fs.statSync(path);
+        logger.debug(path + ' - File exists.');
+    } catch (e) {
+        logger.fatal(path + ' - File does not exist.');
+        throw Error(path + ' - File does not exist.');
+    }
+}
+
 function processEnvironmentVariables() {
     const environmentVariables = [
         'IOTA_HTTP_HOST',
         'IOTA_HTTP_PORT',
         'IOTA_HTTP_TIMEOUT',
+        'IOTA_HTTP_KEY',
+        'IOTA_HTTP_CERT',
         'IOTA_HTTP_DEFAULT_MICS_ENDPOINT'
     ];
 
-    const httpVariables = ['IOTA_HTTP_HOST', 'IOTA_HTTP_PORT', 'IOTA_HTTP_TIMEOUT', 'IOTA_HTTP_DEFAULT_MICS_ENDPOINT'];
+    const httpVariables = [
+        'IOTA_HTTP_HOST',
+        'IOTA_HTTP_PORT',
+        'IOTA_HTTP_TIMEOUT',
+        'IOTA_HTTP_KEY',
+        'IOTA_HTTP_CERT',
+        'IOTA_HTTP_DEFAULT_MICS_ENDPOINT'
+    ];
 
     for (let i = 0; i < environmentVariables.length; i++) {
-        if (process.env[environmentVariables[i]]) {
-            logger.info(
-                'Setting %s to environment value: %s',
-                environmentVariables[i],
-                process.env[environmentVariables[i]]
-            );
+        let value = process.env[environmentVariables[i]];
+        if (value) {
+            if (environmentVariables[i].endsWith('USERNAME') || environmentVariables[i].endsWith('PASSWORD')) {
+                value = '********';
+            }
+            logger.info('Setting %s to environment value: %s', environmentVariables[i], value);
         }
     }
 
@@ -71,8 +95,18 @@ function processEnvironmentVariables() {
         config.http.timeout = process.env.IOTA_HTTP_TIMEOUT;
     }
 
-    if (process.env.IOTA_HTTP_DEFAULT_MICS_ENDPOINT) {
-        config.http.mics_endpoint = process.env.IOTA_HTTP_DEFAULT_MICS_ENDPOINT;
+    if (process.env.IOTA_HTTP_KEY) {
+        fileExists(process.env.IOTA_HTTP_KEY);
+        config.http.key = process.env.IOTA_HTTP_KEY;
+    }
+
+    if (process.env.IOTA_HTTP_CERT) {
+        fileExists(process.env.IOTA_HTTP_CERT);
+        config.http.cert = process.env.IOTA_HTTP_CERT;
+    }
+
+    if (process.env.IOTA_DEFAULT_MICS_ENDPOINT) {
+        config.mics_endpoint = process.env.IOTA_HTTP_DEFAULT_MICS_ENDPOINT;
     }
 
     if (process.env.IOTA_DEFAULT_ISOXML_TYPE) {

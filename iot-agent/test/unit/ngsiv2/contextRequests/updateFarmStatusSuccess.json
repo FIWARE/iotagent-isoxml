@@ -1,0 +1,18 @@
+{
+  "send_status": {
+    "type": "commandStatus",
+    "value": "OK"
+  },
+  "send_info": {
+    "type": "commandResult",
+    "value": ""
+  },
+  "category": {
+    "type": "Text",
+    "value": "farm"
+  },
+  "isoxml_type": {
+    "type": "Text",
+    "value": "frm"
+  }
+}

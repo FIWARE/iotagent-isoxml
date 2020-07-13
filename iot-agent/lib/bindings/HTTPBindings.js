@@ -302,7 +302,7 @@ function generateCommandExecution(apiKey, device, attribute, entities, callback)
     const cmdAttributes = attribute.value;
 
     const options = {
-        url: device.endpoint || config.getConfig().http.mics_endpoint,
+        url: device.endpoint || config.getConfig().mics_endpoint,
         method: 'POST',
         body: isoxmlParser.createCommandPayload(device, cmdName, cmdAttributes, entities),
         headers: {

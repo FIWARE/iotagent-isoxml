@@ -1,0 +1,13 @@
+{
+    "actionType": "update",
+    "entities": [
+        {
+            "type": "Farm",
+            "id": "urn:ngsi-ld:Farm:FRM3",
+            "send" : {
+                "type": "command",
+                "value": {}
+            }
+        }
+    ]
+}

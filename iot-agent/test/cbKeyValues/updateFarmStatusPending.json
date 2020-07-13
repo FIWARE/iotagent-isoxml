@@ -1,0 +1,14 @@
+{
+  "send_status": {
+    "type": "commandStatus",
+    "value": "PENDING"
+  },
+  "category": {
+    "type": "Text",
+    "value": "farm"
+  },
+  "isoxml_type": {
+    "type": "Text",
+    "value": "frm"
+  }
+}

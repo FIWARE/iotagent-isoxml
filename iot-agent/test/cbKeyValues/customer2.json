@@ -1,0 +1,9 @@
+{
+    "id": "urn:ngsi-ld:Person:CTR2",
+    "type": "Person",
+    "familyName": "Napoleon the Pig",
+    "hasOccupation": {
+        "name": "Customer"
+    },
+    "isoxml_type": "ctr"
+}

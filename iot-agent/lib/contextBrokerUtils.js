@@ -29,6 +29,16 @@ const context = {
 };
 const relationshipAdapter = require('./adapters/adapter').Relationships;
 
+
+
+function checkNgsiLD() {
+    if (config.getConfig().contextBroker && config.getConfig().contextBroker.ngsiVersion && config.getConfig().contextBroker.ngsiVersion === 'ld') {
+        return true;
+    }
+
+    return false;
+}
+
 /**
  * Generate a function that retrieves all the Context Broker entities to be used in the MICS payload.
  *
@@ -45,12 +55,11 @@ function getContextEntities(apiKey, device, attribute, callback) {
      * Make a request to the context broker and database in turn to find
      * the complete list of entities to send as a "command".
      */
-    function retrieveSingleEntity(item, callback) {
-        const version = config.getConfig().contextBroker.ngsiVersion;
+    function retrieveSingleEntity(item, callback) {        
         const cbHost = config.getConfig().contextBroker.url;
         let path = '/v2/entities/';
 
-        if (version === 'ld') {
+        if (checkNgsiLD()) {
             path = '/ngsi-ld/v1/entities/';
         }
         const options = {
