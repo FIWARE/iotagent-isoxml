@@ -31,8 +31,8 @@ describe('Startup tests', function() {
             process.env.IOTA_HTTP_HOST = 'localhost';
             process.env.IOTA_HTTP_PORT = '2222';
             process.env.IOTA_HTTP_TIMEOUT = '5';
-            //process.env.IOTA_HTTP_KEY = '/http/bbb/key.pem';
-            //process.env.IOTA_HTTP_CERT = '/http/bbb/cert.pem';
+            process.env.IOTA_HTTP_KEY = '/http/bbb/key.pem';
+            process.env.IOTA_HTTP_CERT = '/http/bbb/cert.pem';
         });
 
         afterEach(function() {
@@ -40,8 +40,8 @@ describe('Startup tests', function() {
             delete process.env.IOTA_HTTP_HOST;
             delete process.env.IOTA_HTTP_PORT;
             delete process.env.IOTA_HTTP_TIMEOUT;
-            //delete process.env.IOTA_HTTP_KEY;
-            //delete process.env.IOTA_HTTP_CERT;
+            delete process.env.IOTA_HTTP_KEY;
+            delete process.env.IOTA_HTTP_CERT;
         });
 
         it('should load the HTTP environment variables in the internal configuration', function(done) {
@@ -49,8 +49,8 @@ describe('Startup tests', function() {
             config.getConfig().http.host.should.equal('localhost');
             config.getConfig().http.port.should.equal('2222');
             config.getConfig().http.timeout.should.equal('5');
-            //config.getConfig().http.key.should.equal('/http/bbb/key.pem');
-            //config.getConfig().http.cert.should.equal('/http/bbb/cert.pem');
+            config.getConfig().http.key.should.equal('/http/bbb/key.pem');
+            config.getConfig().http.cert.should.equal('/http/bbb/cert.pem');
             done();
         });
     });

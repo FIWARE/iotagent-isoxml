@@ -72,7 +72,6 @@ describe('HTTP Transport binding: measures', function() {
     });
 
     describe('When a single isoxml element arrives, via HTTP POST', function() {
-
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
             method: 'POST',
@@ -120,7 +119,6 @@ describe('HTTP Transport binding: measures', function() {
         };
 
         beforeEach(function() {
-
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')

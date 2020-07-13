@@ -33,23 +33,6 @@ const context = {
 const _ = require('underscore');
 
 /**
- * Parse a command execution payload, returning an object containing information about the command. Throws
- * an error if the syntax is not correct.
- *
- * The returned object contains three attributes:
- * - deviceId: ID of the device executing the command.
- * - command: name of the command to execute.
- * - params: object containing the parameters to the command in map format.
- *
- * @param {String} payload         XML command execution payload
- * @return {Object}                Object containing the command information
- */
-function command(payload) {
-    config.getLogger().debug(context, 'Command ', payload);
-    return {};
-}
-
-/**
  * Parse a measure reporting payload, returning an array with all the measure groups restructured as objects. Throws
  * an error if the syntax is not correct.
  *
@@ -79,11 +62,6 @@ function parse(payload) {
     return removeDollars(payload);
 }
 
-function parseConfigurationRequest(payload) {
-    config.getLogger().debug(context, 'parseConfigurationRequest', payload);
-    return {};
-}
-
 /**
  * Parse a command result payload, returning an object containing information about the command result. Throws
  * an error if the syntax is not correct.
@@ -97,10 +75,6 @@ function parseConfigurationRequest(payload) {
  * @return {Object}                Object containing the result information
  */
 
-/////////////////////////////////////////////////////////////////////////
-//
-// Amended Function - extracts command result info from the XML
-//
 function result(payload) {
     const data = xmlToJson(payload);
     const result = {};
@@ -112,7 +86,6 @@ function result(payload) {
 
     return result;
 }
-/////////////////////////////////////////////////////////////////////////
 
 /**
  * Creates the command payload string, based on the device information and command attributes.
@@ -140,21 +113,6 @@ function createCommandPayload(device, command, attributes, entities) {
     return JsonToXml(root);
 }
 
-/**
- * Creates the configuration payload string, based on the device information.
- *
- * @param {Object} device           Object containing all the information about a device.
- * @param {Object} attributes       Object containing the command parameters as attributes of the object.
- * @return {String}                 String with the codified command.
- */
-function createConfigurationPayload(deviceId, attributes) {
-    config.getLogger().debug(context, 'createConfigurationPayload');
-    return 'createConfigurationPayload';
-}
-
 exports.parse = parse;
-exports.parseConfigurationRequest = parseConfigurationRequest;
-exports.command = command;
 exports.result = result;
 exports.createCommandPayload = createCommandPayload;
-exports.createConfigurationPayload = createConfigurationPayload;

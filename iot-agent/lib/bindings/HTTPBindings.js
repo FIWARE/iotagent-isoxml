@@ -59,7 +59,7 @@ function handleError(error, req, res, next) {
 function parseData(req, res, next) {
     const data = [];
     let error;
-    const payload = req.iso11783_taskdata;
+    const payload = req.body.iso11783_taskdata;
 
     config.getLogger().debug(context, 'Parsing payload [%s]', JSON.stringify(payload));
 
@@ -86,42 +86,25 @@ function parseData(req, res, next) {
     }
 }
 
-function addTimestamp(req, res, next) {
-    if (req.query.t && req.ulPayload) {
-        for (let i = 0; i < req.ulPayload.length; i++) {
-            req.ulPayload[i][constants.TIMESTAMP_ATTRIBUTE] = req.query.t;
-        }
-    }
-
-    next();
-}
-
 function checkMandatoryParams(req, res, next) {
     const notFoundParams = [];
     let error;
-    req.iso11783_taskdata = req.body.iso11783_taskdata;
+    const payload = req.isoxmlData;
 
-    if (!req.iso11783_taskdata) {
-        notFoundParams.push('ISOXML Task');
-    } else {
-        Object.keys(req.iso11783_taskdata).forEach((key) => {
-            if (key === '$') {
-                return;
-            }
-            const entity = req.iso11783_taskdata[key];
-            if (Array.isArray(entity)) {
-                entity.forEach((element) => {
-                    const entityId = element.$ ? element.$.A : null;
-                    if (!entityId) {
-                        notFoundParams.push('Id for Entity: ' + key);
-                    }
-                });
-            } else {
-                const entityId = entity.$ ? entity.$.A : null;
-                if (!entityId) {
+    if (payload) {
+        Object.keys(payload).forEach((key) => {
+            const type = Object.keys(payload[key])[0];
+            const entity = payload[key][type];
+                if (Array.isArray(entity)) {
+                    entity.forEach((element) => {
+                        if (!element.A) {
+                            notFoundParams.push('Id for Entity: ' + key);
+                        }
+                    });
+                } else if (!entity.A) {
                     notFoundParams.push('Id for Entity: ' + key);
                 }
-            }
+            
         });
     }
 
@@ -136,8 +119,6 @@ function checkMandatoryParams(req, res, next) {
     }
 }
 
-/////////////////////////////////////////////////////////////////////////
-
 /**
  * This middleware checks whether there is any polling command pending to be sent to the device. If there is some,
  * add the command information to the return payload. Otherwise it returns an empty payload.
@@ -145,71 +126,7 @@ function checkMandatoryParams(req, res, next) {
 
 /* eslint-disable-next-line no-unused-vars */
 function returnCommands(req, res, next) {
-    function updateCommandStatus(device, commandList) {
-        function createCommandUpdate(command) {
-            return apply(
-                iotAgentLib.setCommandResult,
-                device.name,
-                device.resource,
-                req.query.k,
-                command.name,
-                ' ',
-                'DELIVERED',
-                device
-            );
-        }
-
-        function cleanCommand(command) {
-            return apply(iotAgentLib.removeCommand, device.service, device.subservice, device.id, command.name);
-        }
-
-        const updates = commandList.map(createCommandUpdate);
-        const cleanCommands = commandList.map(cleanCommand);
-
-        /* eslint-disable-next-line no-unused-vars */
-        async.parallel(updates.concat(cleanCommands), function(error, results) {
-            if (error) {
-                // prettier-ignore
-                config.getLogger().error(
-                    context,
-                    'Error updating command status after delivering commands for device [%s]',
-                    device.id
-                );
-            } else {
-                // prettier-ignore
-                config.getLogger().debug(
-                    context,
-                    'Command status updated successfully after delivering command list to device [%s]',
-                    device.id
-                );
-            }
-        });
-    }
-
-    function parseCommand(item) {
-        return isoxmlParser.createCommandPayload(req.device, item.name, item.value);
-    }
-
-    function concatCommand(previous, current) {
-        if (previous === '') {
-            return current;
-        }
-        return previous + '|' + current;
-    }
-
-    if (req.query && req.query.getCmd === '1') {
-        iotAgentLib.commandQueue(req.device.service, req.device.subservice, req.deviceId, function(error, list) {
-            if (error || !list || list.count === 0) {
-                res.status(200).send('');
-            } else {
-                res.status(200).send(list.commands.map(parseCommand).reduce(concatCommand, ''));
-
-                process.nextTick(updateCommandStatus.bind(null, req.device, list.commands));
-            }
-        });
-    } else {
-        res.status(200).send('');
-    }
+     res.status(200).send('');
 }
 
 function handleIncomingMeasure(req, res, next) {
@@ -398,31 +315,6 @@ function addDefaultHeader(req, res, next) {
     next();
 }
 
-/**
- * Device provisioning handler. This handler just fills in the transport protocol in case there is none.
- *
- * @param {Object} device           Device object containing all the information about the provisioned device.
- */
-function deviceProvisioningHandler(device, callback) {
-    if (!device.transport) {
-        device.transport = 'HTTP';
-    }
-
-    if (device.transport === 'HTTP') {
-        if (device.endpoint) {
-            device.polling = false;
-        } else {
-            device.polling = true;
-        }
-    }
-
-    callback(null, device);
-}
-
-/////////////////////////////////////////////////////////////////////////
-//
-// Amended Function - uses an XML middleware to preprocess incoming measures
-//
 function start(callback) {
     const baseRoot = '/';
 
@@ -441,9 +333,8 @@ function start(callback) {
         config.getConfig().iota.defaultResource || constants.HTTP_MEASURE_PATH,
         addDefaultHeader,
         xmlBodyParser({ trim: false, explicitArray: false }),
-        checkMandatoryParams,
         parseData,
-        addTimestamp,
+        checkMandatoryParams,
         handleIncomingMeasure,
         returnCommands
     );
@@ -456,7 +347,7 @@ function start(callback) {
 }
 
 function stop(callback) {
-    config.getLogger().info(context, 'Stopping XML HTTP Binding: ');
+    config.getLogger().info(context, 'Stopping ISOXML HTTP Binding: ');
 
     if (httpBindingServer) {
         httpBindingServer.server.close(function() {
@@ -468,31 +359,7 @@ function stop(callback) {
     }
 }
 
-function sendPushNotifications(device, values, callback) {
-    async.series(values.map(generateCommandExecution.bind(null, null, device)), function(error) {
-        callback(error);
-    });
-}
-
-function storePollNotifications(device, values, callback) {
-    function addPollNotification(item, innerCallback) {
-        iotAgentLib.addCommand(device.service, device.subservice, device.id, item, innerCallback);
-    }
-
-    async.map(values, addPollNotification, callback);
-}
-
-function notificationHandler(device, values, callback) {
-    if (device.endpoint) {
-        sendPushNotifications(device, values, callback);
-    } else {
-        storePollNotifications(device, values, callback);
-    }
-}
-
 exports.start = start;
 exports.stop = stop;
-exports.deviceProvisioningHandler = deviceProvisioningHandler;
-exports.notificationHandler = notificationHandler;
 exports.commandHandler = commandHandler;
 exports.protocol = 'HTTP';

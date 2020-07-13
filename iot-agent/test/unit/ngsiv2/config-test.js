@@ -18,7 +18,7 @@
  * If not, see http://www.gnu.org/licenses/.
  *
  */
- 
+
 const config = {};
 
 config.http = {
@@ -46,8 +46,7 @@ config.iota = {
     deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing',
     defaultResource: '/iot/isoxml',
-    isoxmlType: 'isoxml_type',
-    
+    isoxmlType: 'isoxml_type'
 };
 
 config.defaultTransport = 'HTTP';

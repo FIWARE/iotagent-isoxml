@@ -52,9 +52,6 @@ describe('HTTP: Commands', function() {
             },
             body: utils.readISOXML('./test/isoxml/farmAndCustomers.xml')
         };
-
-        config.iota.logLevel = 'FATAL';
-
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -96,7 +93,7 @@ describe('HTTP: Commands', function() {
             .matchHeader('fiware-servicepath', '/gardens')
             .post('/v2/entities?options=upsert')
             .thrice()
-            .reply(204);        
+            .reply(204);
 
         iotagentISOXML.start(config, function() {
             request(provisionOptions, function(error, response, body) {
@@ -153,15 +150,15 @@ describe('HTTP: Commands', function() {
                 )
                 .reply(204);
 
-
             mockedClientServer = nock('http://mics')
-                .post('/iot/isoxml',
-                '<isoxml><FRM A="FRM3" B="Animal Farm" C="Street2" D="PO Box2" E="PostalCode2" F="City2" G="State2" H="Country2" I="CTR2"/><CTR A="CTR2" B="Napoleon the Pig"/></isoxml>')
+                .post(
+                    '/iot/isoxml',
+                    '<isoxml><FRM A="FRM3" B="Animal Farm" C="Street2" D="PO Box2" E="PostalCode2" F="City2" G="State2" H="Country2" I="CTR2"/><CTR A="CTR2" B="Napoleon the Pig"/></isoxml>'
+                )
                 .reply(200);
         });
 
         it('should return a 204 OK without errors', function(done) {
-            config.iota.logLevel = 'DEBUG';
             request(commandOptions, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
@@ -176,7 +173,6 @@ describe('HTTP: Commands', function() {
                 }, 100);
             });
         });
-        ;
         it('should send an update to the ISOXML client', function(done) {
             request(commandOptions, function(error, response, body) {
                 setTimeout(function() {

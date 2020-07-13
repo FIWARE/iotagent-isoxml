@@ -74,14 +74,6 @@ function findOrCreate(deviceId, transport, group, callback) {
                 name: transforms.generateURI(deviceId, group.type)
             };
 
-            if (
-                config.getConfig().iota &&
-                config.getConfig().iota.iotManager &&
-                config.getConfig().iota.iotManager.protocol
-            ) {
-                newDevice.protocol = config.getConfig().iota.iotManager.protocol;
-            }
-
             // Fix transport depending on binding
             if (!newDevice.transport) {
                 newDevice.transport = transport;
@@ -303,19 +295,6 @@ function manageConfiguration(apiKey, deviceId, device, objMessage, sendFunction,
     }
 }
 
-function createConfigurationNotification(results) {
-    const configurations = {};
-    const now = new Date();
-
-    for (let i = 0; i < results.length; i++) {
-        configurations[results[i].name] = results[i].value;
-    }
-
-    configurations.dt = dateFormat(now, constants.DATE_FORMAT);
-    return configurations;
-}
-
-exports.createConfigurationNotification = createConfigurationNotification;
 exports.getEffectiveApiKey = getEffectiveApiKey;
 exports.manageConfiguration = manageConfiguration;
 exports.retrieveDevice = retrieveDevice;

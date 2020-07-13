@@ -19,7 +19,7 @@
  *
  */
 
- const attrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const attrs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
 
 function update(entity, typeInformation, callback) {
     attrs.forEach((attr) => {

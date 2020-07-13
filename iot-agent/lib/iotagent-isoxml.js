@@ -169,12 +169,6 @@ function start(newConfig, callback) {
             iotAgentLib.addUpdateMiddleware(attributeDelete.update);
             iotAgentLib.addUpdateMiddleware(iotAgentLib.dataPlugins.timestampProcess.update);
 
-            if (config.getConfig().configRetrieval) {
-                iotAgentLib.setNotificationHandler(configurationNotificationHandler);
-            } else {
-                iotAgentLib.setNotificationHandler(notificationHandler);
-            }
-
             transportSelector.startTransportBindings(newConfig, callback);
         }
     });

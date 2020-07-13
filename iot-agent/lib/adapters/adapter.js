@@ -19,7 +19,6 @@
  *
  */
 
-
 const transforms = require('./transforms');
 
 const Farm = require('../../conf/farm');

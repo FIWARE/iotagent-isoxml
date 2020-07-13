@@ -27,10 +27,12 @@ const context = {
 };
 const relationshipAdapter = require('./adapters/adapter').Relationships;
 
-
-
 function checkNgsiLD() {
-    if (config.getConfig().contextBroker && config.getConfig().contextBroker.ngsiVersion && config.getConfig().contextBroker.ngsiVersion === 'ld') {
+    if (
+        config.getConfig().contextBroker &&
+        config.getConfig().contextBroker.ngsiVersion &&
+        config.getConfig().contextBroker.ngsiVersion === 'ld'
+    ) {
         return true;
     }
 
@@ -53,7 +55,7 @@ function getContextEntities(apiKey, device, attribute, callback) {
      * Make a request to the context broker and database in turn to find
      * the complete list of entities to send as a "command".
      */
-    function retrieveSingleEntity(item, callback) {        
+    function retrieveSingleEntity(item, callback) {
         const cbHost = config.getConfig().contextBroker.url;
         let path = '/v2/entities/';
 
@@ -101,7 +103,6 @@ function getContextEntities(apiKey, device, attribute, callback) {
             const refIds = [];
             results.forEach(function(result) {
                 entities[result.id] = result.entity;
-                console.log('d: ' + JSON.stringify(result));
                 if (result.refids) {
                     result.refids.forEach(function(refid) {
                         if (!entities[refid]) {
