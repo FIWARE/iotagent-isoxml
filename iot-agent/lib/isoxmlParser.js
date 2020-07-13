@@ -99,12 +99,14 @@ function createCommandPayload(device, command, attributes, entities) {
     config.getLogger().debug(context, 'createCommandPayload');
 
     const root = { isoxml: [] };
+    const isoxmlType = config.getConfig().isoxmlType || constants.DEFAULT_ISOXML_TYPE;
 
     Object.keys(entities).forEach((key) => {
         const entity = entities[key];
-        if (entity[config.getConfig().isoxmlType]) {
+        if (entity[isoxmlType]) {
             fmisAdapter.resetIndex();
-            const transform = fmisAdapter[entity[config.getConfig().isoxmlType]];
+            const transform = fmisAdapter[entity[isoxmlType]];
+
             if (typeof transform === 'function') {
                 root.isoxml.push(transform(entity));
             }

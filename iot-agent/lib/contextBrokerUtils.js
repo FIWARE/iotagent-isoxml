@@ -26,6 +26,7 @@ const context = {
     op: 'IOTA.ISOXML.CBUtils'
 };
 const relationshipAdapter = require('./adapters/adapter').Relationships;
+const constants = require('./constants');
 
 function checkNgsiLD() {
     if (
@@ -57,6 +58,7 @@ function getContextEntities(apiKey, device, attribute, callback) {
      */
     function retrieveSingleEntity(item, callback) {
         const cbHost = config.getConfig().contextBroker.url;
+        const isoxmlType = config.getConfig().isoxmlType || constants.DEFAULT_ISOXML_TYPE;
         let path = '/v2/entities/';
 
         if (checkNgsiLD()) {
@@ -82,8 +84,8 @@ function getContextEntities(apiKey, device, attribute, callback) {
                 entity
             };
 
-            if (entity[config.getConfig().isoxmlType]) {
-                const getRelationships = relationshipAdapter[entity[config.getConfig().isoxmlType]];
+            if (entity[isoxmlType]) {
+                const getRelationships = relationshipAdapter[entity[isoxmlType]];
                 if (typeof getRelationships === 'function') {
                     result.refids = getRelationships(entity);
                 }

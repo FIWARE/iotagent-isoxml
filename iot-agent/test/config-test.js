@@ -45,10 +45,10 @@ config.iota = {
     deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing',
     defaultResource: '/iot/isoxml',
-    isoxmlType: 'isoxml_type',
-    mics_endpoint: 'http://mics/iot/isoxml'
+    isoxmlType: 'isoxml_type' 
 };
 
 config.defaultTransport = 'HTTP';
+config.mics_endpoint =  'http://mics/iot/isoxml'
 
 module.exports = config;

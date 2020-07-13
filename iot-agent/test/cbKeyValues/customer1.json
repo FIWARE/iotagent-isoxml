@@ -1,0 +1,9 @@
+{
+    "id": "urn:ngsi-ld:Person:CTR1",
+    "type": "Person",
+    "familyName": "Mr. Jones",
+    "hasOccupation": {
+        "name": "Customer"
+    },
+    "isoxml_type": "ctr"
+}

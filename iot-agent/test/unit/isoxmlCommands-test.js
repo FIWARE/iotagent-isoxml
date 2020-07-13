@@ -21,51 +21,25 @@
 
 const isoxmlParser = require('../../lib/isoxmlParser');
 const should = require('should');
+const utils = require('../utils');
 
 describe('ISOXML Parser: commands', function() {
-    describe('When a command execution with multiple parameters is parsed', function() {
-        xit('should extract the deviceId, the command name, and the parameters', function() {
-            const result = isoxmlParser.createCommandPayload(null, null, attributes, entities);
-            //function createCommandPayload(device, command, attributes, entities)
-            /* should.exist(result);
-            (typeof result).should.equal('object');
-            should.exist(result.deviceId);
-            result.deviceId.should.equal('weatherStation167');
-            should.exist(result.command);
-            result.command.should.equal('ping');
-            should.exist(result.params);
-            should.exist(result.params.param2);
-            result.params.param2.should.equal('2');*/
+    describe('When a command execution with no params and a single entity is parsed', function() {
+        it('should extract a single isoxml element', function() {
+            const entities = [utils.readJSON('./test/cbKeyValues/farm1.json')];
+            const result = isoxmlParser.createCommandPayload(null, null, null, entities);
+            result.should.equal('<isoxml>' + utils.readXML('./test/isoxml/farm1.xml') + '</isoxml>')
+
         });
     });
-    xdescribe('When a command execution with no params and a value is parsed', function() {
-        it('should extract the deviceId, the command name, and the plain text of the value', function() {
-            const result = isoxmlParser.command('weatherStation167@ping|theValue');
+    describe('When a command execution with no params and a multiple entities is parsed', function() {
+        it('should extract multiple isoxml elements', function() {
+            const entities = [utils.readJSON('./test/cbKeyValues/farm1.json'),
+            utils.readJSON('./test/cbKeyValues/customer1.json'), 
+            utils.readJSON('./test/cbKeyValues/customer2.json') ];
+            const result = isoxmlParser.createCommandPayload(null, null, null, entities);
+            result.should.equal('<isoxml>' + utils.readXML('./test/isoxml/farmAndCustomers.xml') + '</isoxml>')
 
-            should.exist(result);
-            (typeof result).should.equal('object');
-            should.exist(result.deviceId);
-            result.deviceId.should.equal('weatherStation167');
-            should.exist(result.command);
-            result.command.should.equal('ping');
-            should.exist(result.value);
-            result.value.should.equal('theValue');
-        });
-    });
-    xdescribe('When a command result is parsed', function() {
-        describe('should extract the deviceId, the command name, and the result', function() {
-            it('should extract the deviceId, the command name, and the parameters', function() {
-                const result = isoxmlParser.result('weatherStation167@ping|Ping ok');
-
-                should.exist(result);
-                (typeof result).should.equal('object');
-                should.exist(result.deviceId);
-                result.deviceId.should.equal('weatherStation167');
-                should.exist(result.command);
-                result.command.should.equal('ping');
-                should.exist(result.result);
-                result.result.should.equal('Ping ok');
-            });
         });
     });
 });
