@@ -1,0 +1,51 @@
+{
+  "refTarget": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Building:FRM1"
+  },
+  "refObject": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:PartField:PFD1"
+  },
+  "activityType": {
+    "type": "Text",
+    "value": "planned"
+  },
+  "time": {
+    "type": "TimeEvent",
+    "value": [
+      {
+        "startTime": "2003-08-20T08:10:00",
+        "endTime": "2003-08-20T12:04:23",
+        "type": "effective",
+        "data": [
+          {
+            "ddi": "0815",
+            "value": 10,
+            "deviceElementId": "urn:ngsi-ld:DeviceElement:DET1"
+          },
+          {
+            "ddi": "4711",
+            "value": 15,
+            "deviceElementId": "urn:ngsi-ld:DeviceElement:DET2"
+          }
+        ],
+        "startPoint": {
+          "location": {
+            "type": "Point",
+            "coordinates": [
+              "54.588945",
+              "9.989209"
+            ]
+          },
+          "status": 3
+        }
+      },
+      {
+        "startTime": "2003-08-20T08:10:00",
+        "duration": 3612,
+        "type": "repair"
+      }
+    ]
+  }
+}

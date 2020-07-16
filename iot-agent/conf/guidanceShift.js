@@ -25,46 +25,55 @@ const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
 const allocationStamp = require('./allocationStamp');
+const guidanceGroup = require('./guidanceGroup');
+const guidancePattern = require('./guidancePattern');
 
-const isoxmlType = 'DAN';
-const ngsiType = 'DeviceAllocation';
+const isoxmlType = 'GST';
+const ngsiType = 'GuidanceShift';
 
 /*
-A clientNameValue
-B clientNameMask
-C deviceIdRef
+A GuidanceGroupIdRef
+B GuidancePatternIdRef
+C GuidanceEastShift
+D GuidanceNorthShift
+E PropagationOffset
 */
 
 /**
- * This function maps an NGSI object to an ISOXML DAN
+ * This function maps an NGSI object to an ISOXML GST
  */
 function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addAttribute(attr, entity, 'A', 'clientNameValue');
-    FMIS.addAttribute(attr, entity, 'B', 'clientNameMask');
-    FMIS.addRelationship(attr, entity, 'C', 'deviceIdRef', 'DVC');
+    FMIS.addRelationship(attr, entity, 'A', 'groupIdRef', group.isoxmlType);
+    FMIS.addRelationship(attr, entity, 'B', 'patternIdRef', guidancePattern.isoxmlType);
+    FMIS.addAttribute(attr, entity, 'C', 'eastShift');
+    FMIS.addAttribute(attr, entity, 'D', 'northShift');
+    FMIS.addAttribute(attr, entity, 'E', 'offset');
     return xml;
 }
 
 /**
- * This function maps an ISOXML DAN to an NGSI object
+ * This function maps an ISOXML GST to an NGSI object
  */
-function transformMICS(entity, normalized) {
-    MICS.addProperty(entity, 'A', 'clientNameValue', schema.TEXT, normalized);
-    MICS.addProperty(entity, 'B', 'clientNameMask', schema.TEXT, normalized);
-    MICS.addRelationship(entity, 'C', 'deviceIdRef', 'Device', normalized);
+function transformMICS(entity) {
+    MICS.addRelationship(entity, 'A', 'groupIdRef', guidanceGroup.ngsiType, false);
+    MICS.addRelationship(entity, 'B', 'patternIdRef', guidancePattern.ngsiType, false);
+    MICS.addInt(entity, 'C', 'eastShift', schema.NUMBER, false);
+    MICS.addInt(entity, 'D', 'northShift', schema.NUMBER, false);
+    MICS.addInt(entity, 'E', 'offset', schema.NUMBER, false);
     allocationStamp.add(entity);
     return entity;
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML DAN 
+*    This function lists the reference relationships of an ISOXML GST
 */
 function relationships(entity) {
     const refs = [];
-    transforms.addReference(refs, entity, 'deviceIdRef');
+    transforms.addReference(refs, entity, 'groupIdRef');
+    transforms.addReference(refs, entity, 'patternIdRef');
     return refs;
 }
 
@@ -72,6 +81,5 @@ module.exports = {
     transformFMIS,
     transformMICS,
     isoxmlType,
-    ngsiType,
-    relationships
+    ngsiType
 };

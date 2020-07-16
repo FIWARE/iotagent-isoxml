@@ -24,54 +24,63 @@ const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const allocationStamp = require('./allocationStamp');
+const deviceElement = require('./deviceElement');
 
-const isoxmlType = 'DAN';
-const ngsiType = 'DeviceAllocation';
+const isoxmlType = 'DLV';
+const ngsiType = 'StructuredValue';
 
 /*
-A clientNameValue
-B clientNameMask
-C deviceIdRef
+A ProcessDataDDI
+B ProcessDataValue
+C DeviceElementIdRef
+D DataLogPGN
+E DataLogPGNStartBit
+F DataLogPGNStopBit
 */
 
 /**
- * This function maps an NGSI object to an ISOXML DAN
+ * This function maps an NSGI Object to ISOXML DLT
  */
 function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addAttribute(attr, entity, 'A', 'clientNameValue');
-    FMIS.addAttribute(attr, entity, 'B', 'clientNameMask');
-    FMIS.addRelationship(attr, entity, 'C', 'deviceIdRef', 'DVC');
+    FMIS.addAttribute(attr, entity, 'A', 'ddi');
+    FMIS.addAttribute(attr, entity, 'B', 'value');
+    FMIS.addRelationship(attr, entity, 'C', 'deviceElementId', deviceElement.isoxmlType);
+    FMIS.addAttribute(attr, entity, 'D', 'PGN');
+    FMIS.addAttribute(attr, entity, 'E', 'PGNStartBit');
+    FMIS.addAttribute(attr, entity, 'F', 'PGNStopBit');
     return xml;
 }
 
 /**
- * This function maps an ISOXML DAN to an NGSI object
+ * This function maps an ISOXML DLT to an NSGI Object
  */
 function transformMICS(entity, normalized) {
-    MICS.addProperty(entity, 'A', 'clientNameValue', schema.TEXT, normalized);
-    MICS.addProperty(entity, 'B', 'clientNameMask', schema.TEXT, normalized);
-    MICS.addRelationship(entity, 'C', 'deviceIdRef', 'Device', normalized);
-    allocationStamp.add(entity);
+    MICS.addProperty(entity, 'A', 'ddi', schema.TEXT, normalized);
+    MICS.addInt(entity, 'B', 'value', schema.NUMBER, normalized);
+    MICS.addRelationship(entity, 'C', 'deviceElementId', deviceElement.ngsiType, normalized);
+    MICS.addInt(entity, 'D', 'PGN', schema.NUMBER, normalized);
+    MICS.addInt(entity, 'E', 'PGNStartBit', schema.NUMBER, normalized);
+    MICS.addInt(entity, 'F', 'PGNStopBit', schema.NUMBER, normalized);
     return entity;
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML DAN 
+*    This function lists the reference relationships of an ISOXML DLT
+*    Building.owner = I  - CustomerIdRef 
 */
 function relationships(entity) {
     const refs = [];
-    transforms.addReference(refs, entity, 'deviceIdRef');
+    transforms.addReference(refs, entity, 'deviceElementId');
     return refs;
 }
 
 module.exports = {
     transformFMIS,
     transformMICS,
+    relationships,
     isoxmlType,
-    ngsiType,
-    relationships
+    ngsiType
 };

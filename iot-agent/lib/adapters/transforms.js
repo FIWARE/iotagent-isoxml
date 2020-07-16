@@ -61,23 +61,6 @@ function getValue(entity) {
     return entity.value ? entity.value : entity;
 }
 
-function extractPosition(data) {
-    const position = {};
-    const coordinates = [data.A, data.B];
-    if (data.C) {
-        coordinates.push(data.C);
-    }
-    position.location = { type: 'Point', coordinates };
-    position.status = data.D ? parseInt(data.D) : undefined;
-    position.PDOP = data.E ? parseInt(data.E) : undefined;
-    position.HDOP = data.F ? parseInt(data.F) : undefined;
-    position.numberOfSatellites = data.G ? parseInt(data.G) : undefined;
-    position.gpsUtcTime = data.H ? parseInt(data.H) : undefined;
-    position.gpsUtcDate = data.I ? parseInt(data.I) : undefined;
-
-    return position;
-}
-
 // FMIS transform functions
 const FMIS = {
     idIndex: 0,
@@ -219,40 +202,6 @@ const MICS = {
             delete entity[from];
         }
     },
-
-    addTimestamp(entity, from) {
-        const lowerFrom = from.toLowerCase();
-        if (entity[lowerFrom]) {
-            const timestamp = getValue(entity[lowerFrom]);
-            let  position = timestamp.ptn;
-            entity.startTime = timestamp.A ? getValue(timestamp.A): undefined;
-            entity.endTime = timestamp.B ? getValue(timestamp.B): undefined;
-            entity.duration = timestamp.C ? parseInt(getValue(timestamp.C)): undefined;
-
-            if (!!timestamp.D) {
-                if (timestamp.D === '1') {
-                    entity.status = 'planned';
-                } else if (timestamp.D === '4') {
-                    entity.status = 'realized';
-                }
-            }
-            if (!!position) {
-                if (!Array.isArray(position)) {
-                    position = [position];
-                }
-                if (position.length === 2) {
-                    entity.startPoint = extractPosition(position[0]);
-                    entity.endPoint = extractPosition(position[1]);
-                } else if (entity.startTime) {
-                    entity.startPoint = extractPosition(position[0]);
-                } else {
-                    entity.endPoint = extractPosition(position[0]);
-                }
-            }
-            delete entity[lowerFrom];
-        }
-    },
-
     addRelationship(entity, from, to, type, normalized = true) {
         if (entity[from]) {
             entity[to] = normalized

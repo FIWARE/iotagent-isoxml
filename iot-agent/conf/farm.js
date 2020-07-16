@@ -1,3 +1,24 @@
+/*
+ * Copyright 2020 FIWARE Foundation e.V.
+ *
+ * This file is part of iotagent-isoxml
+ *
+ * iotagent-isoxml is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * iotagent-isoxml is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with iotagent-isoxml.
+ * If not, see http://www.gnu.org/licenses/.
+ *
+ */
+
 const transforms = require('../lib/adapters/transforms');
 const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
@@ -42,7 +63,7 @@ function transformMICS(entity, normalized) {
     }
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
     MICS.addAddressProperty(entity, 'C', 'address', schema.POSTAL_ADDRESS, normalized);
-    MICS.addRelationship(entity, 'I', 'owner', schema.PERSON, normalized);
+    MICS.addRelationship(entity, 'I', 'owner', customer.ngsiType, normalized);
     return entity;
 }
 

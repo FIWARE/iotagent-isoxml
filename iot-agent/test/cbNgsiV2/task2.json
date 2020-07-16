@@ -11,7 +11,7 @@
     "type": "CommentAllocation",
     "value": [
       {
-        "id": "urn:ngsi-ld:CommentAllocation:CCT5",
+        "codedCommentIdRef": "urn:ngsi-ld:CodedComment:CCT5",
         "startTime": "2003-08-20T08:00:20",
         "status": "realized"
       }
@@ -34,7 +34,7 @@
       {
         "ddi": "1122",
         "method": 1,
-        "deviceElementId": "urn:ngsi-ld:Device:DET2"
+        "deviceElementId": "urn:ngsi-ld:DeviceElement:DET2"
       }
     ]
   },

@@ -1,0 +1,40 @@
+{
+  "refTarget": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Building:FRM1"
+  },
+  "refObject": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:PartField:PFD1"
+  },
+  "activityType": {
+    "type": "Text",
+    "value": "planned"
+  },
+  "guidanceAllocation": {
+    "type": "GuidanceAllocation",
+    "value": [
+      {
+        "groupIdRef": "urn:ngsi-ld:GuidanceGroup:GGP1",
+        "startTime": "2003-08-20T08:00:00",
+        "status": "planned",
+        "guidanceShift": [
+          {
+            "patternIdRef": "urn:ngsi-ld:GuidancePattern:GPN2",
+            "eastShift": 100,
+            "northShift": 150,
+            "startTime": "2003-08-20T08:10:00",
+            "status": "planned"
+          },
+          {
+            "patternIdRef": "urn:ngsi-ld:GuidancePattern:GPN3",
+            "eastShift": 100,
+            "northShift": 250,
+            "startTime": "2003-08-20T08:11:00",
+            "status": "realized"
+          }
+        ]
+      }
+    ]
+  }
+}

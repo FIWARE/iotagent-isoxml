@@ -1,7 +1,31 @@
+/*
+ * Copyright 2020 FIWARE Foundation e.V.
+ *
+ * This file is part of iotagent-isoxml
+ *
+ * iotagent-isoxml is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * iotagent-isoxml is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with iotagent-isoxml.
+ * If not, see http://www.gnu.org/licenses/.
+ *
+ */
+
 const transforms = require('../lib/adapters/transforms');
 const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
+
+const deviceElement = require('./deviceElement');
+const valuePresentation = require('./valuePresentation');
 
 const isoxmlType = 'DLT';
 const ngsiType = 'DataLogTrigger';
@@ -35,8 +59,8 @@ function transformFMIS(entity) {
     FMIS.addAttribute(attr, entity, 'E', 'thresholdMinimum');
     FMIS.addAttribute(attr, entity, 'F', 'thresholdMaximum');
     FMIS.addAttribute(attr, entity, 'G', 'thresholdChange');
-    FMIS.addRelationship(attr, entity, 'H', 'deviceElementId', 'Device');
-    FMIS.addRelationship(attr, entity, 'I', 'valuePresentationId', 'Value');
+    FMIS.addRelationship(attr, entity, 'H', 'deviceElementId', deviceElement.isoxmlType);
+    FMIS.addRelationship(attr, entity, 'I', 'valuePresentationId', valuePresentation.isoxmlType);
     FMIS.addAttribute(attr, entity, 'J', 'PGN');
     FMIS.addAttribute(attr, entity, 'K', 'PGNStartBit');
     FMIS.addAttribute(attr, entity, 'L', 'PGNStopBit');
@@ -54,8 +78,8 @@ function transformMICS(entity, normalized) {
     MICS.addFloat(entity, 'E', 'thresholdMinimum', schema.NUMBER, normalized);
     MICS.addFloat(entity, 'F', 'thresholdMaximum', schema.NUMBER, normalized);
     MICS.addFloat(entity, 'G', 'thresholdChange', schema.NUMBER, normalized);
-    MICS.addRelationship(entity, 'H', 'deviceElementId', 'Device', normalized);
-    MICS.addRelationship(entity, 'I', 'valuePresentationId', 'Value', normalized);
+    MICS.addRelationship(entity, 'H', 'deviceElementId', deviceElement.ngsiType, normalized);
+    MICS.addRelationship(entity, 'I', 'valuePresentationId',  valuePresentation.ngsiType, normalized);
     MICS.addInt(entity, 'J', 'PGN', schema.NUMBER, normalized);
     MICS.addInt(entity, 'K', 'PGNStartBit', schema.NUMBER, normalized);
     MICS.addInt(entity, 'L', 'PGNStopBit', schema.NUMBER, normalized);

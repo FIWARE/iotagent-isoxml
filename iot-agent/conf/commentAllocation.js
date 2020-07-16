@@ -1,16 +1,40 @@
+/*
+ * Copyright 2020 FIWARE Foundation e.V.
+ *
+ * This file is part of iotagent-isoxml
+ *
+ * iotagent-isoxml is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * iotagent-isoxml is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with iotagent-isoxml.
+ * If not, see http://www.gnu.org/licenses/.
+ *
+ */
+
 const transforms = require('../lib/adapters/transforms');
 const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
+const allocationStamp = require('./allocationStamp');
+const codedComment = require('./codedComment');
+const codedCommentListValue = require('./codedCommentListValue');
+
 const isoxmlType = 'CAN';
 const ngsiType = 'CommentAllocation';
 
 /*
-A CommentId
-B designator
-C scope
-D groupRef
+A CodedCommentIdRef
+B CodedCommentListValueIdRef
+C FreeCommentText
 
 AllocationStamp
 */
@@ -22,10 +46,9 @@ function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addId(attr, entity, isoxmlType);
-    FMIS.addAttribute(attr, entity, 'B', 'designator');
-    FMIS.addAttribute(attr, entity, 'C', 'scope');
-    FMIS.addRelationship(attr, entity, 'D', 'groupRef', 'CCT');
+    FMIS.addRelationship(attr, entity, 'A', 'codedCommentIdRef', codedComment.isoxmlType);
+    FMIS.addRelationship(attr, entity, 'B', 'codedCommentListValueIdRef', codedCommentListValue.isoxmlType);
+    FMIS.addAttribute(attr, entity, 'C', 'comment');
     return xml;
 }
 
@@ -33,13 +56,10 @@ function transformFMIS(entity) {
  * This function maps an ISOXML CAN to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    if (entity.A && !normalized) {
-        entity.id = transforms.generateURI(entity.A, ngsiType);
-    }
-    MICS.addProperty(entity, 'B', 'designator', schema.TEXT, normalized);
-    MICS.addProperty(entity, 'C', 'scope', schema.TEXT, normalized);
-    MICS.addRelationship(entity, 'D', 'groupRef', 'CCT', normalized);
-    MICS.addTimestamp(entity, 'ASP', normalized);
+    MICS.addRelationship(entity, 'A', 'codedCommentIdRef', codedComment.ngsiType, normalized);
+    MICS.addRelationship(entity, 'B', 'codedCommentListValueIdRef', codedCommentListValue.ngsiType, normalized);
+    MICS.addProperty(entity, 'C', 'comment', schema.TEXT, normalized);
+    allocationStamp.add(entity);
     return entity;
 }
 
@@ -49,7 +69,8 @@ function transformMICS(entity, normalized) {
 */
 function relationships(entity) {
     const refs = [];
-    transforms.addReference(refs, entity, 'groupRef');
+    transforms.addReference(refs, entity, 'codedCommentIdRef');
+    transforms.addReference(refs, entity, 'codedCommentListValueIdRef');
     return refs;
 }
 

@@ -1,3 +1,24 @@
+/*
+ * Copyright 2020 FIWARE Foundation e.V.
+ *
+ * This file is part of iotagent-isoxml
+ *
+ * iotagent-isoxml is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the License,
+ * or (at your option) any later version.
+ *
+ * iotagent-isoxml is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with iotagent-isoxml.
+ * If not, see http://www.gnu.org/licenses/.
+ *
+ */
+
 const transforms = require('../lib/adapters/transforms');
 const schema = require('../lib/adapters/schema');
 const smartDataModels = require('../lib/adapters/smartDataModels');
@@ -10,14 +31,15 @@ const commentAllocation = require('./commentAllocation');
 const customer = require('./customer');
 const dataLogTrigger = require('./dataLogTrigger');
 const deviceAllocation = require('./deviceAllocation');
-const farm = require('./worker');
+const farm = require('./farm');
 const grid = require('./grid');
 const guidanceAllocation = require('./guidanceAllocation');
 const operTechPractice = require('./operTechPractice');
+const partField = require('./partField');
 const productAllocation = require('./productAllocation');
 const time = require('./time');
 const treatmentZone = require('./treatmentZone');
-const worker = require('./farm');
+const worker = require('./worker');
 const workerAllocation = require('./workerAllocation');
 const timeLog = require('./timeLog');
 
@@ -73,7 +95,7 @@ function transformFMIS(entity) {
     FMIS.addAttribute(attr, entity, 'B', 'name');
     FMIS.addRelationship(attr, entity, 'C', 'owner', customer.isoxmlType);
     FMIS.addRelationship(attr, entity, 'D', 'refTarget', farm.isoxmlType);
-    FMIS.addRelationship(attr, entity, 'E', 'refObject', 'PFD');
+    FMIS.addRelationship(attr, entity, 'E', 'refObject', partField.isoxmlType);
     FMIS.addRelationship(attr, entity, 'F', 'refAgent', worker.isoxmlType);
     FMIS.addAttribute(attr, entity, 'G', 'status');
     FMIS.addAttribute(attr, entity, 'H', 'defaultTreatment');
@@ -92,10 +114,10 @@ function transformMICS(entity, normalized) {
     }
 
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
-    MICS.addRelationship(entity, 'C', 'owner', schema.PERSON, normalized);
-    MICS.addRelationship(entity, 'D', 'refTarget', smartDataModels.BUILDING, normalized);
-    MICS.addRelationship(entity, 'E', 'refObject', smartDataModels.PART_FIELD, normalized);
-    MICS.addRelationship(entity, 'F', 'refAgent', schema.PERSON, normalized);
+    MICS.addRelationship(entity, 'C', 'owner', customer.ngsiType, normalized);
+    MICS.addRelationship(entity, 'D', 'refTarget', farm.ngsiType, normalized);
+    MICS.addRelationship(entity, 'E', 'refObject', partField.ngsiType, normalized);
+    MICS.addRelationship(entity, 'F', 'refAgent', worker.ngsiType, normalized);
     MICS.addMappedProperty(entity, 'G', 'activityType', schema.TEXT, ACTIVITY_TYPES, normalized);
     MICS.addProperty(entity, 'H', 'defaultTreatment', schema.TEXT, normalized);
     MICS.addProperty(entity, 'I', 'positionLost', schema.TEXT, normalized);
