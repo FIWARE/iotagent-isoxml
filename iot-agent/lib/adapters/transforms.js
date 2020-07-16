@@ -224,32 +224,29 @@ const MICS = {
         const lowerFrom = from.toLowerCase();
         if (entity[lowerFrom]) {
             const timestamp = getValue(entity[lowerFrom]);
-            if (timestamp.A) {
-                entity.startTime = getValue(timestamp.A);
-            }
+            let  position = timestamp.ptn;
+            entity.startTime = timestamp.A ? getValue(timestamp.A): undefined;
+            entity.endTime = timestamp.B ? getValue(timestamp.B): undefined;
+            entity.duration = timestamp.C ? parseInt(getValue(timestamp.C)): undefined;
 
-            if (timestamp.B) {
-                entity.endTime = getValue(timestamp.A);
-            }
-
-            if (timestamp.C) {
-                entity.duration = parseInt(getValue(entity[lowerFrom]));
-            }
-            if (timestamp.D) {
-                if (timestamp.D === 1) {
-                    entity.status = 'Planned';
-                } else if (timestamp.D === 4) {
-                    entity.status = 'Realized';
+            if (!!timestamp.D) {
+                if (timestamp.D === '1') {
+                    entity.status = 'planned';
+                } else if (timestamp.D === '4') {
+                    entity.status = 'realized';
                 }
             }
-            if (timestamp.ptn) {
-                if (timestamp.ptn.length === 2) {
-                    entity.startPoint = extractPosition(timestamp.ptn[0]);
-                    entity.endPoint = extractPosition(timestamp.ptn[1]);
+            if (!!position) {
+                if (!Array.isArray(position)) {
+                    position = [position];
+                }
+                if (position.length === 2) {
+                    entity.startPoint = extractPosition(position[0]);
+                    entity.endPoint = extractPosition(position[1]);
                 } else if (entity.startTime) {
-                    entity.startPoint = extractPosition(timestamp.ptn[0]);
+                    entity.startPoint = extractPosition(position[0]);
                 } else {
-                    entity.endPoint = extractPosition(timestamp.ptn[0]);
+                    entity.endPoint = extractPosition(position[0]);
                 }
             }
             delete entity[lowerFrom];

@@ -24,13 +24,13 @@ DataLogValue
 */
 
 const TIME_TYPES = {
-    '1': 'Planned',
-    '2': 'Preliminary',
-    '4': 'Effective',
-    '5': 'Ineffective',
-    '6': 'Repair',
-    '7': 'Clearing',
-    '8': 'Powered Down'
+    '1': 'planned',
+    '2': 'preliminary',
+    '4': 'effective',
+    '5': 'ineffective',
+    '6': 'repair',
+    '7': 'clearing',
+    '8': 'poweredDown'
 };
 
 /**

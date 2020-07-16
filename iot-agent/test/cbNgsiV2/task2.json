@@ -45,7 +45,7 @@
         "clientNameValue": "200C840000000000",
         "clientNameMask": "7FFFFFFF00000000",
         "startTime": "2003-08-20T08:00:00",
-        "endTime": "2003-08-20T08:00:00",
+        "endTime": "2003-08-20T17:00:00",
         "status": "planned"
       }
     ]
@@ -73,7 +73,7 @@
       {
         "startTime": "2003-08-20T08:00:00",
         "endTime": "2003-08-20T17:00:00",
-        "type": "Planned"
+        "type": "planned"
       }
     ]
   },
@@ -83,7 +83,7 @@
       {
         "workerIdRef": "urn:ngsi-ld:Person:WKR1",
         "startTime": "2003-08-20T08:00:00",
-        "endTime": "2003-08-20T08:00:00",
+        "endTime": "2003-08-20T17:00:00",
         "status": "planned"
       }
     ]
