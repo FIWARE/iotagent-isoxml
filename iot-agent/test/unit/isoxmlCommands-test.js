@@ -28,18 +28,18 @@ describe('ISOXML Parser: commands', function() {
         it('should extract a single isoxml element', function() {
             const entities = [utils.readJSON('./test/cbKeyValues/farm1.json')];
             const result = isoxmlParser.createCommandPayload(null, null, null, entities);
-            result.should.equal('<isoxml>' + utils.readXML('./test/isoxml/farm1.xml') + '</isoxml>')
-
+            result.should.equal('<isoxml>' + utils.readXML('./test/isoxml/farm1.xml') + '</isoxml>');
         });
     });
     describe('When a command execution with no params and a multiple entities is parsed', function() {
         it('should extract multiple isoxml elements', function() {
-            const entities = [utils.readJSON('./test/cbKeyValues/farm1.json'),
-            utils.readJSON('./test/cbKeyValues/customer1.json'), 
-            utils.readJSON('./test/cbKeyValues/customer2.json') ];
+            const entities = [
+                utils.readJSON('./test/cbKeyValues/farm1.json'),
+                utils.readJSON('./test/cbKeyValues/customer1.json'),
+                utils.readJSON('./test/cbKeyValues/customer2.json')
+            ];
             const result = isoxmlParser.createCommandPayload(null, null, null, entities);
-            result.should.equal('<isoxml>' + utils.readXML('./test/isoxml/farmAndCustomers.xml') + '</isoxml>')
-
+            result.should.equal('<isoxml>' + utils.readXML('./test/isoxml/farmAndCustomers.xml') + '</isoxml>');
         });
     });
 });

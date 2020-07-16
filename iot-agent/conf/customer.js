@@ -1,6 +1,10 @@
 const transforms = require('../lib/adapters/transforms');
+const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
+
+const isoxmlType = 'CTR';
+const ngsiType = 'Person';
 
 /*
 A CustomerId
@@ -19,12 +23,13 @@ M CustomerEMail
 */
 
 /**
- * This function maps a Schema.org Person to an ISOXML CTR
+ * This function maps an NGSI object to an ISOXML CTR
  */
 function transformFMIS(entity) {
-    const xml = { CTR: { _attr: {} } };
-    const attr = xml.CTR._attr;
-    FMIS.addId(attr, entity, 'CTR');
+    const xml = {};
+    xml[isoxmlType] = { _attr: {} };
+    const attr = xml[isoxmlType]._attr;
+    FMIS.addId(attr, entity, isoxmlType);
     FMIS.addAttribute(attr, entity, 'B', 'familyName');
     FMIS.addAttribute(attr, entity, 'C', 'givenName');
     FMIS.addAddressAttribute(attr, entity, 'D', 'address');
@@ -36,20 +41,22 @@ function transformFMIS(entity) {
 }
 
 /**
- * This function maps an ISOXML CTR to a Schema.org Person
+ * This function maps an ISOXML CTR to an NGSI object
  */
-function transformMICS(entity) {
-    MICS.addProperty(entity, 'B', 'familyName', 'Text');
-    MICS.addProperty(entity, 'C', 'givenName', 'Text');
-    MICS.addAddressProperty(entity, 'D', 'address', 'PostalAddress');
-    MICS.addProperty(entity, 'J', 'telephone', 'Text');
-    MICS.addProperty(entity, 'K', 'mobile', 'Text');
-    MICS.addProperty(entity, 'L', 'licenseNumber', 'Text');
-    MICS.addProperty(entity, 'M', 'eMail', 'Text');
+function transformMICS(entity, normalized) {
+    MICS.addProperty(entity, 'B', 'familyName', schema.TEXT, normalized);
+    MICS.addProperty(entity, 'C', 'givenName', schema.TEXT, normalized);
+    MICS.addAddressProperty(entity, 'D', 'address', schema.POSTAL_ADDRESS, normalized);
+    MICS.addProperty(entity, 'J', 'telephone', schema.TEXT, normalized);
+    MICS.addProperty(entity, 'K', 'mobile', schema.TEXT, normalized);
+    MICS.addProperty(entity, 'L', 'licenseNumber', schema.TEXT, normalized);
+    MICS.addProperty(entity, 'M', 'eMail', schema.TEXT, normalized);
     return entity;
 }
 
 module.exports = {
     transformFMIS,
-    transformMICS
+    transformMICS,
+    isoxmlType,
+    ngsiType
 };

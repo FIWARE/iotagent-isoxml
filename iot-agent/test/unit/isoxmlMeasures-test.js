@@ -73,4 +73,16 @@ describe('ISOXML Parser: measures', function() {
             });
         });
     });
+
+    /*
+    describe('When a payload with multiple embedded ISOXML element is parsed', function() {
+        it('should return a single object with attributes containing arrays and embedded arrays', function(done) {
+            const input = utils.readXML('./test/isoxml/device1.xml');
+            parser.parseString(input, function(err, xml) {
+                const result = isoxmlParser.parse(xml.DVC);
+                console.error(JSON.stringify(result, null, 4));
+                done();
+            });
+        });
+    });*/
 });

@@ -1,0 +1,91 @@
+{
+  "refAgent": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Person:WKR1"
+  },
+  "activityType": {
+    "type": "Text",
+    "value": "planned"
+  },
+  "commentAllocation": {
+    "type": "CommentAllocation",
+    "value": [
+      {
+        "id": "urn:ngsi-ld:CommentAllocation:CCT5",
+        "startTime": "2003-08-20T08:00:20",
+        "status": "realized"
+      }
+    ]
+  },
+  "connection": {
+    "type": "Connection",
+    "value": [
+      {
+        "deviceIdRef0": "urn:ngsi-ld:Device:DVC2",
+        "deviceElementIdRef0": "urn:ngsi-ld:DeviceElement:DET2",
+        "deviceIdRef1": "urn:ngsi-ld:Device:DVC1",
+        "deviceElementIdRef1": "urn:ngsi-ld:DeviceElement:DET2"
+      }
+    ]
+  },
+  "dataLogTrigger": {
+    "type": "DataLogTrigger",
+    "value": [
+      {
+        "ddi": "1122",
+        "method": 1,
+        "deviceElementId": "urn:ngsi-ld:Device:DET2"
+      }
+    ]
+  },
+  "deviceAllocation": {
+    "type": "DeviceAllocation",
+    "value": [
+      {
+        "clientNameValue": "200C840000000000",
+        "clientNameMask": "7FFFFFFF00000000",
+        "startTime": "2003-08-20T08:00:00",
+        "endTime": "2003-08-20T08:00:00",
+        "status": "planned"
+      }
+    ]
+  },
+  "operTechPractice": {
+    "type": "OperTechPractice",
+    "value": {
+      "culturalPracticeId": "urn:ngsi-ld:CulturalPractice:CPC1",
+      "operationTechniqueId": "urn:ngsi-ld:OperationTechnique:OTQ1"
+    }
+  },
+  "treatmentZone": {
+    "type": "TreatmentZone",
+    "value": [
+      {
+        "code": "1",
+        "name": "200",
+        "color": "140"
+      }
+    ]
+  },
+  "time": {
+    "type": "TimeEvent",
+    "value": [
+      {
+        "startTime": "2003-08-20T08:00:00",
+        "endTime": "2003-08-20T17:00:00",
+        "type": "Planned"
+      }
+    ]
+  },
+  "workerAllocation": {
+    "type": "WorkerAllocation",
+    "value": [
+      {
+        "workerIdRef": "urn:ngsi-ld:Person:WKR1",
+        "startTime": "2003-08-20T08:00:00",
+        "endTime": "2003-08-20T08:00:00",
+        "status": "planned"
+      }
+    ]
+  }
+}

@@ -18,37 +18,14 @@
  * If not, see http://www.gnu.org/licenses/.
  *
  */
-const config = {};
 
-config.http = {
-    port: 7896
+module.exports = {
+    BOOLEAN: 'Boolean',
+    DATE: 'Date',
+    DATETIME: 'DateTime',
+    NUMBER: 'Number',
+    POSTAL_ADDRESS: 'PostalAddress',
+    PERSON: 'Person',
+    TEXT: 'Text',
+    TIME: ' Time'
 };
-
-config.iota = {
-    logLevel: 'FATAL',
-    contextBroker: {
-        host: '192.168.1.1',
-        port: '1026',
-        ngsiVersion: 'v2',
-        url: 'http://192.168.1.1:1026'
-    },
-    server: {
-        port: 4061
-    },
-    deviceRegistry: {
-        type: 'memory'
-    },
-    types: {},
-    service: 'howtoService',
-    subservice: '/howto',
-    providerUrl: 'http://localhost:4061',
-    deviceRegistrationDuration: 'P1M',
-    defaultType: 'Thing',
-    defaultResource: '/iot/isoxml',
-    isoxmlType: 'isoxml_type'
-};
-
-config.defaultTransport = 'HTTP';
-config.mics_endpoint = 'http://mics/iot/isoxml';
-
-module.exports = config;

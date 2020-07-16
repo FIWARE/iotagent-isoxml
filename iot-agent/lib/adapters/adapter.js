@@ -21,17 +21,45 @@
 
 const transforms = require('./transforms');
 
-const Farm = require('../../conf/farm');
-const Worker = require('../../conf/worker');
-const Customer = require('../../conf/customer');
+const connection = require('../../conf/connection');
+const controlAssignment = require('../../conf/controlAssignment');
+const commentAllocation = require('../../conf/commentAllocation');
+const customer = require('../../conf/customer');
+const dataLogTrigger = require('../../conf/dataLogTrigger');
+const deviceAllocation = require('../../conf/deviceAllocation');
+const farm = require('../../conf/farm');
+const grid = require('../../conf/grid');
+const guidanceAllocation = require('../../conf/guidanceAllocation');
+const operTechPractice = require('../../conf/operTechPractice');
+const productAllocation = require('../../conf/productAllocation');
+const task = require('../../conf/task');
+const time = require('../../conf/time');
+const timeLog = require('../../conf/timeLog');
+const treatmentZone = require('../../conf/treatmentZone');
+const worker = require('../../conf/worker');
+const workerAllocation = require('../../conf/workerAllocation');
 
 /*
 * Farm Management Information system
 */
 const FMIS = {
-    ctr: Customer.transformFMIS,
-    frm: Farm.transformFMIS,
-    wkr: Worker.transformFMIS,
+    cnn: connection.transformFMIS,
+    can: commentAllocation.transformFMIS,
+    cat: controlAssignment.transformFMIS,
+    ctr: customer.transformFMIS,
+    dlt: dataLogTrigger.transformFMIS,
+    dan: deviceAllocation.transformFMIS,
+    frm: farm.transformFMIS,
+    grd: grid.transformFMIS,
+    gan: guidanceAllocation.transformFMIS,
+    otp: operTechPractice.transformFMIS,
+    pan: productAllocation.transformFMIS,
+    tim: time.transformFMIS,
+    tlg: timeLog.transformFMIS,
+    tsk: task.transformFMIS,
+    tzn: treatmentZone.transformFMIS,
+    wkr: worker.transformFMIS,
+    wan: workerAllocation.transformFMIS,
     resetIndex: transforms.FMIS.resetIndex
 };
 
@@ -39,13 +67,33 @@ const FMIS = {
 * Mobile Information Control system
 */
 const MICS = {
-    ctr: Customer.transformMICS,
-    frm: Farm.transformMICS,
-    wkr: Worker.transformMICS
+    cnn: connection.transformMICS,
+    cat: controlAssignment.transformMICS,
+    can: commentAllocation.transformMICS,
+    ctr: customer.transformMICS,
+    dan: deviceAllocation.transformMICS,
+    dlt: dataLogTrigger.transformMICS,
+    frm: farm.transformMICS,
+    grd: grid.transformMICS,
+    gan: guidanceAllocation.transformMICS,
+    otp: operTechPractice.transformMICS,
+    pan: productAllocation.transformMICS,
+    tim: time.transformMICS,
+    tlg: timeLog.transformMICS,
+    tsk: task.transformMICS,
+    tzn: treatmentZone.transformMICS,
+    wkr: worker.transformMICS,
+    wan: workerAllocation.transformMICS
 };
 
 const Relationships = {
-    frm: Farm.relationships
+    can: commentAllocation.relationships,
+    dan: deviceAllocation.relationships,
+    dlt: dataLogTrigger.relationships,
+    frm: farm.relationships,
+    otp: operTechPractice.relationships,
+    tsk: task.relationships,
+    wan: workerAllocation.relationships
 };
 
 module.exports = {

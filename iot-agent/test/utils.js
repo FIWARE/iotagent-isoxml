@@ -46,7 +46,7 @@ function readXML(name) {
         /* eslint-disable no-console */
         console.error(JSON.stringify(e));
     }
-    return text ? text.replace(/\n/g, ''): '';
+    return text ? text.replace(/\n/g, '') : '';
 }
 
 function readISOXML(name) {

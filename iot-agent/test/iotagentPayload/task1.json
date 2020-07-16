@@ -1,0 +1,23 @@
+{
+    "A": {
+		"type": "String",
+		"value": "TSK1"
+	},
+    "E": {
+		"type": "String",
+		"value": "PFD1"
+	},
+    "G": {
+		"type": "String",
+		"value":"3"
+	},
+    "DLT": {
+        "type": "Object",
+        "value": [
+	    {
+	      "A": "DFFF",
+	      "B": "31"
+	    }
+	  ]
+    }
+}

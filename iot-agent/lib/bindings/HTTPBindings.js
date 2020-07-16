@@ -95,16 +95,15 @@ function checkMandatoryParams(req, res, next) {
         Object.keys(payload).forEach((key) => {
             const type = Object.keys(payload[key])[0];
             const entity = payload[key][type];
-                if (Array.isArray(entity)) {
-                    entity.forEach((element) => {
-                        if (!element.A) {
-                            notFoundParams.push('Id for Entity: ' + key);
-                        }
-                    });
-                } else if (!entity.A) {
-                    notFoundParams.push('Id for Entity: ' + key);
-                }
-            
+            if (Array.isArray(entity)) {
+                entity.forEach((element) => {
+                    if (!element.A) {
+                        notFoundParams.push('Id for Entity: ' + key);
+                    }
+                });
+            } else if (!entity.A) {
+                notFoundParams.push('Id for Entity: ' + key);
+            }
         });
     }
 
@@ -126,7 +125,11 @@ function checkMandatoryParams(req, res, next) {
 
 /* eslint-disable-next-line no-unused-vars */
 function returnCommands(req, res, next) {
-     res.status(200).send('');
+    res.status(200).send('');
+}
+
+function isString(data) {
+    return typeof data === 'string' || data instanceof String;
 }
 
 function handleIncomingMeasure(req, res, next) {
@@ -138,7 +141,7 @@ function handleIncomingMeasure(req, res, next) {
         const attributes = [];
         Object.keys(data).forEach((key) => {
             if (key !== 'A') {
-                attributes.push({ name: key, value: data[key], type: 'String' });
+                attributes.push({ name: key, value: data[key], type: isString(data) ? 'String' : 'Object' });
             }
         });
         iotAgentLib.update(device.name, device.type, apiKey, attributes, device, function(error) {

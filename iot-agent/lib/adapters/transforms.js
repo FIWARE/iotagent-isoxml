@@ -33,7 +33,7 @@ const addressAttrs = [
 
 // Return the value of an attribute if the value exists
 function valueOf(entity, attr) {
-    return entity[attr] ? entity[attr].value : null;
+    return entity[attr] ? entity[attr].value : undefined;
 }
 
 // Transform an ISOXML id into a valid NGSI-LD URI
@@ -47,6 +47,27 @@ function addReference(refs, entity, attr) {
         refs.push(entity[attr]);
     }
 }
+
+function getValue(entity) {
+    return entity.value ? entity.value : entity;
+}
+
+function extractPosition (data){
+    const position = {}
+    const coordinates = [data.A, data.B];
+    if (!!data.C){
+        coordinates.push(data.C)
+    }
+    position.location = { type: 'Point', coordinates};
+    position.status = !!data.D ? parseInt(data.D) : undefined;
+    position.PDOP = !!data.E ? parseInt(data.E) : undefined;
+    position.HDOP = !!data.F ? parseInt(data.F) : undefined;
+    position.numberOfSatellites = !!data.G ? parseInt(data.G) : undefined;
+    position.gpsUtcTime = !!data.H ? parseInt(data.H) : undefined;
+    position.gpsUtcDate = !!data.I ? parseInt(data.I) : undefined;
+
+    return position;
+};
 
 // FMIS transform functions
 const FMIS = {
@@ -110,21 +131,160 @@ const MICS = {
         }
     },
 
-    addProperty(entity, from, to, type = 'Property') {
-        if (entity[from]) {
+    addGeoPointProperty(entity, from, to, type='GeoProperty') {
+        const attrs = allAttrs.slice(allAttrs.indexOf(from), allAttrs.indexOf(from + 1));
+        let present = true;
+
+        attrs.forEach((attr) => {
+            present = present && entity[attr];
+        });
+
+        if (present) {
             entity[to] = {
-                type,
-                value: entity[from].value
+                type : type,
+                value: {
+                    coordinates: [valueOf(entity, attrs[0]),valueOf(entity, attrs[1])],
+                    type: 'Point'
+                }
             };
         }
     },
 
-    addRelationship(entity, from, to, type) {
+    addProperty(entity, from, to, type = 'Property', normalized = true) {
         if (entity[from]) {
-            entity[to] = {
+            const value = getValue(entity[from]);
+            entity[to] = normalized
+                ? {
+                      type,
+                      value
+                  }
+                : value;
+        }
+    },
+
+    addMappedProperty(entity, from, to, type = 'Property', map, normalized = true) {
+        if (entity[from]) {
+            const value = map[getValue(entity[from])];
+            entity[to] = normalized
+                ? {
+                      type,
+                      value
+                  }
+                : value;
+        }
+    },
+
+    addFloat(entity, from, to, type = 'Float', normalized = true) {
+        if (entity[from]) {
+            const value = parseFloat(getValue(entity[from]));
+            entity[to] = normalized
+                ? {
+                      type,
+                      value
+                  }
+                : value;
+        }
+    },
+
+    addInt(entity, from, to, type = 'Integer', normalized = true) {
+        if (entity[from]) {
+            const value = parseInt(getValue(entity[from]));
+            entity[to] = normalized
+                ? {
+                      type,
+                      value
+                  }
+                : value;
+        }
+    },
+
+    addArray(entity, adapter, to, normalized = false) {
+        if (entity[adapter.isoxmlType]) {
+            const elements = getValue(entity[adapter.isoxmlType]);
+            const value = [];
+
+            elements.forEach((element) => {
+                const ngsi = adapter.transformMICS(element, false);
+
+                allAttrs.forEach((attr) => {
+                    delete ngsi[attr];
+                });
+                value.push(ngsi);
+            });
+            entity[to] = normalized
+                ? {
+                      type: adapter.ngsiType,
+                      value
+                  }
+                : value;
+
+            delete entity[adapter.isoxmlType];
+        }
+    },
+
+    addObject(entity, adapter, to, normalized = false) {
+        if (entity[adapter.isoxmlType]) {
+            const elements = getValue(entity[adapter.isoxmlType]);
+            let value = {};
+
+            elements.forEach((element) => {
+                value = adapter.transformMICS(element, false);
+                allAttrs.forEach((attr) => {
+                    delete value[attr];
+                });
+            });
+            entity[to] = normalized
+                ? {
+                      type: adapter.ngsiType,
+                      value
+                  }
+                : value;
+
+            delete entity[adapter.isoxmlType];
+        }
+    },
+
+    addTimestamp(entity, from) {
+        if (entity[from]) {
+            const timestamp = getValue(entity[from])[0];
+            if(!!timestamp.A){
+                entity.startTime = getValue(timestamp.A);
+            }
+
+            if(!!timestamp.B){
+                entity.endTime = getValue(timestamp.A);
+            }
+
+            if(!!timestamp.C){
+                entity.duration = parseInt(getValue(entity[from]));
+            }
+            if(!!timestamp.D){
+                if (timestamp.D == 1){
+                    entity.status = 'planned';
+                } else if (timestamp.D == 4){
+                    entity.status = 'realized';
+                }
+            } 
+            if (!! timestamp.PTN) {
+                if( timestamp.PTN.length == 2){
+                    entity.startPoint = extractPosition(timestamp.PTN[0]);
+                    entity.endPoint = extractPosition(timestamp.PTN[1]);
+                } else if (!! entity.startTime) {
+                    entity.startPoint = extractPosition(timestamp.PTN[0]);
+                } else {
+                    entity.endPoint = extractPosition(timestamp.PTN[0]);
+                }
+            }
+            delete entity[from];
+        }
+    },
+
+    addRelationship(entity, from, to, type, normalized = true) {
+        if (entity[from]) {
+            entity[to] = normalized ? {
                 type: 'Relationship',
-                value: generateURI(entity[from].value, type)
-            };
+                value: generateURI(getValue(entity[from]), type)
+            } :  generateURI(getValue(entity[from]), type);
         }
     }
 };

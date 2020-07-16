@@ -26,13 +26,13 @@ const constants = require('../constants');
 function update(entity, typeInformation, callback) {
     const statics = typeInformation.staticAttributes;
     const isoxmlType = config.getConfig().isoxmlType || constants.DEFAULT_ISOXML_TYPE;
-        
+
     if (statics && Array.isArray(statics) && statics.length > 0) {
         statics.forEach((attr) => {
             if (attr.name === isoxmlType) {
                 const transform = micsAdapter[attr.value];
                 if (typeof transform === 'function') {
-                    entity = transform(entity);
+                    entity = transform(entity, true);
                 }
             }
         });

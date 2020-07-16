@@ -29,7 +29,31 @@ describe('MICS ADAPTER', function() {
         it('should be converted into a CB Building with all attributes', function(done) {
             const input = utils.readJSON('./test/iotagentPayload/farm1.json');
             const cbEntity = utils.readJSON('./test/cbNgsiV2/farm1.json');
-            const entity = MICS.frm(input);
+            const entity = MICS.frm(input, true);
+            attributeDelete.update(entity, null, function(err, entity) {
+                should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
+                done();
+            });
+        });
+    });
+
+    describe('When a simple <TSK> isoxml element is processed', function() {
+        it('should be converted into a CB Activity with all attributes', function(done) {
+            const input = utils.readJSON('./test/iotagentPayload/task1.json');
+            const cbEntity = utils.readJSON('./test/cbNgsiV2/task1.json');
+            const entity = MICS.tsk(input, true);
+            attributeDelete.update(entity, null, function(err, entity) {
+                should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
+                done();
+            });
+        });
+    });
+
+    describe('When a complex <TSK> isoxml element is processed', function() {
+        it('should be converted into a CB Activity with all attributes', function(done) {
+            const input = utils.readJSON('./test/iotagentPayload/task2.json');
+            const cbEntity = utils.readJSON('./test/cbNgsiV2/task2.json');
+            const entity = MICS.tsk(input, true);
             attributeDelete.update(entity, null, function(err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
                 done();

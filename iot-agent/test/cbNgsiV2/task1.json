@@ -1,0 +1,19 @@
+{
+  "refObject": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:PartField:PFD1"
+  },
+  "activityType": {
+    "type":"Text",
+    "value":"paused"
+  },
+  "dataLogTrigger": {
+    "type": "DataLogTrigger",
+    "value": [
+      {
+        "ddi": "DFFF",
+        "method": 31
+      }
+    ]
+  }
+}
