@@ -60,4 +60,16 @@ describe('MICS ADAPTER', function() {
             });
         });
     });
+
+     describe('When a <TSK> isoxml element including <ASP> and <PTN> data is processed', function() {
+        it('should be converted into a CB Activity with all attributes', function(done) {
+            const input = utils.readJSON('./test/iotagentPayload/task3.json');
+            const cbEntity = utils.readJSON('./test/cbNgsiV2/task2.json');
+            const entity = MICS.tsk(input, true);
+            attributeDelete.update(entity, null, function(err, entity) {
+                should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
+                done();
+            });
+        });
+    });
 });

@@ -49,7 +49,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n \"services\": [\n   {\n     \"apikey\":      \"frm\",\n     \"cbroker\":     \"http://orion:1026\",\n     \"entity_type\": \"Farm\",\n     \"resource\":    \"/iot/isoxml\",\n     \"commands\": [ \n        {\n          \"name\": \"send\",\n          \"type\": \"command\"\n        }\n       ],\n      \"internal_attributes\":{\n      \t\n      },\n      \"static_attributes\": [\n         {\"name\":\"category\", \"type\": \"Text\",\"value\": \"farm\"},\n         {\"name\": \"isoxml_type\",\"type\": \"Text\",\"value\":  \"frm\"}\n      ]\n   },\n    {\n     \"apikey\":      \"ctr\",\n     \"cbroker\":     \"http://orion:1026\",\n     \"entity_type\": \"Person\",\n     \"resource\":    \"/iot/isoxml\",\n     \"static_attributes\": [\n        {\n        \t\"name\":\"hasOccupation\", \"type\": \"Occupation\",\n        \t\"value\": {\"name\": \"Customer\"}\n        },\n        {\"name\": \"isoxml_type\",\"type\": \"Text\",\"value\":  \"ctr\"}\n     ]\n   },\n    {\n     \"apikey\":      \"wkr\",\n     \"cbroker\":     \"http://orion:1026\",\n     \"entity_type\": \"Person\",\n     \"resource\":    \"/iot/isoxml\",\n     \"static_attributes\": [\n        {\n        \t\"name\":\"hasOccupation\", \"type\": \"Occupation\",\n        \t\"value\": {\"name\": \"Worker\"}\n        },\n        {\"name\": \"isoxml_type\",\"type\": \"Text\",\"value\":  \"wkr\"}\n     ]\n   }\n ]\n}"
+							"raw": "{\n \"services\": [\n   {\n     \"apikey\":      \"frm\",\n     \"cbroker\":     \"http://orion:1026\",\n     \"entity_type\": \"Farm\",\n     \"resource\":    \"/iot/isoxml\",\n     \"commands\": [ \n        {\n          \"name\": \"send\",\n          \"type\": \"command\"\n        }\n       ],\n      \"internal_attributes\":{\n      \t\n      },\n      \"static_attributes\": [\n         {\"name\":\"category\", \"type\": \"Text\",\"value\": \"farm\"},\n         {\"name\": \"isoxml_type\",\"type\": \"Text\",\"value\":  \"frm\"}\n      ]\n   },\n    {\n     \"apikey\":      \"ctr\",\n     \"cbroker\":     \"http://orion:1026\",\n     \"entity_type\": \"Person\",\n     \"resource\":    \"/iot/isoxml\",\n     \"static_attributes\": [\n        {\n        \t\"name\":\"hasOccupation\", \"type\": \"Occupation\",\n        \t\"value\": {\"name\": \"Customer\"}\n        },\n        {\"name\": \"isoxml_type\",\"type\": \"Text\",\"value\":  \"CTR\"}\n     ]\n   },\n   {\n     \"apikey\":      \"tsk\",\n     \"cbroker\":     \"http://orion:1026\",\n     \"entity_type\": \"Activity\",\n     \"resource\":    \"/iot/isoxml\",\n     \"static_attributes\": [\n        {\"name\": \"isoxml_type\",\"type\": \"Text\",\"value\":  \"tsk\"}\n     ]\n   },\n    {\n     \"apikey\":      \"wkr\",\n     \"cbroker\":     \"http://orion:1026\",\n     \"entity_type\": \"Person\",\n     \"resource\":    \"/iot/isoxml\",\n     \"static_attributes\": [\n        {\n        \t\"name\":\"hasOccupation\", \"type\": \"Occupation\",\n        \t\"value\": {\"name\": \"Worker\"}\n        },\n        {\"name\": \"isoxml_type\",\"type\": \"Text\",\"value\":  \"wkr\"}\n     ]\n   }\n ]\n}"
 						},
 						"url": {
 							"raw": "http://{{iot-agent}}/iot/services",
@@ -107,7 +107,7 @@
 					"response": []
 				},
 				{
-					"name": "Dummy Device  - Measurement",
+					"name": "ISOXML - send a farm and customer",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -120,7 +120,39 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<ISO11783_TaskData TaskControllerVersion=\"\"\n                   VersionMinor=\"1\"\n                   ManagementSoftwareManufacturer=\"Topcon Precision Agriculture\"\n                   DataTransferOrigin=\"2\"\n                   ManagementSoftwareVersion=\"1.0\"\n                   TaskControllerManufacturer=\"\"\n                   VersionMajor=\"4\" >\n\n\n\n  <FRM A=\"FRM3\" B=\"Animal Farm\" C=\"Street2\" D=\"PO Box2\" E=\"PostalCode2\" F=\"City2\" G=\"State2\" H=\"Country2\" I=\"CTR2\"/>\n\n  <CTR A=\"CTR1\" B=\"Mr. Jones\" />\n  <CTR A=\"CTR2\" B=\"Napoleon the Pig\" />\n\n</ISO11783_TaskData>"
+							"raw": "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<ISO11783_TaskData TaskControllerVersion=\"\"\n                   VersionMinor=\"1\"\n                   ManagementSoftwareManufacturer=\"Topcon Precision Agriculture\"\n                   DataTransferOrigin=\"2\"\n                   ManagementSoftwareVersion=\"1.0\"\n                   TaskControllerManufacturer=\"\"\n                   VersionMajor=\"4\" >\n  <FRM A=\"FRM3\" B=\"Animal Farm\" C=\"Street2\" D=\"PO Box2\" E=\"PostalCode2\" F=\"City2\" G=\"State2\" H=\"Country2\" I=\"CTR2\"/>\n  <CTR A=\"CTR1\" B=\"Mr. Jones\" />\n  <CTR A=\"CTR2\" B=\"Napoleon the Pig\" />\n</ISO11783_TaskData>"
+						},
+						"url": {
+							"raw": "http://localhost:7896/iot/isoxml",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7896",
+							"path": [
+								"iot",
+								"isoxml"
+							]
+						},
+						"description": "This example simulates a request coming from the device `motion001`\n\nThe request to the previously provisioned resource `iot/d` is in UltraLight 2.0 format\nand identifies the device `motion001` and passes a known API key.\n\nA similar request was made in the previous tutorial (before the IoT Agent was connected)\nwhen the door was unlocked, you will have seen the state of each motion sensor changing\nand a Northbound request will be logged in the device monitor."
+					},
+					"response": []
+				},
+				{
+					"name": "ISOXML - send a task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/xml"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<ISO11783_TaskData TaskControllerVersion=\"\"\n                   VersionMinor=\"1\"\n                   ManagementSoftwareManufacturer=\"Topcon Precision Agriculture\"\n                   DataTransferOrigin=\"2\"\n                   ManagementSoftwareVersion=\"1.0\"\n                   TaskControllerManufacturer=\"\"\n                   VersionMajor=\"4\" >\n\t<TSK A=\"TSK1\" F=\"WKR1\" G=\"1\">\n\t\t<OTP A=\"CPC1\" B=\"OTQ1\"/>\n\t\t<WAN A=\"WKR1\">\n\t\t\t<ASP A=\"2003-08-20T08:00:00\" B=\"2003-08-20T17:00:00\" D=\"1\"/>\n\t\t</WAN>\n\t\t<DAN B=\"7FFFFFFF00000000\" A=\"200C840000000000\">\n\t\t\t<ASP A=\"2003-08-20T08:00:00\" B=\"2003-08-20T17:00:00\" D=\"1\"/>\n\t\t</DAN>\n\t\t<CNN A=\"DVC2\" B=\"DET2\" C=\"DVC1\" D=\"DET2\"/>\n\t\t<DLT A=\"1122\" B=\"1\" H=\"DET2\"/>\n\t\t<CAN A=\"CCT5\">\n\t\t\t<ASP A=\"2003-08-20T08:00:20\" D=\"4\"/>\n\t\t</CAN>\n\t\t<TZN A=\"1\" B=\"200\" C=\"140\"/>\n\t\t<TIM A=\"2003-08-20T08:00:00\" B=\"2003-08-20T17:00:00\" D=\"1\"/>\n\t</TSK>\n</ISO11783_TaskData>"
 						},
 						"url": {
 							"raw": "http://localhost:7896/iot/isoxml",
@@ -159,7 +191,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"urn:ngsi-ld:Person:Boxer\",\n    \"type\": \"Person\",\n    \"name\": {\n    \t\"value\": \"Boxer the Horse\",\n    \t\"type\": \"Text\"\n    },\n    \"hasOccupation\": {\n    \t\"value\": {\"name\" :\"Worker\"},\n    \t\"type\": \"Occupation\"\n    },\n     \"isoxml_type\": {\"type\": \"Text\",\"value\":  \"wkr\"}\n}"
+							"raw": "{\n    \"id\": \"urn:ngsi-ld:Person:Boxer1\",\n    \"type\": \"Person\",\n    \"familyName\": {\n    \t\"value\": \"Boxer the Horse\",\n    \t\"type\": \"Text\"\n    },\n    \"hasOccupation\": {\n    \t\"value\": {\"name\" :\"Worker\"},\n    \t\"type\": \"Occupation\"\n    },\n     \"isoxml_type\": {\"type\": \"Text\",\"value\":  \"wkr\"}\n}"
 						},
 						"url": {
 							"raw": "http://{{orion}}/v2/entities/",
@@ -192,7 +224,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://{{orion}}/v2/entities/",
+							"raw": "http://{{orion}}/v2/entities/?options=keyValues",
 							"protocol": "http",
 							"host": [
 								"{{orion}}"
@@ -201,6 +233,12 @@
 								"v2",
 								"entities",
 								""
+							],
+							"query": [
+								{
+									"key": "options",
+									"value": "keyValues"
+								}
 							]
 						},
 						"description": "This example returns the data for the `Motion` entity with the `id=urn:ngsd-ld:Motion:001` within the context data.\n\nThe response shows that the device with `id=motion001` has been successfully identifed by the IoT Agent and mapped to the\nentity `id=urn:ngsd-ld:Motion:001`. This new entity has been created within the context data. The `c` \nattribute from the dummy device measurement request has been mapped to the more meaningful `count` attribute\nwithin the context. As you will notice, a `TimeInstant` attribute has been added to both the entity and the\nmeta data of the attribute - this represents the last time the entity and attribute have been updated, and is\nautomatically added to each new entity because the `IOTA_TIMESTAMP`  environment variable was set when the\nIoT Agent was started up. The `refStore` attribute comes from the `static_attributes` set when the device was provisioned."
