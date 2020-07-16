@@ -28,7 +28,7 @@ function transformFMIS(entity) {
     const attr = xml[isoxmlType]._attr;
     FMIS.addId(attr, entity, isoxmlType);
     FMIS.addAttribute(attr, entity, 'B', 'familyName');
-  
+
     MICS.addAttribute(attr, entity, 'A', 'position');
     MICS.addAttribute(attr, entity, 'C', 'cellNorthSize');
     MICS.addAttribute(attr, entity, 'D', 'cellEastSize');
@@ -39,7 +39,6 @@ function transformFMIS(entity) {
     MICS.addAttribute(attr, entity, 'I', 'gridType');
     MICS.addAttribute(attr, entity, 'J', 'treatmentZoneCode');
 
-
     return xml;
 }
 
@@ -47,7 +46,6 @@ function transformFMIS(entity) {
  * This function maps an ISOXML GRD to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    
     MICS.addGeoPointProperty(entity, 'A', 'position', 'geo:json', normalized);
     MICS.addFloat(entity, 'C', 'cellNorthSize', schema.NUMBER, normalized);
     MICS.addFloat(entity, 'D', 'cellEastSize', schema.NUMBER, normalized);

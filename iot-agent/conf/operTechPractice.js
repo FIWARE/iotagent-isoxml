@@ -1,5 +1,4 @@
 const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
@@ -32,7 +31,6 @@ function transformMICS(entity, normalized) {
     return entity;
 }
 
-
 function relationships(entity) {
     const refs = [];
     transforms.addReference(refs, entity, 'culturalPracticeId');
@@ -44,5 +42,6 @@ module.exports = {
     transformFMIS,
     transformMICS,
     isoxmlType,
-    ngsiType
+    ngsiType,
+    relationships
 };

@@ -21,14 +21,12 @@
 
 const iotAgentLib = require('iotagent-node-lib');
 const errors = require('./errors');
-const dateFormat = require('dateformat');
 const _ = require('underscore');
 const context = {
     op: 'IOTA.ISOXML.IoTUtils'
 };
 const async = require('async');
 const apply = async.apply;
-const constants = require('./constants');
 const config = require('./configService');
 const transforms = require('./adapters/transforms');
 

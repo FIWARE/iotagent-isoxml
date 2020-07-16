@@ -20,6 +20,7 @@
  */
 
 const isoxmlParser = require('../../lib/isoxmlParser');
+// eslint-disable-next-line no-unused-vars
 const should = require('should');
 const utils = require('../utils');
 

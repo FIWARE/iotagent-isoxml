@@ -21,7 +21,6 @@
 
 const http = require('http');
 const async = require('async');
-const apply = async.apply;
 const iotAgentLib = require('iotagent-node-lib');
 const _ = require('underscore');
 const intoTrans = iotAgentLib.intoTrans;
@@ -69,7 +68,7 @@ function parseData(req, res, next) {
                 return;
             }
             const obj = {};
-            obj[key] = isoxmlParser.parse(payload[key]);
+            obj[key.toLowerCase()] = isoxmlParser.parse(payload[key]);
             data.push(obj);
         });
     } catch (e) {

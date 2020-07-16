@@ -20,8 +20,6 @@ F ValuePresentationIdRef
 ASP AllocationStamp
 */
 
-
-
 const TRANSFER_MODES = {
     '1': 'Filling',
     '2': 'Emptying',

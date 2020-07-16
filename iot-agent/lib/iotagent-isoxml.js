@@ -21,12 +21,10 @@
 
 const iotAgentLib = require('iotagent-node-lib');
 const async = require('async');
-const apply = async.apply;
 const context = {
     op: 'IoTA-ISOXML.Agent'
 };
 const config = require('./configService');
-const iotaUtils = require('./iotaUtils');
 const transportSelector = require('./transportSelector');
 
 const dynamicFunctions = require('./plugins/dynamicFunctionsPlugin');
@@ -90,45 +88,6 @@ function commandHandler(id, type, service, subservice, attributes, callback) {
 }
 
 /**
- * Handler for incoming notifications for the configuration subscription mechanism.
- *
- * @param {Object} device           Object containing all the device information.
- * @param {Array} updates           List of all the updated attributes.
-
- */
-function configurationNotificationHandler(device, updates, callback) {
-    function invokeConfiguration(apiKey, callback) {
-        transportSelector.applyFunctionFromBinding(
-            [apiKey, device.id, updates],
-            'sendConfigurationToDevice',
-            device.transport || config.getConfig().defaultTransport,
-            callback
-        );
-    }
-
-    async.waterfall(
-        [apply(iotaUtils.getEffectiveApiKey, device.service, device.subservice, device), invokeConfiguration],
-        callback
-    );
-}
-
-/**
- * Calls all the command execution handlers for each transport protocol binding whenever a new notification request
- * arrives from the Context Broker.
- *
- * @param {Object} device               Device data object containing all stored information about the device.
- * @param {Array} values                Values recieved in the notification.
- */
-function notificationHandler(device, values, callback) {
-    transportSelector.applyFunctionFromBinding(
-        [device, values],
-        'notificationHandler',
-        device.transport || config.getConfig().defaultTransport,
-        callback
-    );
-}
-
-/**
  * Handles incoming updateContext requests related with lazy attributes. This handler is still just registered,
  * but empty.
  *
@@ -146,11 +105,6 @@ function updateHandler(id, type, attributes, service, subservice, callback) {
  * @param {Object} newConfig        New configuration object.
  */
 function start(newConfig, callback) {
-    const options = {
-        keepalive: 0,
-        connectTimeout: 60 * 60 * 1000
-    };
-
     config.setLogger(iotAgentLib.logModule);
     config.setConfig(newConfig);
 

@@ -105,7 +105,7 @@ function createCommandPayload(device, command, attributes, entities) {
         const entity = entities[key];
         if (entity[isoxmlType]) {
             fmisAdapter.resetIndex();
-            const transform = fmisAdapter[entity[isoxmlType]];
+            const transform = fmisAdapter[entity[isoxmlType].toLowerCase()];
 
             if (typeof transform === 'function') {
                 root.isoxml.push(transform(entity));

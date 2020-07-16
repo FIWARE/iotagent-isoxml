@@ -90,6 +90,7 @@ function transformMICS(entity, normalized) {
     if (entity.A && !normalized) {
         entity.id = transforms.generateURI(entity.A, isoxmlType);
     }
+
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
     MICS.addRelationship(entity, 'C', 'owner', schema.PERSON, normalized);
     MICS.addRelationship(entity, 'D', 'refTarget', smartDataModels.BUILDING, normalized);

@@ -11,47 +11,45 @@
 		"type": "String",
 		"value": "1"
 	},
-    "OTP": {
+    "otp": {
 		"type": "Object",
-		"value": [
-	        {
+		"value": {
 	            "A": "CPC1",
 	            "B": "OTQ1"
-	        }
-	    ]
+	    }
 	},
-    "WAN": {
+    "wan": {
 		"type": "Object",
 		"value": [
 	        {
 	            "A": "WKR1",
-	            "ASP": [
+	            "asp": 
 	                {
 	                    "A": "2003-08-20T08:00:00",
 	                    "B": "2003-08-20T17:00:00",
 	                    "D": "1"
 	                }
-	            ]
+	            
 	        }
 	    ]
 	},
-    "DAN": {
+    "dan": {
 		"type": "Object",
 		"value": [
 	        {
 	            "B": "7FFFFFFF00000000",
 	            "A": "200C840000000000",
-	            "ASP": [
+	            "asp": 
 	                {
 	                    "A": "2003-08-20T08:00:00",
 	                    "B": "2003-08-20T17:00:00",
 	                    "D": "1"
 	                }
-	            ]
+	            
 	        }
 	    ]
 	},
-    "CNN": {
+    "cnn": {
 		"type": "Object",
 		"value": [
 	        {
@@ -62,7 +60,7 @@
 	        }
 	    ]
 	},
-    "DLT": {
+    "dlt": {
 		"type": "Object",
 		"value": [
 	        {
@@ -72,21 +70,21 @@
 	        }
 	    ]
 	},
-    "CAN": {
+    "can": {
 		"type": "Object",
 		"value": [
 	        {
 	            "A": "CCT5",
-	            "ASP": [
+	            "asp": 
 	                {
 	                    "A": "2003-08-20T08:00:20",
 	                    "D": "4"
 	                }
-	            ]
+	            
 	        }
 	    ]
 	},
-    "TZN": {
+    "tzn": {
 		"type": "Object",
 			"value": [
 	        {
@@ -96,7 +94,7 @@
 	        }
 	    ]
 	},
-    "TIM": {
+    "tim": {
 		"type": "Object",
 		"value": [
 	        {

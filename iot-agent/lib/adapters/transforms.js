@@ -31,6 +31,15 @@ const addressAttrs = [
     'addressCountry'
 ];
 
+function nsgiAttribute(type, value, normalized = false) {
+    return normalized
+        ? {
+              type,
+              value
+          }
+        : value;
+}
+
 // Return the value of an attribute if the value exists
 function valueOf(entity, attr) {
     return entity[attr] ? entity[attr].value : undefined;
@@ -52,22 +61,22 @@ function getValue(entity) {
     return entity.value ? entity.value : entity;
 }
 
-function extractPosition (data){
-    const position = {}
+function extractPosition(data) {
+    const position = {};
     const coordinates = [data.A, data.B];
-    if (!!data.C){
-        coordinates.push(data.C)
+    if (data.C) {
+        coordinates.push(data.C);
     }
-    position.location = { type: 'Point', coordinates};
-    position.status = !!data.D ? parseInt(data.D) : undefined;
-    position.PDOP = !!data.E ? parseInt(data.E) : undefined;
-    position.HDOP = !!data.F ? parseInt(data.F) : undefined;
-    position.numberOfSatellites = !!data.G ? parseInt(data.G) : undefined;
-    position.gpsUtcTime = !!data.H ? parseInt(data.H) : undefined;
-    position.gpsUtcDate = !!data.I ? parseInt(data.I) : undefined;
+    position.location = { type: 'Point', coordinates };
+    position.status = data.D ? parseInt(data.D) : undefined;
+    position.PDOP = data.E ? parseInt(data.E) : undefined;
+    position.HDOP = data.F ? parseInt(data.F) : undefined;
+    position.numberOfSatellites = data.G ? parseInt(data.G) : undefined;
+    position.gpsUtcTime = data.H ? parseInt(data.H) : undefined;
+    position.gpsUtcDate = data.I ? parseInt(data.I) : undefined;
 
     return position;
-};
+}
 
 // FMIS transform functions
 const FMIS = {
@@ -131,7 +140,7 @@ const MICS = {
         }
     },
 
-    addGeoPointProperty(entity, from, to, type='GeoProperty') {
+    addGeoPointProperty(entity, from, to, type = 'GeoProperty') {
         const attrs = allAttrs.slice(allAttrs.indexOf(from), allAttrs.indexOf(from + 1));
         let present = true;
 
@@ -141,9 +150,9 @@ const MICS = {
 
         if (present) {
             entity[to] = {
-                type : type,
+                type,
                 value: {
-                    coordinates: [valueOf(entity, attrs[0]),valueOf(entity, attrs[1])],
+                    coordinates: [valueOf(entity, attrs[0]), valueOf(entity, attrs[1])],
                     type: 'Point'
                 }
             };
@@ -153,56 +162,39 @@ const MICS = {
     addProperty(entity, from, to, type = 'Property', normalized = true) {
         if (entity[from]) {
             const value = getValue(entity[from]);
-            entity[to] = normalized
-                ? {
-                      type,
-                      value
-                  }
-                : value;
+            entity[to] = nsgiAttribute(type, value, normalized);
         }
     },
 
     addMappedProperty(entity, from, to, type = 'Property', map, normalized = true) {
         if (entity[from]) {
             const value = map[getValue(entity[from])];
-            entity[to] = normalized
-                ? {
-                      type,
-                      value
-                  }
-                : value;
+            entity[to] = nsgiAttribute(type, value, normalized);
         }
     },
 
     addFloat(entity, from, to, type = 'Float', normalized = true) {
         if (entity[from]) {
             const value = parseFloat(getValue(entity[from]));
-            entity[to] = normalized
-                ? {
-                      type,
-                      value
-                  }
-                : value;
+            entity[to] = nsgiAttribute(type, value, normalized);
         }
     },
 
     addInt(entity, from, to, type = 'Integer', normalized = true) {
         if (entity[from]) {
             const value = parseInt(getValue(entity[from]));
-            entity[to] = normalized
-                ? {
-                      type,
-                      value
-                  }
-                : value;
+            entity[to] = nsgiAttribute(type, value, normalized);
         }
     },
 
     addArray(entity, adapter, to, normalized = false) {
-        if (entity[adapter.isoxmlType]) {
-            const elements = getValue(entity[adapter.isoxmlType]);
-            const value = [];
-
+        const from = adapter.isoxmlType.toLowerCase();
+        const value = [];
+        if (entity[from]) {
+            let elements = getValue(entity[from]);
+            if (!Array.isArray(elements)) {
+                elements = [elements];
+            }
             elements.forEach((element) => {
                 const ngsi = adapter.transformMICS(element, false);
 
@@ -211,80 +203,67 @@ const MICS = {
                 });
                 value.push(ngsi);
             });
-            entity[to] = normalized
-                ? {
-                      type: adapter.ngsiType,
-                      value
-                  }
-                : value;
-
-            delete entity[adapter.isoxmlType];
+            entity[to] = nsgiAttribute(adapter.ngsiType, value, normalized);
+            delete entity[from];
         }
     },
 
     addObject(entity, adapter, to, normalized = false) {
-        if (entity[adapter.isoxmlType]) {
-            const elements = getValue(entity[adapter.isoxmlType]);
-            let value = {};
-
-            elements.forEach((element) => {
-                value = adapter.transformMICS(element, false);
-                allAttrs.forEach((attr) => {
-                    delete value[attr];
-                });
+        const from = adapter.isoxmlType.toLowerCase();
+        if (entity[from]) {
+            const value = adapter.transformMICS(getValue(entity[from]), false);
+            allAttrs.forEach((attr) => {
+                delete value[attr];
             });
-            entity[to] = normalized
-                ? {
-                      type: adapter.ngsiType,
-                      value
-                  }
-                : value;
-
-            delete entity[adapter.isoxmlType];
+            entity[to] = nsgiAttribute(adapter.ngsiType, value, normalized);
+            delete entity[from];
         }
     },
 
     addTimestamp(entity, from) {
-        if (entity[from]) {
-            const timestamp = getValue(entity[from])[0];
-            if(!!timestamp.A){
+        const lowerFrom = from.toLowerCase();
+        if (entity[lowerFrom]) {
+            const timestamp = getValue(entity[lowerFrom]);
+            if (timestamp.A) {
                 entity.startTime = getValue(timestamp.A);
             }
 
-            if(!!timestamp.B){
+            if (timestamp.B) {
                 entity.endTime = getValue(timestamp.A);
             }
 
-            if(!!timestamp.C){
-                entity.duration = parseInt(getValue(entity[from]));
+            if (timestamp.C) {
+                entity.duration = parseInt(getValue(entity[lowerFrom]));
             }
-            if(!!timestamp.D){
-                if (timestamp.D == 1){
-                    entity.status = 'planned';
-                } else if (timestamp.D == 4){
-                    entity.status = 'realized';
+            if (timestamp.D) {
+                if (timestamp.D === 1) {
+                    entity.status = 'Planned';
+                } else if (timestamp.D === 4) {
+                    entity.status = 'Realized';
                 }
-            } 
-            if (!! timestamp.PTN) {
-                if( timestamp.PTN.length == 2){
-                    entity.startPoint = extractPosition(timestamp.PTN[0]);
-                    entity.endPoint = extractPosition(timestamp.PTN[1]);
-                } else if (!! entity.startTime) {
-                    entity.startPoint = extractPosition(timestamp.PTN[0]);
+            }
+            if (timestamp.ptn) {
+                if (timestamp.ptn.length === 2) {
+                    entity.startPoint = extractPosition(timestamp.ptn[0]);
+                    entity.endPoint = extractPosition(timestamp.ptn[1]);
+                } else if (entity.startTime) {
+                    entity.startPoint = extractPosition(timestamp.ptn[0]);
                 } else {
-                    entity.endPoint = extractPosition(timestamp.PTN[0]);
+                    entity.endPoint = extractPosition(timestamp.ptn[0]);
                 }
             }
-            delete entity[from];
+            delete entity[lowerFrom];
         }
     },
 
     addRelationship(entity, from, to, type, normalized = true) {
         if (entity[from]) {
-            entity[to] = normalized ? {
-                type: 'Relationship',
-                value: generateURI(getValue(entity[from]), type)
-            } :  generateURI(getValue(entity[from]), type);
+            entity[to] = normalized
+                ? {
+                      type: 'Relationship',
+                      value: generateURI(getValue(entity[from]), type)
+                  }
+                : generateURI(getValue(entity[from]), type);
         }
     }
 };

@@ -1,7 +1,5 @@
 const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
-const MICS = transforms.MICS;
 
 const isoxmlType = 'GAN';
 const ngsiType = 'GuidanceAllocation';

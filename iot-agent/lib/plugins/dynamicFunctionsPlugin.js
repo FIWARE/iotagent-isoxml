@@ -30,7 +30,7 @@ function update(entity, typeInformation, callback) {
     if (statics && Array.isArray(statics) && statics.length > 0) {
         statics.forEach((attr) => {
             if (attr.name === isoxmlType) {
-                const transform = micsAdapter[attr.value];
+                const transform = micsAdapter[attr.value.toLowerCase()];
                 if (typeof transform === 'function') {
                     entity = transform(entity, true);
                 }
