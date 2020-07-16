@@ -39,8 +39,8 @@ describe('MICS ADAPTER', function() {
 
     describe('When a simple <TSK> isoxml element is processed', function() {
         it('should be converted into a CB Activity with all attributes', function(done) {
-            const input = utils.readJSON('./test/iotagentPayload/task1.json');
-            const cbEntity = utils.readJSON('./test/cbNgsiV2/task1.json');
+            const input = utils.readJSON('./test/iotagentPayload/task_DLT.json');
+            const cbEntity = utils.readJSON('./test/cbNgsiV2/task_DLT.json');
             const entity = MICS.tsk(input, true);
             attributeDelete.update(entity, null, function(err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
@@ -51,8 +51,8 @@ describe('MICS ADAPTER', function() {
 
     describe('When a complex <TSK> isoxml element is processed', function() {
         it('should be converted into a CB Activity with all attributes', function(done) {
-            const input = utils.readJSON('./test/iotagentPayload/task2.json');
-            const cbEntity = utils.readJSON('./test/cbNgsiV2/task2.json');
+            const input = utils.readJSON('./test/iotagentPayload/task_Complex.json');
+            const cbEntity = utils.readJSON('./test/cbNgsiV2/task_Complex.json');
             const entity = MICS.tsk(input, true);
             attributeDelete.update(entity, null, function(err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
@@ -63,8 +63,8 @@ describe('MICS ADAPTER', function() {
 
      describe('When a <TSK> isoxml element including <ASP> and <PTN> data is processed', function() {
         it('should be converted into a CB Activity with all attributes', function(done) {
-            const input = utils.readJSON('./test/iotagentPayload/task3.json');
-            const cbEntity = utils.readJSON('./test/cbNgsiV2/task3.json');
+            const input = utils.readJSON('./test/iotagentPayload/task_PAN.json');
+            const cbEntity = utils.readJSON('./test/cbNgsiV2/task_PAN.json');
             const entity = MICS.tsk(input, true);
             attributeDelete.update(entity, null, function(err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
@@ -74,8 +74,8 @@ describe('MICS ADAPTER', function() {
     });
     describe('When a <TSK> isoxml element including <GAN> and <GST> data is processed', function() {
         it('should be converted into a CB Activity with all attributes', function(done) {
-            const input = utils.readJSON('./test/iotagentPayload/task4.json');
-            const cbEntity = utils.readJSON('./test/cbNgsiV2/task4.json');
+            const input = utils.readJSON('./test/iotagentPayload/task_GAN.json');
+            const cbEntity = utils.readJSON('./test/cbNgsiV2/task_GAN.json');
             const entity = MICS.tsk(input, true);
             attributeDelete.update(entity, null, function(err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
@@ -85,8 +85,8 @@ describe('MICS ADAPTER', function() {
     });
      describe('When a <TSK> isoxml element including <TIM> and <DLV> data is processed', function() {
         it('should be converted into a CB Activity with all attributes', function(done) {
-            const input = utils.readJSON('./test/iotagentPayload/task5.json');
-            const cbEntity = utils.readJSON('./test/cbNgsiV2/task5.json');
+            const input = utils.readJSON('./test/iotagentPayload/task_TIM.json');
+            const cbEntity = utils.readJSON('./test/cbNgsiV2/task_TIM.json');
             const entity = MICS.tsk(input, true);
             attributeDelete.update(entity, null, function(err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));

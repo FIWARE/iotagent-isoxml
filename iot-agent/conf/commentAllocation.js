@@ -65,7 +65,6 @@ function transformMICS(entity, normalized) {
 
 /*
 *    This function lists the reference relationships of an ISOXML CAN
-*    Building.owner = D  - GroupRef 
 */
 function relationships(entity) {
     const refs = [];
