@@ -72,7 +72,8 @@ function extractPolygonData(data) {
 
 function extractPolygonLocation(data) {
     const coordinates = [];
-    data.lsg.forEach((lineString) => {
+    const lsg = Array.isArray(data.lsg) ? data.lsg : [data.lsg];
+    lsg.forEach((lineString) => {
         const boundary = [];
         lineString.pnt.forEach((point) => {
             boundary.push(extractCoordinates(point));
@@ -81,8 +82,11 @@ function extractPolygonLocation(data) {
     });
 
     return {
-        type: 'Polygon',
-        coordinates
+        type: 'geo:json',
+        value: {
+            type: 'Polygon',
+            coordinates
+        }
     };
 }
 
@@ -98,7 +102,8 @@ function extractMultiPolygonLocation(data) {
     const polygons = [];
     data.forEach((polygon) => {
         const coordinates = [];
-        polygon.lsg.forEach((lineString) => {
+        const lsg = Array.isArray(polygon.lsg) ? polygon.lsg : [polygon.lsg];
+        lsg.forEach((lineString) => {
             const boundary = [];
             lineString.pnt.forEach((point) => {
                 boundary.push(extractCoordinates(point));
@@ -109,8 +114,11 @@ function extractMultiPolygonLocation(data) {
     });
 
     return {
-        type: 'MultiPolygon',
-        polygons
+        type: 'geo:json',
+        value: {
+            type: 'MultiPolygon',
+            coordinates: polygons
+        }
     };
 }
 

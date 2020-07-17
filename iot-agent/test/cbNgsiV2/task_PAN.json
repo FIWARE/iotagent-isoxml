@@ -20,8 +20,8 @@
     "value": "planned"
   },
   "defaultTreatment": {
-    "type": "Text",
-    "value": "1"
+    "type": "Number",
+    "value": 1
   },
   "productAllocation": {
     "type": "ProductAllocation",
@@ -37,11 +37,14 @@
         "status": "planned",
         "startPoint": {
           "location": {
-            "type": "Point",
-            "coordinates": [
-              "54.588945",
-              "9.989209"
-            ]
+            "type": "geo:json",
+            "value": {
+              "type": "Point",
+              "coordinates": [
+                54.588945,
+                9.989209
+              ]
+            }
           },
           "status": 3
         }
@@ -57,21 +60,27 @@
         "status": "realized",
         "startPoint": {
           "location": {
-            "type": "Point",
-            "coordinates": [
-              "54.588945",
-              "9.989209"
-            ]
+            "type": "geo:json",
+            "value": {
+              "type": "Point",
+              "coordinates": [
+                54.588945,
+                9.989209
+              ]
+            }
           },
           "status": 3
         },
         "endPoint": {
           "location": {
-            "type": "Point",
-            "coordinates": [
-              "54.588945",
-              "9.989209"
-            ]
+            "type": "geo:json",
+            "value": {
+              "type": "Point",
+              "coordinates": [
+                54.588945,
+                9.989209
+              ]
+            }
           },
           "status": 3
         }

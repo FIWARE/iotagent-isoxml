@@ -95,6 +95,10 @@ case "${command}" in
 	"stop")
 		stoppingContainers
 		;;
+	"build")
+		stoppingContainers
+		docker-compose build --no-cache
+		;;
 	"create")
 		echo "Pulling Docker images"
 		docker-compose --log-level ERROR -p fiware pull

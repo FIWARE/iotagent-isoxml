@@ -118,9 +118,9 @@ function transformMICS(entity, normalized) {
     MICS.addRelationship(entity, 'E', 'refObject', partField.ngsiType, normalized);
     MICS.addRelationship(entity, 'F', 'refAgent', worker.ngsiType, normalized);
     MICS.addMappedProperty(entity, 'G', 'activityType', schema.TEXT, ACTIVITY_TYPES, normalized);
-    MICS.addProperty(entity, 'H', 'defaultTreatment', schema.TEXT, normalized);
-    MICS.addProperty(entity, 'I', 'positionLost', schema.TEXT, normalized);
-    MICS.addProperty(entity, 'J', 'outOfFieldTreatment', schema.TEXT, normalized);
+    MICS.addInt(entity, 'H', 'defaultTreatment', schema.NUMBER, normalized);
+    MICS.addInt(entity, 'I', 'positionLost', schema.NUMBER, normalized);
+    MICS.addInt(entity, 'J', 'outOfFieldTreatment', schema.NUMBER, normalized);
 
     MICS.addArray(entity, commentAllocation, 'commentAllocation', normalized);
     MICS.addArray(entity, connection, 'connection', normalized);

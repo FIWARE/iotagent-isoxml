@@ -143,6 +143,9 @@ function handleIncomingMeasure(req, res, next) {
                 attributes.push({ name: key, value: data[key], type: isString(data) ? 'String' : 'Object' });
             }
         });
+
+        //console.error (JSON.stringify(attributes));
+
         iotAgentLib.update(device.name, device.type, apiKey, attributes, device, function(error) {
             if (error) {
                 res.locals.errors.push(error);

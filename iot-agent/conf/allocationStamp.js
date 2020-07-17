@@ -24,18 +24,21 @@ const from = isoxmlType.toLowerCase();
 
 function extractPosition(data) {
     const position = {};
-    const coordinates = [data.A, data.B];
+    const coordinates = [parseFloat(data.A), parseFloat(data.B)];
     if (Object.keys(data).length === 2) {
         return { type: 'Point', coordinates };
     }
     if (data.C) {
-        coordinates.push(data.C);
+        coordinates.push(parseFloat(data.C));
         if (Object.keys(data).length === 3) {
             return { type: 'Point', coordinates };
         }
     }
 
-    position.location = { type: 'Point', coordinates };
+    position.location = {
+        type: 'geo:json',
+        value: { type: 'Point', coordinates }
+    };
     position.status = data.D ? parseInt(data.D) : undefined;
     position.PDOP = data.E ? parseInt(data.E) : undefined;
     position.HDOP = data.F ? parseInt(data.F) : undefined;
