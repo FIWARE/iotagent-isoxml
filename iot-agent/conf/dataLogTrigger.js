@@ -24,12 +24,11 @@ const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const deviceElement = require('./deviceElement');
-const valuePresentation = require('./valuePresentation');
-
 const isoxmlType = 'DLT';
 const ngsiType = 'DataLogTrigger';
 
+const deviceElement = require('./deviceElement');
+const valuePresentation = require('./valuePresentation');
 /*
 A DataLogDDI
 B DataLogMethod
@@ -79,7 +78,7 @@ function transformMICS(entity, normalized) {
     MICS.addFloat(entity, 'F', 'thresholdMaximum', schema.NUMBER, normalized);
     MICS.addFloat(entity, 'G', 'thresholdChange', schema.NUMBER, normalized);
     MICS.addRelationship(entity, 'H', 'deviceElementId', deviceElement.ngsiType, normalized);
-    MICS.addRelationship(entity, 'I', 'valuePresentationId',  valuePresentation.ngsiType, normalized);
+    MICS.addRelationship(entity, 'I', 'valuePresentationId', valuePresentation.ngsiType, normalized);
     MICS.addInt(entity, 'J', 'PGN', schema.NUMBER, normalized);
     MICS.addInt(entity, 'K', 'PGNStartBit', schema.NUMBER, normalized);
     MICS.addInt(entity, 'L', 'PGNStopBit', schema.NUMBER, normalized);

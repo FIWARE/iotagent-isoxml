@@ -22,7 +22,6 @@
 const isoxmlType = 'VPN';
 const ngsiType = 'Value';
 
-
 module.exports = {
     isoxmlType,
     ngsiType

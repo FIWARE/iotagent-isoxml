@@ -22,7 +22,6 @@
 const isoxmlType = 'DET';
 const ngsiType = 'DeviceElement';
 
-
 module.exports = {
     isoxmlType,
     ngsiType

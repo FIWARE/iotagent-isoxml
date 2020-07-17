@@ -22,7 +22,6 @@
 const isoxmlType = 'GGP';
 const ngsiType = 'GuidanceGroup';
 
-
 module.exports = {
     isoxmlType,
     ngsiType

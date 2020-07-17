@@ -24,12 +24,12 @@ const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
+const isoxmlType = 'GST';
+const ngsiType = 'GuidanceShift';
+
 const allocationStamp = require('./allocationStamp');
 const guidanceGroup = require('./guidanceGroup');
 const guidancePattern = require('./guidancePattern');
-
-const isoxmlType = 'GST';
-const ngsiType = 'GuidanceShift';
 
 /*
 A GuidanceGroupIdRef
@@ -46,7 +46,7 @@ function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addRelationship(attr, entity, 'A', 'groupIdRef', group.isoxmlType);
+    FMIS.addRelationship(attr, entity, 'A', 'groupIdRef', guidanceGroup.isoxmlType);
     FMIS.addRelationship(attr, entity, 'B', 'patternIdRef', guidancePattern.isoxmlType);
     FMIS.addAttribute(attr, entity, 'C', 'eastShift');
     FMIS.addAttribute(attr, entity, 'D', 'northShift');
@@ -80,6 +80,7 @@ function relationships(entity) {
 module.exports = {
     transformFMIS,
     transformMICS,
+    relationships,
     isoxmlType,
     ngsiType
 };

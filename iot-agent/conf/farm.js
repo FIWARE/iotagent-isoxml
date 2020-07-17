@@ -23,11 +23,11 @@ const transforms = require('../lib/adapters/transforms');
 const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
-const customer = require('./customer');
 
 const isoxmlType = 'FRM';
 const ngsiType = 'Building';
 
+const customer = require('./customer');
 /*
 A FarmId
 B FarmDesignator - designator/name

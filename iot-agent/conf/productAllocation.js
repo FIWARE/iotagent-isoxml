@@ -24,11 +24,10 @@ const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const allocationStamp = require('./allocationStamp');
-
 const isoxmlType = 'PAN';
 const ngsiType = 'ProductAllocation';
 
+const allocationStamp = require('./allocationStamp');
 /*
 A ProductIdRef
 B QuantityDDI

@@ -24,12 +24,12 @@ const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
+const isoxmlType = 'CAN';
+const ngsiType = 'CommentAllocation';
+
 const allocationStamp = require('./allocationStamp');
 const codedComment = require('./codedComment');
 const codedCommentListValue = require('./codedCommentListValue');
-
-const isoxmlType = 'CAN';
-const ngsiType = 'CommentAllocation';
 
 /*
 A CodedCommentIdRef

@@ -24,10 +24,10 @@ const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const deviceElement = require('./deviceElement');
-
 const isoxmlType = 'DLV';
 const ngsiType = 'StructuredValue';
+
+const deviceElement = require('./deviceElement');
 
 /*
 A ProcessDataDDI

@@ -23,11 +23,12 @@ const transforms = require('../lib/adapters/transforms');
 const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
-const allocationStamp = require('./allocationStamp');
-const worker = require('./worker');
 
 const isoxmlType = 'WAN';
 const ngsiType = 'WorkerAllocation';
+
+const allocationStamp = require('./allocationStamp');
+const worker = require('./worker');
 
 /*
 A WorkerIdRef

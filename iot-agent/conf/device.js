@@ -22,7 +22,6 @@
 const isoxmlType = 'DVC';
 const ngsiType = 'Device';
 
-
 module.exports = {
     isoxmlType,
     ngsiType

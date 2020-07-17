@@ -24,10 +24,10 @@ const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const dataLogValue = require('./dataLogValue');
-
 const isoxmlType = 'TIM';
 const ngsiType = 'TimeEvent';
+
+const dataLogValue = require('./dataLogValue');
 
 /*
 A Start
@@ -56,16 +56,15 @@ const TIME_TYPES = {
     '8': 'poweredDown'
 };
 
-
 function extractPosition(data) {
     const position = {};
     const coordinates = [data.A, data.B];
-    if (Object.keys(data).length == 2){
+    if (Object.keys(data).length === 2) {
         return { type: 'Point', coordinates };
     }
     if (data.C) {
         coordinates.push(data.C);
-        if (Object.keys(data).length == 3){
+        if (Object.keys(data).length === 3) {
             return { type: 'Point', coordinates };
         }
     }
@@ -80,9 +79,6 @@ function extractPosition(data) {
 
     return position;
 }
-
-
-
 
 /**
  * This function maps an NGSI object to an ISOXML TIM
@@ -106,11 +102,11 @@ function transformMICS(entity, normalized) {
     MICS.addProperty(entity, 'B', 'endTime', schema.DATETIME, normalized);
     MICS.addInt(entity, 'C', 'duration', schema.NUMBER, normalized);
     MICS.addMappedProperty(entity, 'D', 'type', schema.TEXT, TIME_TYPES, normalized);
-    
+
     MICS.addArray(entity, dataLogValue, 'data', normalized);
 
-    let  position = entity.ptn;
-    if (!!position) {
+    let position = entity.ptn;
+    if (position) {
         if (!Array.isArray(position)) {
             position = [position];
         }
@@ -119,16 +115,13 @@ function transformMICS(entity, normalized) {
         if (position.length === 2) {
             entity.startPoint = extractPosition(position[0]);
             entity.endPoint = extractPosition(position[1]);
-        } else if (keys === 2 || (keys === 3 && !! position[0].C)){
+        } else if (keys === 2 || (keys === 3 && !!position[0].C)) {
             entity.location = extractPosition(position[0]);
         } else {
             entity.startPoint = extractPosition(position[0]);
         }
     }
     delete entity.ptn;
-
-
-
 
     return entity;
 }

@@ -22,7 +22,6 @@
 const isoxmlType = 'CCT';
 const ngsiType = 'CodedComment';
 
-
 module.exports = {
     isoxmlType,
     ngsiType

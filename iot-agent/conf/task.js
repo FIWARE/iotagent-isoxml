@@ -21,9 +21,11 @@
 
 const transforms = require('../lib/adapters/transforms');
 const schema = require('../lib/adapters/schema');
-const smartDataModels = require('../lib/adapters/smartDataModels');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
+
+const isoxmlType = 'TSK';
+const ngsiType = 'Activity';
 
 const connection = require('./connection');
 const controlAssignment = require('./controlAssignment');
@@ -42,9 +44,6 @@ const treatmentZone = require('./treatmentZone');
 const worker = require('./worker');
 const workerAllocation = require('./workerAllocation');
 const timeLog = require('./timeLog');
-
-const isoxmlType = 'TSK';
-const ngsiType = 'Activity';
 
 /*
 A TaskId

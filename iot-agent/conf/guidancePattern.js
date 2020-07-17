@@ -22,7 +22,6 @@
 const isoxmlType = 'GPN';
 const ngsiType = 'GuidancePattern';
 
-
 module.exports = {
     isoxmlType,
     ngsiType

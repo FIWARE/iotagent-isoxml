@@ -19,8 +19,8 @@
  *
  */
 
-const isoxmlType = 'PFD';
-const ngsiType = 'PartField';
+const isoxmlType = 'PDT';
+const ngsiType = 'Product';
 
 module.exports = {
     isoxmlType,

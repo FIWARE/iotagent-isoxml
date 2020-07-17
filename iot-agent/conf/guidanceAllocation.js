@@ -23,11 +23,12 @@ const transforms = require('../lib/adapters/transforms');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
+const isoxmlType = 'GAN';
+const ngsiType = 'GuidanceAllocation';
+
 const allocationStamp = require('./allocationStamp');
 const guidanceShift = require('./guidanceShift');
 const guidanceGroup = require('./guidanceGroup');
-const isoxmlType = 'GAN';
-const ngsiType = 'GuidanceAllocation';
 
 /*
 A GuidanceGroupIdRef

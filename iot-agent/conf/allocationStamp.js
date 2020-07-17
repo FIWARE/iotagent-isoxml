@@ -25,12 +25,12 @@ const from = isoxmlType.toLowerCase();
 function extractPosition(data) {
     const position = {};
     const coordinates = [data.A, data.B];
-    if (Object.keys(data).length === 2){
+    if (Object.keys(data).length === 2) {
         return { type: 'Point', coordinates };
     }
     if (data.C) {
         coordinates.push(data.C);
-        if (Object.keys(data).length === 3){
+        if (Object.keys(data).length === 3) {
             return { type: 'Point', coordinates };
         }
     }
@@ -46,24 +46,22 @@ function extractPosition(data) {
     return position;
 }
 
-
 function addTimestamp(entity) {
     if (entity[from]) {
         const timestamp = entity[from];
-        let  position = timestamp.ptn;
+        let position = timestamp.ptn;
         entity.startTime = timestamp.A;
         entity.endTime = timestamp.B;
-        entity.duration = timestamp.C ? parseInt(timestamp.C): undefined;
+        entity.duration = timestamp.C ? parseInt(timestamp.C) : undefined;
 
-        if (!!timestamp.D) {
+        if (timestamp.D) {
             if (timestamp.D === '1') {
                 entity.status = 'planned';
             } else if (timestamp.D === '4') {
                 entity.status = 'realized';
             }
         }
-        if (!!position) {
-
+        if (position) {
             if (!Array.isArray(position)) {
                 position = [position];
             }
@@ -72,8 +70,8 @@ function addTimestamp(entity) {
             if (position.length === 2) {
                 entity.startPoint = extractPosition(position[0]);
                 entity.endPoint = extractPosition(position[1]);
-            } else if (keys === 2 || (keys === 3 && !! position[0].C)){
-            	entity.location = extractPosition(position[0]);
+            } else if (keys === 2 || (keys === 3 && !!position[0].C)) {
+                entity.location = extractPosition(position[0]);
             } else {
                 entity.startPoint = extractPosition(position[0]);
             }
@@ -82,6 +80,6 @@ function addTimestamp(entity) {
     }
 }
 
-module.exports = {    
-    add : addTimestamp
+module.exports = {
+    add: addTimestamp
 };

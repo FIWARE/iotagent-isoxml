@@ -27,6 +27,9 @@ const MICS = transforms.MICS;
 const isoxmlType = 'TZN';
 const ngsiType = 'TreatmentZone';
 
+const processDataVariable = require('./processDataVariable');
+const polygon = require('./polygon');
+
 /*
 A TreatmentZoneCode 
 B TreatmentZoneDesignator
@@ -56,6 +59,9 @@ function transformMICS(entity, normalized) {
     MICS.addProperty(entity, 'A', 'code', schema.TEXT, normalized);
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
     MICS.addProperty(entity, 'C', 'color', schema.TEXT, normalized);
+
+    polygon.add(entity, 'zoneDefinition');
+    MICS.addArray(entity, processDataVariable, 'processDataVariable');
     return entity;
 }
 

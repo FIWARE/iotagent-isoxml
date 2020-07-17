@@ -40,7 +40,7 @@ describe('ISOXML Parser: measures', function() {
     });
     describe('When a payload with an embedded ISOXML element is parsed', function() {
         it('should return a single object with attributes containing arrays', function(done) {
-            const input = utils.readXML('./test/isoxml/task1.xml');
+            const input = utils.readXML('./test/isoxml/task_DLT.xml');
             parser.parseString(input, function(err, xml) {
                 const result = isoxmlParser.parse(xml.TSK);
                 should.exist(result);
