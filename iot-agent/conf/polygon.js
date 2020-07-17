@@ -82,11 +82,8 @@ function extractPolygonLocation(data) {
     });
 
     return {
-        type: 'geo:json',
-        value: {
-            type: 'Polygon',
-            coordinates
-        }
+        type: 'Polygon',
+        coordinates
     };
 }
 
@@ -114,11 +111,8 @@ function extractMultiPolygonLocation(data) {
     });
 
     return {
-        type: 'geo:json',
-        value: {
-            type: 'MultiPolygon',
-            coordinates: polygons
-        }
+        type: 'MultiPolygon',
+        coordinates: polygons
     };
 }
 

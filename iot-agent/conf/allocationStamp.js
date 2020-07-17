@@ -35,10 +35,7 @@ function extractPosition(data) {
         }
     }
 
-    position.location = {
-        type: 'geo:json',
-        value: { type: 'Point', coordinates }
-    };
+    position.location = { type: 'Point', coordinates };
     position.status = data.D ? parseInt(data.D) : undefined;
     position.PDOP = data.E ? parseInt(data.E) : undefined;
     position.HDOP = data.F ? parseInt(data.F) : undefined;

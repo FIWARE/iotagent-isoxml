@@ -37,14 +37,11 @@
         "status": "planned",
         "startPoint": {
           "location": {
-            "type": "geo:json",
-            "value": {
-              "type": "Point",
-              "coordinates": [
-                54.588945,
-                9.989209
-              ]
-            }
+            "type": "Point",
+            "coordinates": [
+              54.588945,
+              9.989209
+            ]
           },
           "status": 3
         }
@@ -60,27 +57,21 @@
         "status": "realized",
         "startPoint": {
           "location": {
-            "type": "geo:json",
-            "value": {
-              "type": "Point",
-              "coordinates": [
-                54.588945,
-                9.989209
-              ]
-            }
+            "type": "Point",
+            "coordinates": [
+              54.588945,
+              9.989209
+            ]
           },
           "status": 3
         },
         "endPoint": {
           "location": {
-            "type": "geo:json",
-            "value": {
-              "type": "Point",
-              "coordinates": [
-                54.588945,
-                9.989209
-              ]
-            }
+            "type": "Point",
+            "coordinates": [
+              54.588945,
+              9.989209
+            ]
           },
           "status": 3
         }
