@@ -1,0 +1,10 @@
+<TSK A="TSK11" B="mass-based product allocation">
+    <PAN A="PDT2" B="004B" C="20000" D="1" E="DET3" F="VPN1">
+        <ASP A="2003-11-12T08:00:00" D="4"/>
+    </PAN>
+</TSK>
+<PGP A="PGP1" B="Herbicides"/>
+<PDT A="PDT1" B="agent 1" C="PGP1"/> 
+<PGP A="PGP2" B="Potato" C="2" /> 
+<PDT A="PDT1" B="Asterix" C="PGP2"/>
+<VPN A="VPN1" B="0.001" C="1.0" D="0" E="kg"/>

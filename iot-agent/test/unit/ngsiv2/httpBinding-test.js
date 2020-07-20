@@ -86,10 +86,10 @@ describe('HTTP Transport binding: measures', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities/urn:ngsi-ld:Farm:FRM3/attrs',
+                    '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
                     utils.readJSON('./test/unit/ngsiv2/contextRequests/singleFarmMeasure.json')
                 )
-                .query({ type: 'Farm' })
+                .query({ type: 'Building' })
                 .reply(204);
         });
 
@@ -130,10 +130,10 @@ describe('HTTP Transport binding: measures', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities/urn:ngsi-ld:Farm:FRM3/attrs',
+                    '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
                     utils.readJSON('./test/unit/ngsiv2/contextRequests/singleFarmMeasure.json')
                 )
-                .query({ type: 'Farm' })
+                .query({ type: 'Building' })
                 .reply(204);
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')

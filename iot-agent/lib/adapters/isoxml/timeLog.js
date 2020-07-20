@@ -19,57 +19,46 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
+const transforms = require('../transforms');
+const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'WAN';
-const ngsiType = 'WorkerAllocation';
-
-const allocationStamp = require('./allocationStamp');
-const worker = require('./worker');
+const isoxmlType = 'TLG';
+const ngsiType = 'TimeLog';
 
 /*
-A WorkerIdRef
-
-AllocationStamp
+A Filename
+B Filelength
+C TimeLogType
 */
 
 /**
- * This function maps an NGSI object to an ISOXML WAN
+ * This function maps an NGSI object to an ISOXML TLG
  */
 function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addRelationship(attr, entity, 'A', 'workerIdRef', worker.isoxmlType);
+    FMIS.addAttribute(attr, entity, 'A', 'filename');
+    FMIS.addAttribute(attr, entity, 'B', 'fileLength');
+    FMIS.addAttribute(attr, entity, 'C', 'timeLogType');
     return xml;
 }
 
 /**
- * This function maps an ISOXML WAN to an NGSI object
+ * This function maps an ISOXML TLG to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    MICS.addRelationship(entity, 'A', 'workerIdRef', schema.PERSON, normalized);
-    allocationStamp.add(entity);
+    MICS.addProperty(entity, 'A', 'filename', schema.TEXT, normalized);
+    MICS.addInt(entity, 'B', 'fileLength', schema.NUMBER, normalized);
+    MICS.addProperty(entity, 'C', 'timeLogType', schema.TEXT, normalized);
     return entity;
-}
-
-/*
-*    This function lists the reference relationships of an ISOXML FRM
-*    Building.owner = I  - CustomerIdRef 
-*/
-function relationships(entity) {
-    const refs = [];
-    transforms.addReference(refs, entity, 'workerIdRef');
-    return refs;
 }
 
 module.exports = {
     transformFMIS,
     transformMICS,
-    relationships,
     isoxmlType,
     ngsiType
 };

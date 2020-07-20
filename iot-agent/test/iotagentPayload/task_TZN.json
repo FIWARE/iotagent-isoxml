@@ -1,8 +1,19 @@
 {
-  "A": "TSK1",
-  "G": "1",
-  "H": "0",
-  "tzn": [
+  "A": {
+    "type": "string",
+    "value" : "TSK1"
+  },
+  "G": {
+    "type": "string",
+    "value" : "1"
+  },
+  "H": {
+    "type": "string",
+    "value" : "0"
+  },
+  "tzn": {
+    "type": "object",
+    "value" : [
       {
         "A": "1",
         "B": "Layer 1, TreatmentZone 1",
@@ -880,4 +891,5 @@
         }
       }
     ]
+  }
 }

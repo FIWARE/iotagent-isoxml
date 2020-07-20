@@ -1,6 +1,6 @@
 {
     "id": "XXX",
-    "type": "Farm",
+    "type": "Building",
     "TimeInstant": "2020-07-10T13:18:47.00Z",
     "address": {
         "streetAddress": "Street3",

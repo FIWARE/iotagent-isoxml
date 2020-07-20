@@ -1,18 +1,18 @@
 {
     "A": {
-		"type": "String",
+		"type": "string",
 		"value": "TSK1"
 	},
     "E": {
-		"type": "String",
+		"type": "string",
 		"value": "PFD1"
 	},
     "G": {
-		"type": "String",
+		"type": "string",
 		"value":"3"
 	},
     "dlt": {
-        "type": "Object",
+        "type": "object",
         "value": [
 	    {
 	      "A": "DFFF",

@@ -19,8 +19,8 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
+const transforms = require('../transforms');
+const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
@@ -90,7 +90,7 @@ function transformFMIS(entity) {
     FMIS.addAttribute(attr, entity, 'A', 'startTime');
     FMIS.addAttribute(attr, entity, 'B', 'endTime');
     FMIS.addAttribute(attr, entity, 'C', 'duration');
-    FMIS.addAttribute(attr, entity, 'D', 'type');
+    FMIS.addAttribute(attr, entity, 'D', 'status');
     return xml;
 }
 
@@ -101,7 +101,7 @@ function transformMICS(entity, normalized) {
     MICS.addProperty(entity, 'A', 'startTime', schema.DATETIME, normalized);
     MICS.addProperty(entity, 'B', 'endTime', schema.DATETIME, normalized);
     MICS.addInt(entity, 'C', 'duration', schema.NUMBER, normalized);
-    MICS.addMappedProperty(entity, 'D', 'type', schema.TEXT, TIME_TYPES, normalized);
+    MICS.addMappedProperty(entity, 'D', 'status', schema.TEXT, TIME_TYPES, normalized);
 
     MICS.addArray(entity, dataLogValue, 'data', normalized);
 

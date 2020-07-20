@@ -19,84 +19,33 @@
  *
  */
 
+const fs = require('fs');
+const path = require('path');
 const transforms = require('./transforms');
 
-const connection = require('../../conf/connection');
-const controlAssignment = require('../../conf/controlAssignment');
-const commentAllocation = require('../../conf/commentAllocation');
-const customer = require('../../conf/customer');
-const dataLogTrigger = require('../../conf/dataLogTrigger');
-const deviceAllocation = require('../../conf/deviceAllocation');
-const farm = require('../../conf/farm');
-const grid = require('../../conf/grid');
-const guidanceAllocation = require('../../conf/guidanceAllocation');
-const operTechPractice = require('../../conf/operTechPractice');
-const productAllocation = require('../../conf/productAllocation');
-const task = require('../../conf/task');
-const time = require('../../conf/time');
-const timeLog = require('../../conf/timeLog');
-const treatmentZone = require('../../conf/treatmentZone');
-const worker = require('../../conf/worker');
-const workerAllocation = require('../../conf/workerAllocation');
-
-/*
-* Farm Management Information system
-*/
 const FMIS = {
-    cnn: connection.transformFMIS,
-    can: commentAllocation.transformFMIS,
-    cat: controlAssignment.transformFMIS,
-    ctr: customer.transformFMIS,
-    dlt: dataLogTrigger.transformFMIS,
-    dan: deviceAllocation.transformFMIS,
-    frm: farm.transformFMIS,
-    grd: grid.transformFMIS,
-    gan: guidanceAllocation.transformFMIS,
-    otp: operTechPractice.transformFMIS,
-    pan: productAllocation.transformFMIS,
-    tim: time.transformFMIS,
-    tlg: timeLog.transformFMIS,
-    tsk: task.transformFMIS,
-    tzn: treatmentZone.transformFMIS,
-    wkr: worker.transformFMIS,
-    wan: workerAllocation.transformFMIS,
     resetIndex: transforms.FMIS.resetIndex
 };
+const MICS = {};
+const NGSI = {};
+const Relationships = {};
 
-/*
-* Mobile Information Control system
-*/
-const MICS = {
-    cnn: connection.transformMICS,
-    cat: controlAssignment.transformMICS,
-    can: commentAllocation.transformMICS,
-    ctr: customer.transformMICS,
-    dan: deviceAllocation.transformMICS,
-    dlt: dataLogTrigger.transformMICS,
-    frm: farm.transformMICS,
-    grd: grid.transformMICS,
-    gan: guidanceAllocation.transformMICS,
-    otp: operTechPractice.transformMICS,
-    pan: productAllocation.transformMICS,
-    tim: time.transformMICS,
-    tlg: timeLog.transformMICS,
-    tsk: task.transformMICS,
-    tzn: treatmentZone.transformMICS,
-    wkr: worker.transformMICS,
-    wan: workerAllocation.transformMICS
-};
+const bindings = fs.readdirSync(path.join(__dirname, './isoxml'));
 
-const Relationships = {
-    can: commentAllocation.relationships,
-    dan: deviceAllocation.relationships,
-    dlt: dataLogTrigger.relationships,
-    frm: farm.relationships,
-    otp: operTechPractice.relationships,
-    tsk: task.relationships,
-    wan: workerAllocation.relationships
-};
+bindings.forEach(function(item) {
+    const isoxml = require('./isoxml/' + item);
+
+    if (isoxml.isoxmlType) {
+        const type = isoxml.isoxmlType.toLowerCase();
+        MICS[type] = isoxml.transformMICS;
+        FMIS[type] = isoxml.transformFMIS;
+        Relationships[type] = isoxml.relationships;
+        NGSI[type] = isoxml.ngsiType;
+    }
+});
 
 module.exports = {
+    NGSI,
     FMIS,
     MICS,
     Relationships

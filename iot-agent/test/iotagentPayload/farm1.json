@@ -1,38 +1,38 @@
 {
 	"A": {
-		"type": "String",
+		"type": "string",
 		"value": "FRM3"
 	}, 
 	"B": {
-		"type": "String",
+		"type": "string",
 		"value": "Animal Farm"
 	}, 
 	"C": {
-		"type": "String",
+		"type": "string",
 		"value": "Street2"
 	}, 
 	"D": {
-		"type": "String",
+		"type": "string",
 		"value": "PO Box2"
 	},
 	"E": {
-		"type": "String",
+		"type": "string",
 		"value": "PostalCode2" 
 	},
 	"F": {
-		"type": "String",
+		"type": "string",
 		"value": "City2" 
 	},
 	"G": {
-		"type": "String",
+		"type": "string",
 		"value": "State2" 
 	},
 	"H": {
-		"type": "String",
+		"type": "string",
 		"value": "Country2" 
 	},
 	"I": {
-		"type": "String",
+		"type": "string",
 		"value": "CTR2"
 	}
 }

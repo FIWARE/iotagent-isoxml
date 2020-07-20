@@ -19,39 +19,47 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
+const transforms = require('../transforms');
+const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'GAN';
-const ngsiType = 'GuidanceAllocation';
+const isoxmlType = 'CAN';
+const ngsiType = 'CommentAllocation';
 
 const allocationStamp = require('./allocationStamp');
-const guidanceShift = require('./guidanceShift');
-const guidanceGroup = require('./guidanceGroup');
+const codedComment = require('./codedComment');
+const codedCommentListValue = require('./codedCommentListValue');
 
 /*
-A GuidanceGroupIdRef
+A CodedCommentIdRef
+B CodedCommentListValueIdRef
+C FreeCommentText
+
+AllocationStamp
 */
 
 /**
- * This function maps an NGSI object to an ISOXML GAN
+ * This function maps an NGSI object to an ISOXML CAN
  */
 function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addRelationship(attr, entity, 'A', 'groupIdRef', guidanceGroup.isoxmlType);
+    FMIS.addRelationship(attr, entity, 'A', 'codedCommentIdRef', codedComment.isoxmlType);
+    FMIS.addRelationship(attr, entity, 'B', 'codedCommentListValueIdRef', codedCommentListValue.isoxmlType);
+    FMIS.addAttribute(attr, entity, 'C', 'comment');
     return xml;
 }
 
 /**
- * This function maps an ISOXML GAN to an NGSI object
+ * This function maps an ISOXML CAN to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    MICS.addRelationship(entity, 'A', 'groupIdRef', guidanceGroup.ngsiType, normalized);
+    MICS.addRelationship(entity, 'A', 'codedCommentIdRef', codedComment.ngsiType, normalized);
+    MICS.addRelationship(entity, 'B', 'codedCommentListValueIdRef', codedCommentListValue.ngsiType, normalized);
+    MICS.addProperty(entity, 'C', 'comment', schema.TEXT, normalized);
     allocationStamp.add(entity);
-    MICS.addArray(entity, guidanceShift, 'guidanceShift');
     return entity;
 }
 
@@ -60,14 +68,15 @@ function transformMICS(entity, normalized) {
 */
 function relationships(entity) {
     const refs = [];
-    transforms.addReference(refs, entity, 'groupIdRef');
+    transforms.addReference(refs, entity, 'codedCommentIdRef');
+    transforms.addReference(refs, entity, 'codedCommentListValueIdRef');
     return refs;
 }
 
 module.exports = {
     transformFMIS,
     transformMICS,
-    relationships,
     isoxmlType,
-    ngsiType
+    ngsiType,
+    relationships
 };

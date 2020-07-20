@@ -19,14 +19,17 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
+const transforms = require('../transforms');
+const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
 const isoxmlType = 'PAN';
 const ngsiType = 'ProductAllocation';
 
+const product = require('./product');
+const deviceElement = require('./deviceElement');
+const valuePresentation = require('./valuePresentation');
 const allocationStamp = require('./allocationStamp');
 /*
 A ProductIdRef
@@ -55,12 +58,12 @@ function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addRelationship(attr, entity, 'A', 'productIdRef', 'Product');
+    FMIS.addRelationship(attr, entity, 'A', 'productIdRef', product.isoxmlType);
     FMIS.addAttribute(attr, entity, 'B', 'quantityDDI');
     FMIS.addAttribute(attr, entity, 'C', 'quantityValue');
     FMIS.addAddressAttribute(attr, entity, 'D', 'transferMode');
-    FMIS.addRelationship(attr, entity, 'E', 'deviceElementIdRef', 'DeviceElement');
-    FMIS.addRelationship(attr, entity, 'F', 'valuePresentationIdRef', 'ValuePresentation');
+    FMIS.addRelationship(attr, entity, 'E', 'deviceElementIdRef', deviceElement.isoxmlType);
+    FMIS.addRelationship(attr, entity, 'F', 'valuePresentationIdRef', valuePresentation.isoxmlType);
     return xml;
 }
 
@@ -68,12 +71,12 @@ function transformFMIS(entity) {
  * This function maps an ISOXML PAN to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    MICS.addRelationship(entity, 'A', 'productIdRef', 'Product', normalized);
+    MICS.addRelationship(entity, 'A', 'productIdRef', product.ngsiType, normalized);
     MICS.addProperty(entity, 'B', 'quantityDDI', schema.TEXT, normalized);
     MICS.addInt(entity, 'C', 'quantityValue', schema.NUMBER, normalized);
     MICS.addMappedProperty(entity, 'D', 'transferMode', schema.TEXT, TRANSFER_MODES, normalized);
-    MICS.addRelationship(entity, 'E', 'deviceElementIdRef', 'DeviceElement', normalized);
-    MICS.addRelationship(entity, 'F', 'valuePresentationIdRef', 'ValuePresentation', normalized);
+    MICS.addRelationship(entity, 'E', 'deviceElementIdRef', deviceElement.ngsiType, normalized);
+    MICS.addRelationship(entity, 'F', 'valuePresentationIdRef', valuePresentation.ngsiType, normalized);
     allocationStamp.add(entity);
     return entity;
 }

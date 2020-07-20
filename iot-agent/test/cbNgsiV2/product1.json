@@ -1,0 +1,10 @@
+{
+  "name": {
+    "type": "Text",
+    "value": "Asterix"
+  },
+  "productGroupIdRef": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:ProductGroup:PGP2"
+  }
+}

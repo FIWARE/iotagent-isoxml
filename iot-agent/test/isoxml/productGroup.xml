@@ -1,0 +1,4 @@
+<PGP A="PGP1" B="Herbicides"/>
+<PDT A="PDT1" B="agent 1" C="PGP1"/> 
+<PGP A="PGP2" B="Potato" C="2" /> 
+<PDT A="PDT1" B="Asterix" C="PGP2"/>

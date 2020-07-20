@@ -19,8 +19,8 @@
  *
  */
 
-const isoxmlType = 'PDT';
-const ngsiType = 'Product';
+const isoxmlType = 'CLD';
+const ngsiType = 'ColourLegend';
 
 module.exports = {
     isoxmlType,

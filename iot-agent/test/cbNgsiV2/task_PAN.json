@@ -32,7 +32,7 @@
         "quantityValue": 50000,
         "transferMode": "Filling",
         "deviceElementIdRef": "urn:ngsi-ld:DeviceElement:DET3",
-        "valuePresentationIdRef": "urn:ngsi-ld:ValuePresentation:VPN1",
+        "valuePresentationIdRef": "urn:ngsi-ld:Value:VPN1",
         "startTime": "2010-02-05T13:00:00",
         "status": "planned",
         "startPoint": {
@@ -52,7 +52,7 @@
         "quantityValue": 2000,
         "transferMode": "Remainder",
         "deviceElementIdRef": "urn:ngsi-ld:DeviceElement:DET3",
-        "valuePresentationIdRef": "urn:ngsi-ld:ValuePresentation:VPN1",
+        "valuePresentationIdRef": "urn:ngsi-ld:Value:VPN1",
         "startTime": "2010-02-05T13:38:00",
         "status": "realized",
         "startPoint": {
@@ -82,7 +82,7 @@
         "quantityValue": 50000,
         "transferMode": "Filling",
         "deviceElementIdRef": "urn:ngsi-ld:DeviceElement:DET3",
-        "valuePresentationIdRef": "urn:ngsi-ld:ValuePresentation:VPN1",
+        "valuePresentationIdRef": "urn:ngsi-ld:Value:VPN1",
         "startTime": "2010-02-05T13:40:00",
         "status": "realized"
       },
@@ -92,7 +92,7 @@
         "quantityValue": 10000,
         "transferMode": "Remainder",
         "deviceElementIdRef": "urn:ngsi-ld:DeviceElement:DET3",
-        "valuePresentationIdRef": "urn:ngsi-ld:ValuePresentation:VPN1",
+        "valuePresentationIdRef": "urn:ngsi-ld:Value:VPN1",
         "startTime": "2010-02-05T18:50:00",
         "status": "realized"
       }

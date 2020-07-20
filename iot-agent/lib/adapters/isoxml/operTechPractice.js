@@ -19,29 +19,20 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
+const transforms = require('../transforms');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'FRM';
-const ngsiType = 'Building';
+const isoxmlType = 'OTP';
+const ngsiType = 'OperTechPractice';
 
-const customer = require('./customer');
 /*
-A FarmId
-B FarmDesignator - designator/name
-C FarmStreet
-D FarmPOBox
-E FarmPostalCode
-F FarmCity
-G FarmState
-H FarmCountry
-I CustomerIdRef
+A CulturalPracticeIdRef
+B OperationTechniqueIdRef
 */
 
 /**
- * This function maps a smart-data-models Building to ISOXML FRM
+ * This function maps an NGSI object to an ISOXML OTP
  */
 function transformFMIS(entity) {
     const xml = {};
@@ -49,38 +40,29 @@ function transformFMIS(entity) {
     const attr = xml[isoxmlType]._attr;
     FMIS.addId(attr, entity, isoxmlType);
     FMIS.addAttribute(attr, entity, 'B', 'name');
-    FMIS.addAddressAttribute(attr, entity, 'C', 'address');
-    FMIS.addRelationship(attr, entity, 'I', 'owner', customer.isoxmlType);
     return xml;
 }
 
 /**
- * This function maps an ISOXML FRM to a smart-data-models Building
+ * This function maps an ISOXML OTP to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    if (entity.A && !normalized) {
-        entity.id = transforms.generateURI(entity.A, ngsiType);
-    }
-    MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
-    MICS.addAddressProperty(entity, 'C', 'address', schema.POSTAL_ADDRESS, normalized);
-    MICS.addRelationship(entity, 'I', 'owner', customer.ngsiType, normalized);
+    MICS.addRelationship(entity, 'A', 'culturalPracticeId', 'CulturalPractice', normalized);
+    MICS.addRelationship(entity, 'B', 'operationTechniqueId', 'OperationTechnique', normalized);
     return entity;
 }
 
-/*
-*    This function lists the reference relationships of an ISOXML FRM
-*    Building.owner = I  - CustomerIdRef 
-*/
 function relationships(entity) {
     const refs = [];
-    transforms.addReference(refs, entity, 'owner');
+    transforms.addReference(refs, entity, 'culturalPracticeId');
+    transforms.addReference(refs, entity, 'operationTechniqueId');
     return refs;
 }
 
 module.exports = {
     transformFMIS,
     transformMICS,
-    relationships,
     isoxmlType,
-    ngsiType
+    ngsiType,
+    relationships
 };

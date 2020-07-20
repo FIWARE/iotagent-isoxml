@@ -64,10 +64,10 @@ describe('HTTP: Commands', function() {
             .matchHeader('fiware-service', 'smartGondor')
             .matchHeader('fiware-servicepath', '/gardens')
             .post(
-                '/v2/entities/urn:ngsi-ld:Farm:FRM3/attrs',
+                '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
                 utils.readJSON('./test/unit/ngsiv2/contextRequests/singleFarmMeasure.json')
             )
-            .query({ type: 'Farm' })
+            .query({ type: 'Building' })
             .reply(204);
         contextBrokerMock
             .matchHeader('fiware-service', 'smartGondor')
@@ -124,7 +124,7 @@ describe('HTTP: Commands', function() {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .get('/v2/entities/urn:ngsi-ld:Farm:FRM3?options=keyValues')
+                .get('/v2/entities/urn:ngsi-ld:Building:FRM3?options=keyValues')
                 .reply(200, utils.readJSON('./test/cbKeyValues/farm1.json'));
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
@@ -136,7 +136,7 @@ describe('HTTP: Commands', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities/urn:ngsi-ld:Farm:FRM3/attrs?type=Farm',
+                    '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs?type=Building',
                     utils.readJSON('./test/unit/ngsiv2/contextRequests/updateFarmStatusPending.json')
                 )
                 .reply(204);
@@ -145,7 +145,7 @@ describe('HTTP: Commands', function() {
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities/urn:ngsi-ld:Farm:FRM3/attrs?type=Farm',
+                    '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs?type=Building',
                     utils.readJSON('./test/unit/ngsiv2/contextRequests/updateFarmStatusSuccess.json')
                 )
                 .reply(204);

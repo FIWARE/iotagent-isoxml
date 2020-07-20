@@ -1,0 +1,10 @@
+{
+	"B": {
+        "value": "Asterix",
+        "type": "string"
+    },
+    "C": {
+        "value": "PGP2",
+        "type": "string"
+    }
+}

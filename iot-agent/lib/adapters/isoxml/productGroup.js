@@ -19,58 +19,54 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
+const transforms = require('../transforms');
+const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'DAN';
-const ngsiType = 'DeviceAllocation';
+const isoxmlType = 'PGP';
+const ngsiType = 'ProductGroup';
 
-const allocationStamp = require('./allocationStamp');
 /*
-A clientNameValue
-B clientNameMask
-C deviceIdRef
+A id
+B name
+C groupType
 */
 
+const GROUP_TYPES = {
+    '1': 'products',
+    '2': 'crops'
+};
+
 /**
- * This function maps an NGSI object to an ISOXML DAN
+ * This function maps an NGSI object to an ISOXML PGP
  */
 function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addAttribute(attr, entity, 'A', 'clientNameValue');
-    FMIS.addAttribute(attr, entity, 'B', 'clientNameMask');
-    FMIS.addRelationship(attr, entity, 'C', 'deviceIdRef', 'DVC');
+    FMIS.addId(attr, entity, isoxmlType);
+    FMIS.addAttribute(attr, entity, 'B', 'name');
+    FMIS.addAttribute(attr, entity, 'C', 'groupType');
+
     return xml;
 }
 
 /**
- * This function maps an ISOXML DAN to an NGSI object
+ * This function maps an ISOXML PGP to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    MICS.addProperty(entity, 'A', 'clientNameValue', schema.TEXT, normalized);
-    MICS.addProperty(entity, 'B', 'clientNameMask', schema.TEXT, normalized);
-    MICS.addRelationship(entity, 'C', 'deviceIdRef', 'Device', normalized);
-    allocationStamp.add(entity);
+    if (entity.A && !normalized) {
+        entity.id = transforms.generateURI(entity.A, ngsiType);
+    }
+    MICS.addProperty(entity, 'B', 'name', schema.Text, normalized);
+    MICS.addMappedProperty(entity, 'C', 'groupType', schema.TEXT, GROUP_TYPES, normalized);
     return entity;
-}
-
-/*
-*    This function lists the reference relationships of an ISOXML DAN 
-*/
-function relationships(entity) {
-    const refs = [];
-    transforms.addReference(refs, entity, 'deviceIdRef');
-    return refs;
 }
 
 module.exports = {
     transformFMIS,
     transformMICS,
     isoxmlType,
-    ngsiType,
-    relationships
+    ngsiType
 };

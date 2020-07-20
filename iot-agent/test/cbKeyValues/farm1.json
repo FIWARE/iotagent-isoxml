@@ -1,6 +1,6 @@
 {
-    "id": "urn:ngsi-ld:Farm:FRM3",
-    "type": "Farm",
+    "id": "urn:ngsi-ld:Building:FRM3",
+    "type": "Building",
     "TimeInstant": "2020-07-10T13:18:47.00Z",
     "address": {
         "streetAddress": "Street2",

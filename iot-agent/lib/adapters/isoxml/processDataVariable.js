@@ -19,8 +19,8 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
+const transforms = require('../transforms');
+const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
@@ -73,14 +73,14 @@ function transformFMIS(entity) {
 /**
  * This function maps an ISOXML PDV to an NGSI object
  */
-function transformMICS(entity) {
-    MICS.addProperty(entity, 'A', 'ddi', schema.TEXT, false);
-    MICS.addInt(entity, 'B', 'value', schema.NUMBER, false);
-    MICS.addRelationship(entity, 'C', 'productIdRef', product.ngsiType, false);
-    MICS.addRelationship(entity, 'D', 'deviceElementIdRef', deviceElement.ngsiType, false);
-    MICS.addRelationship(entity, 'E', 'valuePresentationIdRef', valuePresentation.ngsiType, false);
-    MICS.addInt(entity, 'F', 'actualCulturalPracticeValue', schema.NUMBER, false);
-    MICS.addInt(entity, 'G', 'elementTypeInstanceValue', schema.NUMBER, false);
+function transformMICS(entity, normalized) {
+    MICS.addProperty(entity, 'A', 'ddi', schema.TEXT, normalized);
+    MICS.addInt(entity, 'B', 'value', schema.NUMBER, normalized);
+    MICS.addRelationship(entity, 'C', 'productIdRef', product.ngsiType, normalized);
+    MICS.addRelationship(entity, 'D', 'deviceElementIdRef', deviceElement.ngsiType, normalized);
+    MICS.addRelationship(entity, 'E', 'valuePresentationIdRef', valuePresentation.ngsiType, normalized);
+    MICS.addInt(entity, 'F', 'actualCulturalPracticeValue', schema.NUMBER, normalized);
+    MICS.addInt(entity, 'G', 'elementTypeInstanceValue', schema.NUMBER, normalized);
 
     MICS.addArray(entity, processDataVariable, 'processDataVariable');
 

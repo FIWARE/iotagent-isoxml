@@ -1,25 +1,25 @@
 {
     "A": {
-		"type": "String",
+		"type": "string",
 		"value": "TSK1"
 	},
     "F": {
-		"type": "String",
+		"type": "string",
 		"value": "WKR1"
 	},
     "G": {
-		"type": "String",
+		"type": "string",
 		"value": "1"
 	},
     "otp": {
-		"type": "Object",
+		"type": "object",
 		"value": {
 	            "A": "CPC1",
 	            "B": "OTQ1"
 	    }
 	},
     "wan": {
-		"type": "Object",
+		"type": "object",
 		"value": [
 	        {
 	            "A": "WKR1",
@@ -34,7 +34,7 @@
 	    ]
 	},
     "dan": {
-		"type": "Object",
+		"type": "object",
 		"value": [
 	        {
 	            "B": "7FFFFFFF00000000",
@@ -50,7 +50,7 @@
 	    ]
 	},
     "cnn": {
-		"type": "Object",
+		"type": "object",
 		"value": [
 	        {
 	            "A": "DVC2",
@@ -61,7 +61,7 @@
 	    ]
 	},
     "dlt": {
-		"type": "Object",
+		"type": "object",
 		"value": [
 	        {
 	            "A": "1122",
@@ -71,7 +71,7 @@
 	    ]
 	},
     "can": {
-		"type": "Object",
+		"type": "object",
 		"value": [
 	        {
 	            "A": "CCT5",
@@ -84,7 +84,7 @@
 	    ]
 	},
     "tzn": {
-		"type": "Object",
+		"type": "object",
 			"value": [
 	        {
 	            "A": "1",
@@ -94,7 +94,7 @@
 	    ]
 	},
     "tim": {
-		"type": "Object",
+		"type": "object",
 		"value": [
 	        {
 	            "A": "2003-08-20T08:00:00",

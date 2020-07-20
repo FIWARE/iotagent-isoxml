@@ -15,7 +15,7 @@
     "start": "node ./bin/iotagent-isoxml",
     "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
     "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
-    "lint": "eslint bin/iotagent-isoxml lib/ conf/ test/ --cache --fix",
+    "lint": "eslint bin/iotagent-isoxml lib/ test/ --cache --fix",
     "prettier": "prettier --config .prettierrc.json --write **/**/*.js  **/*.js *.js"
   },
   "dependencies": {

@@ -19,61 +19,48 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
+const transforms = require('../transforms');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'GST';
-const ngsiType = 'GuidanceShift';
+const isoxmlType = 'GAN';
+const ngsiType = 'GuidanceAllocation';
 
 const allocationStamp = require('./allocationStamp');
+const guidanceShift = require('./guidanceShift');
 const guidanceGroup = require('./guidanceGroup');
-const guidancePattern = require('./guidancePattern');
 
 /*
 A GuidanceGroupIdRef
-B GuidancePatternIdRef
-C GuidanceEastShift
-D GuidanceNorthShift
-E PropagationOffset
 */
 
 /**
- * This function maps an NGSI object to an ISOXML GST
+ * This function maps an NGSI object to an ISOXML GAN
  */
 function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
     FMIS.addRelationship(attr, entity, 'A', 'groupIdRef', guidanceGroup.isoxmlType);
-    FMIS.addRelationship(attr, entity, 'B', 'patternIdRef', guidancePattern.isoxmlType);
-    FMIS.addAttribute(attr, entity, 'C', 'eastShift');
-    FMIS.addAttribute(attr, entity, 'D', 'northShift');
-    FMIS.addAttribute(attr, entity, 'E', 'offset');
     return xml;
 }
 
 /**
- * This function maps an ISOXML GST to an NGSI object
+ * This function maps an ISOXML GAN to an NGSI object
  */
-function transformMICS(entity) {
-    MICS.addRelationship(entity, 'A', 'groupIdRef', guidanceGroup.ngsiType, false);
-    MICS.addRelationship(entity, 'B', 'patternIdRef', guidancePattern.ngsiType, false);
-    MICS.addInt(entity, 'C', 'eastShift', schema.NUMBER, false);
-    MICS.addInt(entity, 'D', 'northShift', schema.NUMBER, false);
-    MICS.addInt(entity, 'E', 'offset', schema.NUMBER, false);
+function transformMICS(entity, normalized) {
+    MICS.addRelationship(entity, 'A', 'groupIdRef', guidanceGroup.ngsiType, normalized);
     allocationStamp.add(entity);
+    MICS.addArray(entity, guidanceShift, 'guidanceShift');
     return entity;
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML GST
+*    This function lists the reference relationships of an ISOXML CAN
 */
 function relationships(entity) {
     const refs = [];
     transforms.addReference(refs, entity, 'groupIdRef');
-    transforms.addReference(refs, entity, 'patternIdRef');
     return refs;
 }
 

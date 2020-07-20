@@ -73,7 +73,7 @@
       {
         "startTime": "2003-08-20T08:00:00",
         "endTime": "2003-08-20T17:00:00",
-        "type": "planned"
+        "status": "planned"
       }
     ]
   },

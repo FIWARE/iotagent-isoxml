@@ -1,34 +1,34 @@
 {
   "A": {
-    "type": "String",
+    "type": "string",
     "value": "TSK11"
   },
   "B": {
-    "type": "String",
+    "type": "string",
     "value": "filling example"
   },
   "D": {
-    "type": "String",
+    "type": "string",
     "value": "FRM1"
   },
   "E": {
-    "type": "String",
+    "type": "string",
     "value": "PFD1"
   },
   "G": {
-    "type": "String",
+    "type": "string",
     "value": "1"
   },
   "H": {
-    "type": "String",
+    "type": "string",
     "value": "1"
   },
   "F": {
-    "type": "String",
+    "type": "string",
     "value": "WKR1"
   },
   "pan": {
-    "type": "String",
+    "type": "object",
     "value": [
       {
         "A": "PDT250",

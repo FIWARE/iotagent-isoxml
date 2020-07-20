@@ -127,10 +127,6 @@ function returnCommands(req, res, next) {
     res.status(200).send('');
 }
 
-function isString(data) {
-    return typeof data === 'string' || data instanceof String;
-}
-
 function handleIncomingMeasure(req, res, next) {
     res.locals.errors = [];
     // prettier-ignore
@@ -140,11 +136,11 @@ function handleIncomingMeasure(req, res, next) {
         const attributes = [];
         Object.keys(data).forEach((key) => {
             if (key !== 'A') {
-                attributes.push({ name: key, value: data[key], type: isString(data) ? 'String' : 'Object' });
+                attributes.push({ name: key, value: data[key], type: typeof data[key] });
             }
         });
 
-        //console.error (JSON.stringify(attributes));
+        //console.error(JSON.stringify(attributes, null, 4));
 
         iotAgentLib.update(device.name, device.type, apiKey, attributes, device, function(error) {
             if (error) {

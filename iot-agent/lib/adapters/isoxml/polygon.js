@@ -19,7 +19,7 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
+const transforms = require('../transforms');
 
 const isoxmlType = 'PLN';
 const ngsiType = 'Polygon';

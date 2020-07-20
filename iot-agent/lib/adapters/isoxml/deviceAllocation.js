@@ -19,57 +19,51 @@
  *
  */
 
-const transforms = require('../lib/adapters/transforms');
-const schema = require('../lib/adapters/schema');
+const transforms = require('../transforms');
+const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'CAN';
-const ngsiType = 'CommentAllocation';
+const isoxmlType = 'DAN';
+const ngsiType = 'DeviceAllocation';
 
 const allocationStamp = require('./allocationStamp');
-const codedComment = require('./codedComment');
-const codedCommentListValue = require('./codedCommentListValue');
-
 /*
-A CodedCommentIdRef
-B CodedCommentListValueIdRef
-C FreeCommentText
-
-AllocationStamp
+A clientNameValue
+B clientNameMask
+C deviceIdRef
 */
 
 /**
- * This function maps an NGSI object to an ISOXML CAN
+ * This function maps an NGSI object to an ISOXML DAN
  */
 function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addRelationship(attr, entity, 'A', 'codedCommentIdRef', codedComment.isoxmlType);
-    FMIS.addRelationship(attr, entity, 'B', 'codedCommentListValueIdRef', codedCommentListValue.isoxmlType);
-    FMIS.addAttribute(attr, entity, 'C', 'comment');
+    FMIS.addAttribute(attr, entity, 'A', 'clientNameValue');
+    FMIS.addAttribute(attr, entity, 'B', 'clientNameMask');
+    FMIS.addRelationship(attr, entity, 'C', 'deviceIdRef', 'DVC');
     return xml;
 }
 
 /**
- * This function maps an ISOXML CAN to an NGSI object
+ * This function maps an ISOXML DAN to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    MICS.addRelationship(entity, 'A', 'codedCommentIdRef', codedComment.ngsiType, normalized);
-    MICS.addRelationship(entity, 'B', 'codedCommentListValueIdRef', codedCommentListValue.ngsiType, normalized);
-    MICS.addProperty(entity, 'C', 'comment', schema.TEXT, normalized);
+    MICS.addProperty(entity, 'A', 'clientNameValue', schema.TEXT, normalized);
+    MICS.addProperty(entity, 'B', 'clientNameMask', schema.TEXT, normalized);
+    MICS.addRelationship(entity, 'C', 'deviceIdRef', 'Device', normalized);
     allocationStamp.add(entity);
     return entity;
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML CAN
+*    This function lists the reference relationships of an ISOXML DAN 
 */
 function relationships(entity) {
     const refs = [];
-    transforms.addReference(refs, entity, 'codedCommentIdRef');
-    transforms.addReference(refs, entity, 'codedCommentListValueIdRef');
+    transforms.addReference(refs, entity, 'deviceIdRef');
     return refs;
 }
 

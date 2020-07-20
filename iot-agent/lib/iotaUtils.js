@@ -29,6 +29,7 @@ const async = require('async');
 const apply = async.apply;
 const config = require('./configService');
 const transforms = require('./adapters/transforms');
+const adapter = require('./adapters/adapter');
 
 /**
  * Get the API Key for the selected service if there is any, or the default API Key if a specific one does not exist.
@@ -69,7 +70,7 @@ function findOrCreate(deviceId, transport, group, callback) {
                 service: group.service,
                 subservice: group.subservice,
                 type: group.type,
-                name: transforms.generateURI(deviceId, group.type)
+                name: deviceId
             };
 
             // Fix transport depending on binding
@@ -160,10 +161,11 @@ function mergeDeviceWithConfiguration(deviceData, configuration, callback) {
  * @param {String} apiKey           APIKey of the Device Group (or default APIKey).
  */
 function retrieveDevice(deviceId, apiKey, transport, callback) {
+    const effectiveId = adapter.NGSI[apiKey] ? transforms.generateURI(deviceId, adapter.NGSI[apiKey]) : deviceId;
     async.waterfall(
         [
             apply(iotAgentLib.getConfiguration, config.getConfig().iota.defaultResource, apiKey),
-            apply(findOrCreate, deviceId, transport),
+            apply(findOrCreate, effectiveId, transport),
             mergeDeviceWithConfiguration
         ],
         callback

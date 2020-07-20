@@ -2,8 +2,8 @@
     "actionType": "update",
     "entities": [
         {
-            "type": "Farm",
-            "id": "urn:ngsi-ld:Farm:FRM3",
+            "type": "Building",
+            "id": "urn:ngsi-ld:Building:FRM3",
             "send" : {
                 "type": "command",
                 "value": {}

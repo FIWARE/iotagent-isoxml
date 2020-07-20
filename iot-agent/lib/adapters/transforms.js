@@ -58,7 +58,7 @@ function addReference(refs, entity, attr) {
 }
 
 function getValue(entity) {
-    return entity.value ? entity.value : entity;
+    return Object.prototype.hasOwnProperty.call(entity, 'value') ? entity.value : entity;
 }
 
 // FMIS transform functions
@@ -70,7 +70,7 @@ const FMIS = {
 
     addAddressAttribute(attr, entity, to, from) {
         const toAttrs = allAttrs.slice(allAttrs.indexOf(to), allAttrs.indexOf(to) + 6);
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             toAttrs.forEach((toAttr, index) => {
                 if (entity[from][addressAttrs[index]]) {
                     attr[toAttr] = entity[from][addressAttrs[index]];
@@ -85,13 +85,13 @@ const FMIS = {
     },
 
     addAttribute(attr, entity, to, from) {
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             attr[to] = entity[from];
         }
     },
 
     addRelationship(attr, entity, to, from, type) {
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             const match = entity[from].match(idRegex);
             attr[to] = type + match[0];
         }
@@ -143,28 +143,28 @@ const MICS = {
     },
 
     addProperty(entity, from, to, type = 'Property', normalized = true) {
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             const value = getValue(entity[from]);
             entity[to] = nsgiAttribute(type, value, normalized);
         }
     },
 
     addMappedProperty(entity, from, to, type = 'Property', map, normalized = true) {
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             const value = map[getValue(entity[from])];
             entity[to] = nsgiAttribute(type, value, normalized);
         }
     },
 
     addFloat(entity, from, to, type = 'Float', normalized = true) {
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             const value = parseFloat(getValue(entity[from]));
             entity[to] = nsgiAttribute(type, value, normalized);
         }
     },
 
     addInt(entity, from, to, type = 'Integer', normalized = true) {
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             const value = parseInt(getValue(entity[from]));
             entity[to] = nsgiAttribute(type, value, normalized);
         }
@@ -173,7 +173,7 @@ const MICS = {
     addArray(entity, adapter, to, normalized = false) {
         const from = adapter.isoxmlType.toLowerCase();
         const value = [];
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             let elements = getValue(entity[from]);
             if (!Array.isArray(elements)) {
                 elements = [elements];
@@ -193,7 +193,7 @@ const MICS = {
 
     addObject(entity, adapter, to, normalized = false) {
         const from = adapter.isoxmlType.toLowerCase();
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             const value = adapter.transformMICS(getValue(entity[from]), false);
             allAttrs.forEach((attr) => {
                 delete value[attr];
@@ -203,7 +203,7 @@ const MICS = {
         }
     },
     addRelationship(entity, from, to, type, normalized = true) {
-        if (entity[from]) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
             entity[to] = normalized
                 ? {
                       type: 'Relationship',

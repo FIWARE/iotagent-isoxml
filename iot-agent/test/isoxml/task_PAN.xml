@@ -1,37 +1,28 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ISO11783_TaskData TaskControllerVersion=""
-   VersionMinor="1"
-   ManagementSoftwareManufacturer="Topcon Precision Agriculture"
-   DataTransferOrigin="2"
-   ManagementSoftwareVersion="1.0"
-   TaskControllerManufacturer=""
-   VersionMajor="4" >
-  <TSK A="TSK11" B="filling example" D="FRM1" E="PFD1" G="1" H="1" F="WKR1">
-      <PAN A="PDT250" B="0048" C="50000" D="1" E="DET3" F="VPN1">
-        <ASP A="2010-02-05T13:00:00" D="1">
-          <PTN A="54.588945" B="9.989209" D="3"/>
-        </ASP>
-      </PAN>
-      <PAN A="PDT250" B="0048" C="2000" D="3" E="DET3" F="VPN1">
-        <ASP A="2010-02-05T13:38:00" D="4">
-          <PTN A="54.588945" B="9.989209" D="3"/>
-          <PTN A="54.588945" B="9.989209" D="3"/>
-        </ASP>
-      </PAN>
+<TSK A="TSK11" B="filling example" D="FRM1" E="PFD1" G="1" H="1" F="WKR1">
     <PAN A="PDT250" B="0048" C="50000" D="1" E="DET3" F="VPN1">
-      <ASP A="2010-02-05T13:40:00" D="4"/>
+      <ASP A="2010-02-05T13:00:00" D="1">
+        <PTN A="54.588945" B="9.989209" D="3"/>
+      </ASP>
     </PAN>
-    <PAN A="PDT250" B="0048" C="10000" D="3" E="DET3" F="VPN1">
-      <ASP A="2010-02-05T18:50:00" D="4"/>
+    <PAN A="PDT250" B="0048" C="2000" D="3" E="DET3" F="VPN1">
+      <ASP A="2010-02-05T13:38:00" D="4">
+        <PTN A="54.588945" B="9.989209" D="3"/>
+        <PTN A="54.588945" B="9.989209" D="3"/>
+      </ASP>
     </PAN>
-    <PAN A="PDT250" B="0048" C="50000" D="1" E="DET3" F="VPN1">
-      <ASP A="2010-02-05T19:00:00" D="4"/>
-    </PAN>
-    <PAN A="PDT250" B="0048" C="0" D="3" E="DET3" F="VPN1">
-      <ASP B="2010-02-05T20:40:00" D="1"/>
-    </PAN>
-    <PAN A="PDT258" B="0048" C="30000" D="1" E="DET3" F="VPN1">
-      <ASP A="2010-02-05T21:00:00" D="4"/> 
-    </PAN>
-  </TSK>
-</ISO11783_TaskData>
+  <PAN A="PDT250" B="0048" C="50000" D="1" E="DET3" F="VPN1">
+    <ASP A="2010-02-05T13:40:00" D="4"/>
+  </PAN>
+  <PAN A="PDT250" B="0048" C="10000" D="3" E="DET3" F="VPN1">
+    <ASP A="2010-02-05T18:50:00" D="4"/>
+  </PAN>
+  <PAN A="PDT250" B="0048" C="50000" D="1" E="DET3" F="VPN1">
+    <ASP A="2010-02-05T19:00:00" D="4"/>
+  </PAN>
+  <PAN A="PDT250" B="0048" C="0" D="3" E="DET3" F="VPN1">
+    <ASP B="2010-02-05T20:40:00" D="1"/>
+  </PAN>
+  <PAN A="PDT258" B="0048" C="30000" D="1" E="DET3" F="VPN1">
+    <ASP A="2010-02-05T21:00:00" D="4"/> 
+  </PAN>
+</TSK>

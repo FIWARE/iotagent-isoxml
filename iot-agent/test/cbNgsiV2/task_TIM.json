@@ -17,7 +17,7 @@
       {
         "startTime": "2003-08-20T08:10:00",
         "endTime": "2003-08-20T12:04:23",
-        "type": "effective",
+        "status": "effective",
         "data": [
           {
             "ddi": "0815",
@@ -44,7 +44,7 @@
       {
         "startTime": "2003-08-20T08:10:00",
         "duration": 3612,
-        "type": "repair"
+        "status": "repair"
       }
     ]
   }
