@@ -24,34 +24,44 @@ const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'CCL';
-const ngsiType = 'CodedCommentListValue';
+const isoxmlType = 'DPT';
+const ngsiType = 'DeviceProperty';
 
 /*
-A CodedCommentListValueId
-B CodedCommentListValueDesignator
+A DevicePropertyObjectId
+B DevicePropertyDDI
+C DevicePropertyValue
+D DevicePropertyDesignator
+E DeviceValuePresentationObjectId
+
 */
 
 /**
- * This function maps an NGSI object to an ISOXML CCL
+ * This function maps an NGSI object to an ISOXML DPT
  */
 function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addId(attr, entity, isoxmlType);
-    FMIS.addAttribute(attr, entity, 'B', 'name');
+    FMIS.addAttribute(attr, entity, 'A', 'objectId');
+    FMIS.addAttribute(attr, entity, 'B', 'ddi');
+    FMIS.addAttribute(attr, entity, 'C', 'value');
+    FMIS.addAttribute(attr, entity, 'D', 'name');
+    FMIS.addAttribute(attr, entity, 'E', 'presentationObjectId');
+
     return xml;
 }
 
 /**
- * This function maps an ISOXML CCL to an NGSI object
+ * This function maps an ISOXML DPT to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    if (entity.A && !normalized) {
-        entity.id = transforms.generateURI(entity.A, ngsiType);
-    }
-    MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
+    MICS.addInt(entity, 'A', 'objectId', schema.NUMBER, normalized);
+    MICS.addProperty(entity, 'B', 'ddi', schema.TEXT, normalized);
+    MICS.addInt(entity, 'C', 'value', schema.NUMBER, normalized);
+    MICS.addProperty(entity, 'D', 'name', schema.TEXT, normalized);
+    MICS.addInt(entity, 'E', 'presentationObjectId', schema.NUMBER, normalized);
+
     return entity;
 }
 

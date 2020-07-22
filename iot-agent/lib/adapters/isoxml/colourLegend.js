@@ -19,10 +19,52 @@
  *
  */
 
+const transforms = require('../transforms');
+const schema = require('../schema');
+const FMIS = transforms.FMIS;
+const MICS = transforms.MICS;
+
 const isoxmlType = 'CLD';
 const ngsiType = 'ColourLegend';
 
+const colourRange = require('./colourRange');
+
+/*
+A ColourLegendId
+B DefaultColour
+
+ColourRange
+*/
+
+/**
+ * This function maps an NGSI object to an ISOXML CLD
+ */
+function transformFMIS(entity) {
+    const xml = {};
+    xml[isoxmlType] = { _attr: {} };
+    const attr = xml[isoxmlType]._attr;
+    FMIS.addId(attr, entity, isoxmlType);
+    FMIS.addAttribute(attr, entity, 'B', 'defaultColour');
+
+    return xml;
+}
+
+/**
+ * This function maps an ISOXML CLD to an NGSI object
+ */
+function transformMICS(entity, normalized) {
+    if (entity.A && !normalized) {
+        entity.id = transforms.generateURI(entity.A, ngsiType);
+    }
+    MICS.addInt(entity, 'B', 'defaultColour', schema.Number, normalized);
+
+    MICS.addArray(entity, colourRange, 'colourRange', normalized);
+    return entity;
+}
+
 module.exports = {
+    transformFMIS,
+    transformMICS,
     isoxmlType,
     ngsiType
 };

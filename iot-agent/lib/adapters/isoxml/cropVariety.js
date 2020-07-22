@@ -24,16 +24,19 @@ const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'CCL';
-const ngsiType = 'CodedCommentListValue';
+const isoxmlType = 'CVT';
+const ngsiType = 'CropVariety';
+
+const product = require('./product');
 
 /*
-A CodedCommentListValueId
-B CodedCommentListValueDesignator
+A CropVarietyId
+B CropVarietyDesignator
+C ProductIdRef
 */
 
 /**
- * This function maps an NGSI object to an ISOXML CCL
+ * This function maps an NGSI object to an ISOXML CVT
  */
 function transformFMIS(entity) {
     const xml = {};
@@ -41,17 +44,21 @@ function transformFMIS(entity) {
     const attr = xml[isoxmlType]._attr;
     FMIS.addId(attr, entity, isoxmlType);
     FMIS.addAttribute(attr, entity, 'B', 'name');
+    FMIS.addRelationship(attr, entity, 'C', 'productIdRef', product.isoxmlType);
+
     return xml;
 }
 
 /**
- * This function maps an ISOXML CCL to an NGSI object
+ * This function maps an ISOXML CVT to an NGSI object
  */
 function transformMICS(entity, normalized) {
     if (entity.A && !normalized) {
         entity.id = transforms.generateURI(entity.A, ngsiType);
     }
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
+    MICS.addRelationship(entity, 'C', 'productIdRef', product.ngsiType, normalized);
+
     return entity;
 }
 

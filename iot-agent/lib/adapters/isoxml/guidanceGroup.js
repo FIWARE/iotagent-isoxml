@@ -19,10 +19,51 @@
  *
  */
 
+const transforms = require('../transforms');
+const schema = require('../schema');
+const FMIS = transforms.FMIS;
+const MICS = transforms.MICS;
+
 const isoxmlType = 'GGP';
 const ngsiType = 'GuidanceGroup';
 
+const polygon = require('./polygon');
+const guidancePattern = require('./guidancePattern');
+
+/*
+A GuidanceGroupId
+B GuidanceDesignator
+*/
+
+/**
+ * This function maps an NGSI object to an ISOXML GGP
+ */
+function transformFMIS(entity) {
+    const xml = {};
+    xml[isoxmlType] = { _attr: {} };
+    const attr = xml[isoxmlType]._attr;
+    FMIS.addId(attr, entity, isoxmlType);
+    FMIS.addAttribute(attr, entity, 'B', 'name');
+    return xml;
+}
+
+/**
+ * This function maps an ISOXML GGP to an NGSI object
+ */
+function transformMICS(entity, normalized) {
+    if (entity.A && !normalized) {
+        entity.id = transforms.generateURI(entity.A, ngsiType);
+    }
+    MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
+
+    polygon.add(entity, 'boundary');
+    MICS.addArray(entity, guidancePattern, 'guidancePattern');
+    return entity;
+}
+
 module.exports = {
+    transformFMIS,
+    transformMICS,
     isoxmlType,
     ngsiType
 };

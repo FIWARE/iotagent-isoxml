@@ -60,7 +60,7 @@ const POLYGON_TYPES = {
     '12': 'Windbreak'
 };
 
-function extractPolygonData(data) {
+function extractSinglePolygonData(data) {
     const polygon = {};
     polygon.type = data.A ? POLYGON_TYPES[data.A] : undefined;
     polygon.name = data.B ? data.B : undefined;
@@ -70,7 +70,7 @@ function extractPolygonData(data) {
     return polygon;
 }
 
-function extractPolygonLocation(data) {
+function extractSinglePolygonGeoJSON(data) {
     const coordinates = [];
     const lsg = Array.isArray(data.lsg) ? data.lsg : [data.lsg];
     lsg.forEach((lineString) => {
@@ -90,12 +90,12 @@ function extractPolygonLocation(data) {
 function extractMultiPolygonData(data) {
     const multiPolygon = [];
     data.forEach((polygon) => {
-        multiPolygon.push(extractPolygonData(polygon, false));
+        multiPolygon.push(extractSinglePolygonData(polygon, false));
     });
     return multiPolygon;
 }
 
-function extractMultiPolygonLocation(data) {
+function extractMultiPolygonGeoJSON(data) {
     const polygons = [];
     data.forEach((polygon) => {
         const coordinates = [];
@@ -133,11 +133,11 @@ function addPolygon(entity, to) {
         }
 
         if (isoxmlData.length === 1) {
-            polygon.data = extractPolygonData(isoxmlData[0]);
-            polygon.location = extractPolygonLocation(isoxmlData[0]);
+            polygon.data = extractSinglePolygonData(isoxmlData[0]);
+            polygon.location = extractSinglePolygonGeoJSON(isoxmlData[0]);
         } else {
             polygon.data = extractMultiPolygonData(isoxmlData);
-            polygon.location = extractMultiPolygonLocation(isoxmlData);
+            polygon.location = extractMultiPolygonGeoJSON(isoxmlData);
         }
 
         entity[to] = polygon;

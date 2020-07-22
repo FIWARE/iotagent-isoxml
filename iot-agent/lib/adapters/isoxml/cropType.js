@@ -24,16 +24,23 @@ const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'CCL';
-const ngsiType = 'CodedCommentListValue';
+const isoxmlType = 'CTP';
+const ngsiType = 'CropType';
+
+const productGroup = require('./productGroup');
+const cropVariety = require('./cropVariety');
 
 /*
-A CodedCommentListValueId
-B CodedCommentListValueDesignator
+A CropTypeId
+B CropTypeDesignator
+C ProductGroupIdRef
+
+CropVariety.
+
 */
 
 /**
- * This function maps an NGSI object to an ISOXML CCL
+ * This function maps an NGSI object to an ISOXML CTP
  */
 function transformFMIS(entity) {
     const xml = {};
@@ -41,23 +48,35 @@ function transformFMIS(entity) {
     const attr = xml[isoxmlType]._attr;
     FMIS.addId(attr, entity, isoxmlType);
     FMIS.addAttribute(attr, entity, 'B', 'name');
+    FMIS.addRelationship(attr, entity, 'C', 'productGroupIdRef', productGroup.isoxmlType);
+
     return xml;
 }
 
 /**
- * This function maps an ISOXML CCL to an NGSI object
+ * This function maps an ISOXML CTP to an NGSI object
  */
 function transformMICS(entity, normalized) {
     if (entity.A && !normalized) {
         entity.id = transforms.generateURI(entity.A, ngsiType);
     }
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
+    MICS.addRelationship(entity, 'C', 'productGroupIdRef', productGroup.ngsiType, normalized);
+
+    MICS.addArray(entity, cropVariety, 'cropVariety', normalized);
     return entity;
+}
+
+function relationships(entity) {
+    const refs = [];
+    transforms.addReference(refs, entity, 'productGroupIdRef');
+    return refs;
 }
 
 module.exports = {
     transformFMIS,
     transformMICS,
+    relationships,
     isoxmlType,
     ngsiType
 };

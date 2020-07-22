@@ -26,6 +26,9 @@ const MICS = transforms.MICS;
 const isoxmlType = 'OTP';
 const ngsiType = 'OperTechPractice';
 
+const culturalPractice = require('./culturalPractice');
+const operationTechnique = require('./operationTechnique');
+
 /*
 A CulturalPracticeIdRef
 B OperationTechniqueIdRef
@@ -38,8 +41,8 @@ function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addId(attr, entity, isoxmlType);
-    FMIS.addAttribute(attr, entity, 'B', 'name');
+    FMIS.addRelationship(attr, entity, 'A', 'culturalPracticeId', culturalPractice.isoxmlType);
+    FMIS.addRelationship(attr, entity, 'B', 'operationTechniqueId', operationTechnique.isoxmlType);
     return xml;
 }
 
@@ -47,8 +50,8 @@ function transformFMIS(entity) {
  * This function maps an ISOXML OTP to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    MICS.addRelationship(entity, 'A', 'culturalPracticeId', 'CulturalPractice', normalized);
-    MICS.addRelationship(entity, 'B', 'operationTechniqueId', 'OperationTechnique', normalized);
+    MICS.addRelationship(entity, 'A', 'culturalPracticeId', culturalPractice.ngsiType, normalized);
+    MICS.addRelationship(entity, 'B', 'operationTechniqueId', operationTechnique.ngsiType, normalized);
     return entity;
 }
 

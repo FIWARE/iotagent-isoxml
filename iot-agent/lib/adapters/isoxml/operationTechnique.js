@@ -24,16 +24,16 @@ const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'CCL';
-const ngsiType = 'CodedCommentListValue';
+const isoxmlType = 'OTQ';
+const ngsiType = 'OperationTechnique';
 
 /*
-A CodedCommentListValueId
-B CodedCommentListValueDesignator
+A OperationTechniqueId
+B OperationTechniqueDesignator
 */
 
 /**
- * This function maps an NGSI object to an ISOXML CCL
+ * This function maps an NGSI object to an ISOXML OTQ
  */
 function transformFMIS(entity) {
     const xml = {};
@@ -41,11 +41,12 @@ function transformFMIS(entity) {
     const attr = xml[isoxmlType]._attr;
     FMIS.addId(attr, entity, isoxmlType);
     FMIS.addAttribute(attr, entity, 'B', 'name');
+
     return xml;
 }
 
 /**
- * This function maps an ISOXML CCL to an NGSI object
+ * This function maps an ISOXML OTQ to an NGSI object
  */
 function transformMICS(entity, normalized) {
     if (entity.A && !normalized) {

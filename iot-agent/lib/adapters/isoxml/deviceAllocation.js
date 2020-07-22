@@ -28,6 +28,7 @@ const isoxmlType = 'DAN';
 const ngsiType = 'DeviceAllocation';
 
 const allocationStamp = require('./allocationStamp');
+const device = require('./device');
 /*
 A clientNameValue
 B clientNameMask
@@ -43,7 +44,7 @@ function transformFMIS(entity) {
     const attr = xml[isoxmlType]._attr;
     FMIS.addAttribute(attr, entity, 'A', 'clientNameValue');
     FMIS.addAttribute(attr, entity, 'B', 'clientNameMask');
-    FMIS.addRelationship(attr, entity, 'C', 'deviceIdRef', 'DVC');
+    FMIS.addRelationship(attr, entity, 'C', 'deviceIdRef', device.isoxmlType);
     return xml;
 }
 
@@ -53,7 +54,7 @@ function transformFMIS(entity) {
 function transformMICS(entity, normalized) {
     MICS.addProperty(entity, 'A', 'clientNameValue', schema.TEXT, normalized);
     MICS.addProperty(entity, 'B', 'clientNameMask', schema.TEXT, normalized);
-    MICS.addRelationship(entity, 'C', 'deviceIdRef', 'Device', normalized);
+    MICS.addRelationship(entity, 'C', 'deviceIdRef', device.ngsiType, normalized);
     allocationStamp.add(entity);
     return entity;
 }

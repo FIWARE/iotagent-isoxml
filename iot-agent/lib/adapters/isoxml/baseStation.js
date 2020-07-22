@@ -24,16 +24,21 @@ const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'CCL';
-const ngsiType = 'CodedCommentListValue';
+const isoxmlType = 'BSN';
+const ngsiType = 'BaseStation';
 
 /*
-A CodedCommentListValueId
-B CodedCommentListValueDesignator
+
+A BaseStationId
+B BaseStationDesignator
+C BaseStationNorth
+D BaseStationEast
+E BaseStationUp
+
 */
 
 /**
- * This function maps an NGSI object to an ISOXML CCL
+ * This function maps an NGSI object to an ISOXML BSN
  */
 function transformFMIS(entity) {
     const xml = {};
@@ -41,17 +46,28 @@ function transformFMIS(entity) {
     const attr = xml[isoxmlType]._attr;
     FMIS.addId(attr, entity, isoxmlType);
     FMIS.addAttribute(attr, entity, 'B', 'name');
+    FMIS.addAttribute(attr, entity, 'C', 'north');
+    FMIS.addAttribute(attr, entity, 'D', 'east');
+    FMIS.addAttribute(attr, entity, 'E', 'up');
     return xml;
 }
 
 /**
- * This function maps an ISOXML CCL to an NGSI object
+ * This function maps an ISOXML BSN to an NGSI object
  */
 function transformMICS(entity, normalized) {
     if (entity.A && !normalized) {
-        entity.id = transforms.generateURI(entity.A, ngsiType);
+        entity.id = transforms.generateURI(entity.A, isoxmlType);
     }
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
+
+    if (entity.C && entity.D) {
+        const coordinates = [parseFloat(entity.C), parseFloat(entity.D)];
+        if (entity.E) {
+            coordinates.push(parseFloat(entity.E));
+        }
+        entity.location = { type: 'Point', coordinates };
+    }
     return entity;
 }
 

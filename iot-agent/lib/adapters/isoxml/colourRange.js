@@ -19,39 +19,43 @@
  *
  */
 
+const isoxmlType = 'CRG';
+const ngsiType = 'ColourRange';
+
 const transforms = require('../transforms');
 const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
-const isoxmlType = 'CCL';
-const ngsiType = 'CodedCommentListValue';
-
 /*
-A CodedCommentListValueId
-B CodedCommentListValueDesignator
+A MinimumValue
+B MaximumValue
+C Colour
+
 */
 
 /**
- * This function maps an NGSI object to an ISOXML CCL
+ * This function maps an NGSI object to an ISOXML CRG
  */
 function transformFMIS(entity) {
     const xml = {};
     xml[isoxmlType] = { _attr: {} };
     const attr = xml[isoxmlType]._attr;
-    FMIS.addId(attr, entity, isoxmlType);
-    FMIS.addAttribute(attr, entity, 'B', 'name');
+    FMIS.addAttribute(attr, entity, 'A', 'minimumValue');
+    FMIS.addAttribute(attr, entity, 'B', 'maximumValue');
+    FMIS.addAttribute(attr, entity, 'C', 'colour');
+
     return xml;
 }
 
 /**
- * This function maps an ISOXML CCL to an NGSI object
+ * This function maps an ISOXML CRG to an NGSI object
  */
 function transformMICS(entity, normalized) {
-    if (entity.A && !normalized) {
-        entity.id = transforms.generateURI(entity.A, ngsiType);
-    }
-    MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
+    MICS.addInt(entity, 'A', 'minimumValue', schema.Number, normalized);
+    MICS.addInt(entity, 'B', 'maximumValue', schema.Number, normalized);
+    MICS.addInt(entity, 'C', 'colour', schema.Number, normalized);
+
     return entity;
 }
 

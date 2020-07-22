@@ -20,7 +20,6 @@
  */
 
 const transforms = require('../transforms');
-const schema = require('../schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
