@@ -13,7 +13,7 @@
        ],
       "static_attributes": [
          {"name":"category", "type": "Text","value": "farm"},
-         {"name": "isoxml_type","type": "Text","value":  "frm"}
+         {"name": "isoxml_type","type": "string","value":  "frm"}
       ]
    },
     {
@@ -22,7 +22,7 @@
      "entity_type": "Person",
      "resource":    "/iot/isoxml",
      "static_attributes": [
-        {"name": "isoxml_type","type": "Text","value":  "ctr"}
+        {"name": "isoxml_type","type": "string","value":  "ctr"}
      ]
    },
     {
@@ -31,7 +31,7 @@
      "entity_type": "Person",
      "resource":    "/iot/isoxml",
      "static_attributes": [
-        {"name": "isoxml_type","type": "Text","value":  "wkr"}
+        {"name": "isoxml_type","type": "string","value":  "wkr"}
      ]
    }
  ]

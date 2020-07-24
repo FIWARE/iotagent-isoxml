@@ -4,7 +4,7 @@
     "value": "farm"
   },
   "isoxml_type": {
-    "type": "Text",
+    "type": "string",
     "value": "frm"
   },
   "name": {

@@ -38,3 +38,4 @@ jspm_packages/
 .eslintcache
 *.tgz
 .next
+.nyc_output

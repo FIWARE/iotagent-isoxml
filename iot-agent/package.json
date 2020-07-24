@@ -13,18 +13,24 @@
   },
   "scripts": {
     "start": "node ./bin/iotagent-isoxml",
-    "test": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
-    "test:coverage": "istanbul cover _mocha -- --recursive 'test/**/*.js' --reporter spec --exit",
+    "test_single": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit --bail --g 'Anonymous ISOXML measures'",
+    "test": "nyc --reporter=text mocha -- --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
+    "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/**/*.js' ",
+    "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+    "prettier": "prettier --config .prettierrc.json --write **/**/*.js  **/*.js *.js",
+    "prettier:text": "prettier  --parser markdown '*.md' 'docker/*.md' 'docs/*.md' --tab-width 4 --print-width 120 --write --prose-wrap always",
     "lint": "eslint bin/iotagent-isoxml lib/ test/ --cache --fix",
-    "prettier": "prettier --config .prettierrc.json --write **/**/*.js  **/*.js *.js"
+    "lint:md": "remark  -f '*.md' 'docker/*.md' 'docs/*.md'"
   },
   "dependencies": {
     "async": "3.2.0",
+    "coveralls": "^3.1.0",
     "dateformat": "3.0.3",
     "express": "~4.17.1",
     "express-xml-bodyparser": "^0.3.0",
     "iotagent-node-lib": "git://github.com/telefonicaid/iotagent-node-lib.git#master",
     "logops": "2.1.1",
+    "nyc": "^15.1.0",
     "request": "2.88.2",
     "underscore": "1.10.2",
     "xml": "^1.0.1",
@@ -32,7 +38,6 @@
     "xmljs": "^0.3.2"
   },
   "devDependencies": {
-    "istanbul": "~0.4.5",
     "mocha": "8.0.1",
     "prettier": "~2.0.5",
     "eslint": "~7.5.0",

@@ -159,8 +159,6 @@ function getConfiguration(resource, apikey, headers, callback) {
         const isoxmltypes = config.getConfig().iota.types;
         Object.keys(isoxmltypes).forEach((key) => {
             if (isoxmltypes[key].apikey === apikey) {
-                console.error(isoxmltypes[key]);
-
                 group = {
                     type: isoxmltypes[key].entity_type,
                     resource,

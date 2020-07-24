@@ -22,7 +22,7 @@
 /* eslint-disable no-unused-vars */
 
 const iotagentISOXML = require('../../../lib/iotagent-isoxml');
-const config = require('./config-test.js');
+const config = require('./config.js');
 const nock = require('nock');
 const should = require('should');
 const iotAgentLib = require('iotagent-node-lib');
