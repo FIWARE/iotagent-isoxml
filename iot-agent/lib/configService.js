@@ -23,6 +23,7 @@ let config = {};
 let logger = require('logops');
 const fs = require('fs');
 const constants = require('./constants');
+const ngsiAdapter = require('./adapters/adapter').NGSI;
 
 function anyIsSet(variableSet) {
     for (let i = 0; i < variableSet.length; i++) {
@@ -113,6 +114,21 @@ function processEnvironmentVariables() {
     }
     if (!config.isoxmlType) {
         config.isoxmlType = constants.DEFAULT_ISOXML_TYPE;
+    }
+
+    if (config.iota.types) {
+        Object.keys(config.iota.types).forEach((key) => {
+            config.iota.types[key].entity_type =
+                config.iota.types[key].entity_type || ngsiAdapter[config.iota.types[key].apikey];
+            const statics = config.iota.types[key].static_attributes || [];
+            const isoxml = {
+                name: config.isoxmlType,
+                type: 'string',
+                value: config.iota.types[key].apikey
+            };
+            statics.push(isoxml);
+            config.iota.types[key].static_attributes = statics;
+        });
     }
 }
 

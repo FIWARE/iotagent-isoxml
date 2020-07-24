@@ -153,6 +153,34 @@ function mergeDeviceWithConfiguration(deviceData, configuration, callback) {
     callback(null, deviceData);
 }
 
+function getConfiguration(resource, apikey, headers, callback) {
+    if (config.getConfig().iota.types) {
+        let group = null;
+        const isoxmltypes = config.getConfig().iota.types;
+        Object.keys(isoxmltypes).forEach((key) => {
+            if (isoxmltypes[key].apikey === apikey) {
+                console.error(isoxmltypes[key]);
+
+                group = {
+                    type: isoxmltypes[key].entity_type,
+                    resource,
+                    apikey,
+                    staticAttributes: isoxmltypes[key].static_attributes,
+                    service: config.getConfig().iota.service,
+                    subservice: config.getConfig().iota.subservice
+                };
+            }
+        });
+        if (group) {
+            return callback(null, group);
+        }
+    }
+
+    return iotAgentLib.getConfiguration(resource, apikey, (err, group) => {
+        callback(err, group);
+    });
+}
+
 /**
  * Retrieve a device from the device repository based on the given APIKey and DeviceID, creating one if none is
  * found for the given data.
@@ -160,11 +188,11 @@ function mergeDeviceWithConfiguration(deviceData, configuration, callback) {
  * @param {String} deviceId         Device ID of the device that wants to be retrieved or created.
  * @param {String} apiKey           APIKey of the Device Group (or default APIKey).
  */
-function retrieveDevice(deviceId, apiKey, transport, callback) {
+function retrieveDevice(deviceId, apiKey, transport, headers, callback) {
     const effectiveId = adapter.NGSI[apiKey] ? transforms.generateURI(deviceId, adapter.NGSI[apiKey]) : deviceId;
     async.waterfall(
         [
-            apply(iotAgentLib.getConfiguration, config.getConfig().iota.defaultResource, apiKey),
+            apply(getConfiguration, config.getConfig().iota.defaultResource, apiKey, headers),
             apply(findOrCreate, effectiveId, transport),
             mergeDeviceWithConfiguration
         ],

@@ -165,7 +165,7 @@ function handleIncomingMeasure(req, res, next) {
     }
 
     function processDeviceMeasure(item, callback) {
-        utils.retrieveDevice(item.id, item.apiKey, transport, (error, device) => {
+        utils.retrieveDevice(item.id, item.apiKey, transport, req.headers, (error, device) => {
             if (error) {
                 error.message += ': ' + item.apiKey;
                 res.locals.errors.push(error);

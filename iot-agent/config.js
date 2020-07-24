@@ -228,25 +228,67 @@ config.iota = {
      *      https://github.com/telefonicaid/iotagent-node-lib#type-configuration
      */
     types: {
-
-        services :[
-            {
-                "apikey": "frm",
-                "type": "Farm"
-            }
-        ]
-
+        AttachedFile : {apikey: "afe" },
+        BaseStation : { apikey: "bsn" },
+        CodedComment : { apikey: "cct" },
+        CodedCommentGroup : { apikey: "ccg" },
+        ColourLegend : {apikey: "cld" },
+        CropType : {apikey: "ctp"},
+        CulturalPractice : {apikey: "cpc"}, 
+        Customer : {
+            apikey: "ctr",
+            static_attributes: [
+                {
+                    name: "hasOccupation",
+                    type: "Occupation",
+                    value: {
+                        name: "Customer"
+                    }
+                }
+            ]
+        },
+        Device : { apikey: "dvc" },
+        Farm : {
+            apikey: "frm",
+            static_attributes: [
+                {
+                    name: "category",
+                    type: "Text",
+                    value: "farm"
+                }
+            ]
+        },
+        OperationTechique : { apikey: "otq" },
+        PartField : { apikey: "pfd" },
+        Product : { apikey: "pdt" },
+        ProductGroup : { apikey: "pgp" },
+        TaskControllerCapabilities : { apikey: "tcc" },
+        Task : { apikey: "tsk" },
+        ValuePresentation : { apikey: "vpn" },
+        Worker : {
+            apikey: "wkr",
+            static_attributes: [
+                {
+                    name: "hasOccupation",
+                    type: "Occupation",
+                    value: {
+                        name: "Worker"
+                    }
+                }
+            ]
+        },
+        ExternalFileReference : {apikey: "xfr"}
     },
 
     /**
      * Default service, for IoT Agent installations that won't require preregistration.
      */
-    service: 'howtoService',
+    service: 'openiot',
 
     /**
      * Default subservice, for IoT Agent installations that won't require preregistration.
      */
-    subservice: '/howto',
+    subservice: '/',
 
     /**
      * URL Where the IoT Agent Will listen for incoming updateContext and queryContext requests (for commands and
