@@ -68,8 +68,8 @@ function transformMICS(entity) {
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML GST
-*/
+ *    This function lists the reference relationships of an ISOXML GST
+ */
 function relationships(entity) {
     const refs = [];
     transforms.addReference(refs, entity, 'groupIdRef');

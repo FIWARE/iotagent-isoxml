@@ -56,7 +56,7 @@ function getContextEntities(apiKey, device, attribute, callback) {
      * Make a request to the context broker and database in turn to find
      * the complete list of entities to send as a "command".
      */
-    function retrieveSingleEntity(item, callback) {
+    function retrieveSingleEntity(item, callbackFn) {
         const cbHost = config.getConfig().contextBroker.url;
         const isoxmlType = config.getConfig().isoxmlType || constants.DEFAULT_ISOXML_TYPE;
         let path = '/v2/entities/';
@@ -74,9 +74,9 @@ function getContextEntities(apiKey, device, attribute, callback) {
             }
         };
 
-        request(options, function(error, response) {
+        request(options, function (error, response) {
             if (error) {
-                return callback(error);
+                return callbackFn(error);
             }
             const entity = JSON.parse(response.body);
             const result = {
@@ -90,30 +90,30 @@ function getContextEntities(apiKey, device, attribute, callback) {
                     result.refids = getRelationships(entity);
                 }
             }
-            return callback(null, result);
+            return callbackFn(null, result);
         });
     }
 
     /**
      * Recursively iterate through all required entities and their dependencies.
      */
-    function retrieveEntities(ids, entities, callback) {
-        async.map(ids, retrieveSingleEntity, function(err, results) {
+    function retrieveEntities(ids, data, callbackFn) {
+        async.map(ids, retrieveSingleEntity, function (err, results) {
             if (err) {
-                return callback(err);
+                return callbackFn(err);
             }
             const refIds = [];
-            results.forEach(function(result) {
-                entities[result.id] = result.entity;
+            results.forEach(function (result) {
+                data[result.id] = result.entity;
                 if (result.refids) {
-                    result.refids.forEach(function(refid) {
-                        if (!entities[refid]) {
+                    result.refids.forEach(function (refid) {
+                        if (!data[refid]) {
                             refIds.push(refid);
                         }
                     });
                 }
             });
-            return refIds.length === 0 ? callback() : retrieveEntities(refIds, entities, callback);
+            return refIds.length === 0 ? callbackFn() : retrieveEntities(refIds, data, callbackFn);
         });
     }
 
@@ -126,7 +126,7 @@ function getContextEntities(apiKey, device, attribute, callback) {
         });
     }
     // Get each entity and recursively check for any references.
-    retrieveEntities(entityIds, entities, function(err) {
+    retrieveEntities(entityIds, entities, function (err) {
         if (err) {
             config.getLogger().error(context, 'Error [%s] retrieving entities: %s', err.name, err.message);
         }

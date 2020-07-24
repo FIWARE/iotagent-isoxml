@@ -227,7 +227,16 @@ config.iota = {
      *
      *      https://github.com/telefonicaid/iotagent-node-lib#type-configuration
      */
-    types: {},
+    types: {
+
+        services :[
+            {
+                "apikey": "frm",
+                "type": "Farm"
+            }
+        ]
+
+    },
 
     /**
      * Default service, for IoT Agent installations that won't require preregistration.

@@ -45,7 +45,7 @@ function getEffectiveApiKey(service, subservice, device, callback) {
         config.getLogger().debug('Using device apikey: %s', device.apikey);
         callback(null, device.apikey);
     } else {
-        iotAgentLib.findConfiguration(service, subservice, function(error, group) {
+        iotAgentLib.findConfiguration(service, subservice, function (error, group) {
             if (group) {
                 config.getLogger().debug('Using found group: %j', group);
                 callback(null, group.apikey);
@@ -61,7 +61,7 @@ function getEffectiveApiKey(service, subservice, device, callback) {
 }
 
 function findOrCreate(deviceId, transport, group, callback) {
-    iotAgentLib.getDevice(deviceId, group.service, group.subservice, function(error, device) {
+    iotAgentLib.getDevice(deviceId, group.service, group.subservice, function (error, device) {
         if (!error && device) {
             callback(null, device, group);
         } else if (error.name === 'DEVICE_NOT_FOUND') {
@@ -82,8 +82,8 @@ function findOrCreate(deviceId, transport, group, callback) {
                 newDevice.timestamp = group.timestamp;
             }
 
-            iotAgentLib.register(newDevice, function(error, device) {
-                callback(error, device, group);
+            iotAgentLib.register(newDevice, function (err, registeredDevice) {
+                callback(err, registeredDevice, group);
             });
         } else {
             callback(error);
@@ -96,7 +96,7 @@ function mergeArrays(original, newArray) {
     const originalKeys = _.pluck(original, 'object_id');
     const newKeys = _.pluck(newArray, 'object_id');
     const addedKeys = _.difference(newKeys, originalKeys);
-    const differenceArray = newArray.filter(function(item) {
+    const differenceArray = newArray.filter(function (item) {
         return addedKeys.indexOf(item.object_id) >= 0;
     });
 
@@ -190,7 +190,7 @@ function updateCommand(apiKey, device, message, command, status, callback) {
         message,
         status,
         device,
-        function(error) {
+        function (error) {
             if (error) {
                 config.getLogger().error(
                     context,
@@ -240,16 +240,16 @@ function manageConfiguration(apiKey, deviceId, device, objMessage, sendFunction,
         callback(error);
     }
 
-    function extractAttributes(results, callback) {
+    function extractAttributes(results, callbackFn) {
         if (
             results.contextResponses &&
             results.contextResponses[0] &&
             results.contextResponses[0].contextElement.attributes
         ) {
-            callback(null, results.contextResponses[0].contextElement.attributes);
+            callbackFn(null, results.contextResponses[0].contextElement.attributes);
         } else {
             /*jshint quotmark: double */
-            callback("Couldn't find any information in Context Broker response");
+            callbackFn("Couldn't find any information in Context Broker response");
             /*jshint quotmark: single */
         }
     }
@@ -264,8 +264,8 @@ function manageConfiguration(apiKey, deviceId, device, objMessage, sendFunction,
             handleSendConfigurationError
         );
     } else if (objMessage.type === 'subscription') {
-        iotAgentLib.subscribe(device, objMessage.attributes, objMessage.attributes, function(error) {
-            if (error) {
+        iotAgentLib.subscribe(device, objMessage.attributes, objMessage.attributes, function (err) {
+            if (err) {
                 config
                     .getLogger()
                     .error(
@@ -285,7 +285,7 @@ function manageConfiguration(apiKey, deviceId, device, objMessage, sendFunction,
                     );
             }
 
-            callback(error);
+            callback(err);
         });
     } else {
         config

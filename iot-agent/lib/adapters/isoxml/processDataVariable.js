@@ -32,18 +32,18 @@ const product = require('./product');
 const valuePresentation = require('./valuePresentation');
 
 /*
-*
-* A ProcessDataDDI
-* B ProcessDataValue
-* C ProductIdRef
-* D DeviceElementIdRef
-* E ValuePresentationIdRef
-* F ActualCulturalPracticeValue
-* G ElementTypeInstanceValue
-* 
-* ProcessDataVariable
-*
-*/
+ *
+ * A ProcessDataDDI
+ * B ProcessDataValue
+ * C ProductIdRef
+ * D DeviceElementIdRef
+ * E ValuePresentationIdRef
+ * F ActualCulturalPracticeValue
+ * G ElementTypeInstanceValue
+ *
+ * ProcessDataVariable
+ *
+ */
 
 const processDataVariable = {
     transformFMIS,
@@ -88,8 +88,8 @@ function transformMICS(entity, normalized) {
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML PDV
-*/
+ *    This function lists the reference relationships of an ISOXML PDV
+ */
 function relationships(entity) {
     const refs = [];
     transforms.addReference(refs, entity, 'productIdRef');

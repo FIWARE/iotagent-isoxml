@@ -33,8 +33,8 @@ const utils = require('../../utils');
 let contextBrokerUnprovMock;
 let contextBrokerMock;
 
-describe('HTTP Transport binding: measures', function() {
-    beforeEach(function(done) {
+describe('HTTP Transport binding: measures', function () {
+    beforeEach(function (done) {
         const provisionOptions = {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -59,19 +59,19 @@ describe('HTTP Transport binding: measures', function() {
             .post('/v2/entities?options=upsert')
             .reply(204);
 
-        iotagentISOXML.start(config, function() {
-            request(provisionOptions, function(error, response, body) {
+        iotagentISOXML.start(config, function () {
+            request(provisionOptions, function (error, response, body) {
                 done();
             });
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         nock.cleanAll();
         async.series([iotAgentLib.clearAll, iotagentISOXML.stop], done);
     });
 
-    describe('When a single isoxml element arrives, via HTTP POST', function() {
+    describe('When a single isoxml element arrives, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
             method: 'POST',
@@ -81,7 +81,7 @@ describe('HTTP Transport binding: measures', function() {
             body: utils.readISOXML('./test/isoxml/farm1.xml')
         };
 
-        beforeEach(function() {
+        beforeEach(function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
@@ -93,22 +93,22 @@ describe('HTTP Transport binding: measures', function() {
                 .reply(204);
         });
 
-        it('should end up with a 200OK status code', function(done) {
-            request(getOptions, function(error, response, body) {
+        it('should end up with a 200OK status code', function (done) {
+            request(getOptions, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
             });
         });
-        it('should send a new update context request to the Context Broker with just that entity', function(done) {
-            request(getOptions, function(error, response, body) {
+        it('should send a new update context request to the Context Broker with just that entity', function (done) {
+            request(getOptions, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });
         });
     });
 
-    describe('When multiple isoxml elements arrives, via HTTP POST', function() {
+    describe('When multiple isoxml elements arrives, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
             method: 'POST',
@@ -118,7 +118,7 @@ describe('HTTP Transport binding: measures', function() {
             body: utils.readISOXML('./test/isoxml/farmAndCustomers.xml')
         };
 
-        beforeEach(function() {
+        beforeEach(function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
@@ -155,15 +155,15 @@ describe('HTTP Transport binding: measures', function() {
                 .reply(204);
         });
 
-        it('should end up with a 200OK status code', function(done) {
-            request(getOptions, function(error, response, body) {
+        it('should end up with a 200OK status code', function (done) {
+            request(getOptions, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
                 done();
             });
         });
-        it('should send multiple update context requests to the Context Broker', function(done) {
-            request(getOptions, function(error, response, body) {
+        it('should send multiple update context requests to the Context Broker', function (done) {
+            request(getOptions, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
             });

@@ -37,7 +37,7 @@ const attributeDelete = require('./plugins/attributeDeletePlugin');
  * @param {Object} device           Device provisioning information.
  */
 function deviceProvisioningHandler(device, callback) {
-    transportSelector.applyFunctionFromBinding([device], 'deviceProvisioningHandler', null, function(error, devices) {
+    transportSelector.applyFunctionFromBinding([device], 'deviceProvisioningHandler', null, function (error, devices) {
         if (error) {
             callback(error);
         } else {
@@ -65,7 +65,7 @@ function configurationHandler(configuration, callback) {
  * @param {Array} attributes        List of NGSI attributes of type command to execute.
  */
 function commandHandler(id, type, service, subservice, attributes, callback) {
-    iotAgentLib.getDeviceByName(id, service, subservice, function(error, device) {
+    iotAgentLib.getDeviceByName(id, service, subservice, function (error, device) {
         if (error) {
             config.getLogger().error(
                 context,
@@ -108,7 +108,7 @@ function start(newConfig, callback) {
     config.setLogger(iotAgentLib.logModule);
     config.setConfig(newConfig);
 
-    iotAgentLib.activate(config.getConfig().iota, function(error) {
+    iotAgentLib.activate(config.getConfig().iota, function (error) {
         if (error) {
             callback(error);
         } else {
@@ -136,7 +136,7 @@ function stop(callback) {
     config.getLogger().info(context, 'Stopping IoT Agent: ');
     async.series(
         [transportSelector.stopTransportBindings, iotAgentLib.resetMiddlewares, iotAgentLib.deactivate],
-        function() {
+        function () {
             config.getLogger().info('Agent stopped');
             callback();
         }

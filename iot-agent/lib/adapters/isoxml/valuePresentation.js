@@ -30,15 +30,15 @@ const ngsiType = 'Value';
 const colourLegend = require('./colourLegend');
 
 /*
-*
-* A ValuePresentationId
-* B Offset
-* C Scale
-* D NumberOfDecimals
-* E UnitDesignator
-* F ColourLegendIdRef
-*
-*/
+ *
+ * A ValuePresentationId
+ * B Offset
+ * C Scale
+ * D NumberOfDecimals
+ * E UnitDesignator
+ * F ColourLegendIdRef
+ *
+ */
 
 /**
  * This function maps an NGSI object to an ISOXML VPN
@@ -73,8 +73,8 @@ function transformMICS(entity, normalized) {
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML VPN
-*/
+ *    This function lists the reference relationships of an ISOXML VPN
+ */
 function relationships(entity) {
     const refs = [];
     transforms.addReference(refs, entity, 'colourLegendIdRef');

@@ -32,8 +32,8 @@ const utils = require('../../utils');
 let mockedClientServer;
 let contextBrokerMock;
 
-describe('HTTP: Commands', function() {
-    beforeEach(function(done) {
+describe('HTTP: Commands', function () {
+    beforeEach(function (done) {
         const provisionOptions = {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
             method: 'POST',
@@ -95,21 +95,21 @@ describe('HTTP: Commands', function() {
             .thrice()
             .reply(204);
 
-        iotagentISOXML.start(config, function() {
-            request(provisionOptions, function(error, response, body) {
-                request(provisionFarm, function(error, response, body) {
+        iotagentISOXML.start(config, function () {
+            request(provisionOptions, function (error1, response1, body1) {
+                request(provisionFarm, function (error2, response2, body2) {
                     done();
                 });
             });
         });
     });
 
-    afterEach(function(done) {
+    afterEach(function (done) {
         nock.cleanAll();
         async.series([iotAgentLib.clearAll, iotagentISOXML.stop], done);
     });
 
-    describe('When a command arrive to the Agent for a single isoxml element with the HTTP protocol', function() {
+    describe('When a command arrive to the Agent for a single isoxml element with the HTTP protocol', function () {
         const commandOptions = {
             url: 'http://localhost:' + config.iota.server.port + '/v2/op/update',
             method: 'POST',
@@ -120,7 +120,7 @@ describe('HTTP: Commands', function() {
             }
         };
 
-        beforeEach(function() {
+        beforeEach(function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartGondor')
                 .matchHeader('fiware-servicepath', '/gardens')
@@ -158,24 +158,24 @@ describe('HTTP: Commands', function() {
                 .reply(200);
         });
 
-        it('should return a 204 OK without errors', function(done) {
-            request(commandOptions, function(error, response, body) {
+        it('should return a 204 OK without errors', function (done) {
+            request(commandOptions, function (error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(204);
                 done();
             });
         });
-        it('should update the status in the Context Broker', function(done) {
-            request(commandOptions, function(error, response, body) {
-                setTimeout(function() {
+        it('should update the status in the Context Broker', function (done) {
+            request(commandOptions, function (error, response, body) {
+                setTimeout(function () {
                     contextBrokerMock.done();
                     done();
                 }, 100);
             });
         });
-        it('should send an update to the ISOXML client', function(done) {
-            request(commandOptions, function(error, response, body) {
-                setTimeout(function() {
+        it('should send an update to the ISOXML client', function (done) {
+            request(commandOptions, function (error, response, body) {
+                setTimeout(function () {
                     mockedClientServer.done();
                     done();
                 }, 100);

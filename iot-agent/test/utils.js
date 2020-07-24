@@ -50,8 +50,8 @@ function readXML(name) {
 }
 
 function readISOXML(name) {
-    const xml = readXML(name);
-    return isoxmlPrefix + xml + isoxmlPostfix;
+    const xmlFile = readXML(name);
+    return isoxmlPrefix + xmlFile + isoxmlPostfix;
 }
 
 function convertToXML(xmlObject) {

@@ -25,11 +25,11 @@ const xml2js = require('xml2js');
 const utils = require('../utils');
 const parser = new xml2js.Parser();
 
-describe('ISOXML Parser: measures', function() {
-    describe('When a payload with a single ISOXML element is parsed', function() {
-        it('should return a single object with attributes', function(done) {
+describe('ISOXML Parser: measures', function () {
+    describe('When a payload with a single ISOXML element is parsed', function () {
+        it('should return a single object with attributes', function (done) {
             const input = utils.readXML('./test/isoxml/farm1.xml');
-            parser.parseString(input, function(err, xml) {
+            parser.parseString(input, function (err, xml) {
                 const result = isoxmlParser.parse(xml.FRM);
                 should.exist(result);
                 (typeof result).should.equal('object');
@@ -38,10 +38,10 @@ describe('ISOXML Parser: measures', function() {
             });
         });
     });
-    describe('When a payload with an embedded ISOXML element is parsed', function() {
-        it('should return a single object with attributes containing arrays', function(done) {
+    describe('When a payload with an embedded ISOXML element is parsed', function () {
+        it('should return a single object with attributes containing arrays', function (done) {
             const input = utils.readXML('./test/isoxml/task_DLT.xml');
-            parser.parseString(input, function(err, xml) {
+            parser.parseString(input, function (err, xml) {
                 const result = isoxmlParser.parse(xml.TSK);
                 should.exist(result);
                 (typeof result).should.equal('object');
@@ -54,10 +54,10 @@ describe('ISOXML Parser: measures', function() {
         });
     });
 
-    describe('When a payload with multiple embedded ISOXML element is parsed', function() {
-        it('should return a single object with attributes containing arrays and embedded arrays', function(done) {
+    describe('When a payload with multiple embedded ISOXML element is parsed', function () {
+        it('should return a single object with attributes containing arrays and embedded arrays', function (done) {
             const input = utils.readXML('./test/isoxml/device1.xml');
-            parser.parseString(input, function(err, xml) {
+            parser.parseString(input, function (err, xml) {
                 const result = isoxmlParser.parse(xml.DVC);
                 should.exist(result);
                 (typeof result).should.equal('object');

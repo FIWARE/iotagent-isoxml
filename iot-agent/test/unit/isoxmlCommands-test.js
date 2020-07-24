@@ -24,16 +24,16 @@ const isoxmlParser = require('../../lib/isoxmlParser');
 const should = require('should');
 const utils = require('../utils');
 
-describe('ISOXML Parser: commands', function() {
-    describe('When a command execution with no params and a single entity is parsed', function() {
-        it('should extract a single isoxml element', function() {
+describe('ISOXML Parser: commands', function () {
+    describe('When a command execution with no params and a single entity is parsed', function () {
+        it('should extract a single isoxml element', function () {
             const entities = [utils.readJSON('./test/cbKeyValues/farm1.json')];
             const result = isoxmlParser.createCommandPayload(null, null, null, entities);
             result.should.equal('<isoxml>' + utils.readXML('./test/isoxml/farm1.xml') + '</isoxml>');
         });
     });
-    describe('When a command execution with no params and a multiple entities is parsed', function() {
-        it('should extract multiple isoxml elements', function() {
+    describe('When a command execution with no params and a multiple entities is parsed', function () {
+        it('should extract multiple isoxml elements', function () {
             const entities = [
                 utils.readJSON('./test/cbKeyValues/farm1.json'),
                 utils.readJSON('./test/cbKeyValues/customer1.json'),

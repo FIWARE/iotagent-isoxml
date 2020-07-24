@@ -64,8 +64,8 @@ function transformMICS(entity, normalized) {
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML CAN
-*/
+ *    This function lists the reference relationships of an ISOXML CAN
+ */
 function relationships(entity) {
     const refs = [];
     transforms.addReference(refs, entity, 'codedCommentIdRef');

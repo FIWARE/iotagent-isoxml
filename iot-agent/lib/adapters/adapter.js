@@ -32,7 +32,7 @@ const Relationships = {};
 
 const bindings = fs.readdirSync(path.join(__dirname, './isoxml'));
 
-bindings.forEach(function(item) {
+bindings.forEach(function (item) {
     const isoxml = require('./isoxml/' + item);
 
     if (isoxml.isoxmlType) {

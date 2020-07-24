@@ -142,7 +142,7 @@ function handleIncomingMeasure(req, res, next) {
 
         //console.error(JSON.stringify(attributes, null, 4));
 
-        iotAgentLib.update(device.name, device.type, apiKey, attributes, device, function(error) {
+        iotAgentLib.update(device.name, device.type, apiKey, attributes, device, function (error) {
             if (error) {
                 res.locals.errors.push(error);
                 // prettier-ignore
@@ -233,7 +233,7 @@ function generateCommandExecution(apiKey, device, attribute, entities, callback)
 
     let commandObj;
 
-    request(options, function(error, response, body) {
+    request(options, function (error, response, body) {
         if (error) {
             callback(new errors.HTTPCommandResponseError('', error, cmdName));
         } else if (response.statusCode !== 200) {
@@ -276,9 +276,9 @@ function generateCommandExecution(apiKey, device, attribute, entities, callback)
  * @param {String} attributes       Command attributes (in NGSIv1 format).
  */
 function commandHandler(device, attributes, callback) {
-    utils.getEffectiveApiKey(device.service, device.subservice, device, function(error, apiKey) {
-        contextBroker.getContextEntities(apiKey, device, attributes[0], function(error, entities) {
-            generateCommandExecution(apiKey, device, attributes[0], entities, function(error) {
+    utils.getEffectiveApiKey(device.service, device.subservice, device, function (error1, apiKey) {
+        contextBroker.getContextEntities(apiKey, device, attributes[0], function (error2, entities) {
+            generateCommandExecution(apiKey, device, attributes[0], entities, function (error) {
                 if (error) {
                     // prettier-ignore
                     config.getLogger().error(context, 
@@ -290,8 +290,8 @@ function commandHandler(device, attributes, callback) {
                         error.message,
                         error.command,
                         constants.COMMAND_STATUS_ERROR,
-                        function(error) {
-                            if (error) {
+                        function (err) {
+                            if (err) {
                                 // prettier-ignore
                                 config.getLogger().error(
                                     context,
@@ -351,7 +351,7 @@ function stop(callback) {
     config.getLogger().info(context, 'Stopping ISOXML HTTP Binding: ');
 
     if (httpBindingServer) {
-        httpBindingServer.server.close(function() {
+        httpBindingServer.server.close(function () {
             config.getLogger().info('HTTP Binding Stopped');
             callback();
         });

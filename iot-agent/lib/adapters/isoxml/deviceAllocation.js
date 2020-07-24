@@ -60,8 +60,8 @@ function transformMICS(entity, normalized) {
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML DAN 
-*/
+ *    This function lists the reference relationships of an ISOXML DAN
+ */
 function relationships(entity) {
     const refs = [];
     transforms.addReference(refs, entity, 'deviceIdRef');

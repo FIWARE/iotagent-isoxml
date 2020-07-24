@@ -86,9 +86,9 @@ function transformMICS(entity, normalized) {
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML DLT
-*    Building.owner = I  - CustomerIdRef 
-*/
+ *    This function lists the reference relationships of an ISOXML DLT
+ *    Building.owner = I  - CustomerIdRef
+ */
 function relationships(entity) {
     const refs = [];
     transforms.addReference(refs, entity, 'deviceElementId');

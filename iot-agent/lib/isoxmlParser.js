@@ -39,27 +39,27 @@ const _ = require('underscore');
  * @param {String} payload         XML measure reporting payload
  * @return {Array}                 Array containing an object per measure group
  */
-function parse(payload) {
-    config.getLogger().debug(context, 'parse', JSON.stringify(payload));
+function parse(data) {
+    config.getLogger().debug(context, 'parse', JSON.stringify(data));
 
     function removeDollars(payload) {
         if (Array.isArray(payload)) {
             return payload.map((elem) => removeDollars(elem));
         }
         const keys = Object.keys(payload);
-        const result = payload.$;
+        const obj = payload.$;
         for (let i = 0; i < keys.length; i++) {
             if (keys[i] !== '$') {
                 if (Array.isArray(payload[keys[i]])) {
-                    result[keys[i]] = payload[keys[i]].map((elem) => removeDollars(elem));
+                    obj[keys[i]] = payload[keys[i]].map((elem) => removeDollars(elem));
                 } else {
-                    result[keys[i]] = removeDollars(payload[keys[i]]);
+                    obj[keys[i]] = removeDollars(payload[keys[i]]);
                 }
             }
         }
-        return result;
+        return obj;
     }
-    return removeDollars(payload);
+    return removeDollars(data);
 }
 
 /**
@@ -77,14 +77,14 @@ function parse(payload) {
 
 function result(payload) {
     const data = xmlToJson(payload);
-    const result = {};
+    const obj = {};
 
     config.getLogger().debug(context, 'result', JSON.stringify(payload));
-    result.deviceId = data.root.attributes.device;
-    result.command = data.root.attributes.command;
-    result.result = data.root.name;
+    obj.deviceId = data.root.attributes.device;
+    obj.command = data.root.attributes.command;
+    obj.result = data.root.name;
 
-    return result;
+    return obj;
 }
 
 /**

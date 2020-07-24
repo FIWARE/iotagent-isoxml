@@ -31,13 +31,13 @@ let transportBindings = [];
  * @param {Object} newConfig        Configuration object to start the bindings
  */
 function startTransportBindings(newConfig, callback) {
-    function invokeBinding(binding, callback) {
-        binding.start(callback);
+    function invokeBinding(binding, callbackFn) {
+        binding.start(callbackFn);
     }
 
     const bindings = fs.readdirSync(path.join(__dirname, './bindings'));
 
-    transportBindings = bindings.map(function(item) {
+    transportBindings = bindings.map(function (item) {
         return require('./bindings/' + item);
     });
 
@@ -48,8 +48,8 @@ function startTransportBindings(newConfig, callback) {
  * Stop all the transport protocol bindings of the agent.
  */
 function stopTransportBindings(callback) {
-    function invokeBinding(binding, callback) {
-        binding.stop(callback);
+    function invokeBinding(binding, callbackFn) {
+        binding.stop(callbackFn);
     }
 
     async.map(transportBindings, invokeBinding, callback);

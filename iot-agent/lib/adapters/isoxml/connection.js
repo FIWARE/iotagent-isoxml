@@ -62,8 +62,8 @@ function transformMICS(entity, normalized) {
 }
 
 /*
-*    This function lists the reference relationships of an ISOXML CNN 
-*/
+ *    This function lists the reference relationships of an ISOXML CNN
+ */
 function relationships(entity) {
     const refs = [];
     transforms.addReference(refs, entity, 'deviceIdRef0');

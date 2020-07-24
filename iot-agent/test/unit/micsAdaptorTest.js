@@ -24,93 +24,93 @@ const attributeDelete = require('../../lib/plugins/AttributeDeletePlugin');
 const utils = require('../utils');
 const should = require('should');
 
-describe('MICS ADAPTER', function() {
-    describe('When a single <FRM> isoxml element is processed', function() {
-        it('should be converted into a CB Building with all attributes', function(done) {
+describe('MICS ADAPTER', function () {
+    describe('When a single <FRM> isoxml element is processed', function () {
+        it('should be converted into a CB Building with all attributes', function (done) {
             const input = utils.readJSON('./test/iotagentPayload/farm1.json');
             const cbEntity = utils.readJSON('./test/cbNgsiV2/farm1.json');
-            const entity = MICS.frm(input, true);
-            attributeDelete.update(entity, null, function(err, entity) {
+            const data = MICS.frm(input, true);
+            attributeDelete.update(data, null, function (err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
                 done();
             });
         });
     });
 
-    describe('When a simple <TSK> isoxml element is processed', function() {
-        it('should be converted into a CB Activity with all attributes', function(done) {
+    describe('When a simple <TSK> isoxml element is processed', function () {
+        it('should be converted into a CB Activity with all attributes', function (done) {
             const input = utils.readJSON('./test/iotagentPayload/task_DLT.json');
             const cbEntity = utils.readJSON('./test/cbNgsiV2/task_DLT.json');
-            const entity = MICS.tsk(input, true);
-            attributeDelete.update(entity, null, function(err, entity) {
+            const data = MICS.tsk(input, true);
+            attributeDelete.update(data, null, function (err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
                 done();
             });
         });
     });
 
-    describe('When a complex <TSK> isoxml element is processed', function() {
-        it('should be converted into a CB Activity with all attributes', function(done) {
+    describe('When a complex <TSK> isoxml element is processed', function () {
+        it('should be converted into a CB Activity with all attributes', function (done) {
             const input = utils.readJSON('./test/iotagentPayload/task_Complex.json');
             const cbEntity = utils.readJSON('./test/cbNgsiV2/task_Complex.json');
-            const entity = MICS.tsk(input, true);
-            attributeDelete.update(entity, null, function(err, entity) {
+            const data = MICS.tsk(input, true);
+            attributeDelete.update(data, null, function (err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
                 done();
             });
         });
     });
 
-    describe('When a <TSK> isoxml element including <ASP> and <PTN> data is processed', function() {
-        it('should be converted into a CB Activity with all attributes', function(done) {
+    describe('When a <TSK> isoxml element including <ASP> and <PTN> data is processed', function () {
+        it('should be converted into a CB Activity with all attributes', function (done) {
             const input = utils.readJSON('./test/iotagentPayload/task_PAN.json');
             const cbEntity = utils.readJSON('./test/cbNgsiV2/task_PAN.json');
-            const entity = MICS.tsk(input, true);
-            attributeDelete.update(entity, null, function(err, entity) {
+            const data = MICS.tsk(input, true);
+            attributeDelete.update(data, null, function (err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
                 done();
             });
         });
     });
-    describe('When a <TSK> isoxml element including <GAN> and <GST> data is processed', function() {
-        it('should be converted into a CB Activity with all attributes', function(done) {
+    describe('When a <TSK> isoxml element including <GAN> and <GST> data is processed', function () {
+        it('should be converted into a CB Activity with all attributes', function (done) {
             const input = utils.readJSON('./test/iotagentPayload/task_GAN.json');
             const cbEntity = utils.readJSON('./test/cbNgsiV2/task_GAN.json');
-            const entity = MICS.tsk(input, true);
-            attributeDelete.update(entity, null, function(err, entity) {
+            const data = MICS.tsk(input, true);
+            attributeDelete.update(data, null, function (err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
                 done();
             });
         });
     });
-    describe('When a <TSK> isoxml element including <TIM> and <DLV> data is processed', function() {
-        it('should be converted into a CB Activity with all attributes', function(done) {
+    describe('When a <TSK> isoxml element including <TIM> and <DLV> data is processed', function () {
+        it('should be converted into a CB Activity with all attributes', function (done) {
             const input = utils.readJSON('./test/iotagentPayload/task_TIM.json');
             const cbEntity = utils.readJSON('./test/cbNgsiV2/task_TIM.json');
-            const entity = MICS.tsk(input, true);
-            attributeDelete.update(entity, null, function(err, entity) {
+            const data = MICS.tsk(input, true);
+            attributeDelete.update(data, null, function (err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
                 done();
             });
         });
     });
-    describe('When a <TSK> isoxml element including <TZN> and <PLN> data is processed', function() {
-        it('should be converted into a CB Activity with all attributes', function(done) {
+    describe('When a <TSK> isoxml element including <TZN> and <PLN> data is processed', function () {
+        it('should be converted into a CB Activity with all attributes', function (done) {
             const input = utils.readJSON('./test/iotagentPayload/task_TZN.json');
             const cbEntity = utils.readJSON('./test/cbNgsiV2/task_TZN.json');
-            const entity = MICS.tsk(input, true);
-            attributeDelete.update(entity, null, function(err, entity) {
+            const data = MICS.tsk(input, true);
+            attributeDelete.update(data, null, function (err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
                 done();
             });
         });
     });
-    describe('When a <PDT> isoxml element is processed', function() {
-        it('should be converted into a CB Activity with all attributes', function(done) {
+    describe('When a <PDT> isoxml element is processed', function () {
+        it('should be converted into a CB Activity with all attributes', function (done) {
             const input = utils.readJSON('./test/iotagentPayload/product1.json');
             const cbEntity = utils.readJSON('./test/cbNgsiV2/product1.json');
-            const entity = MICS.pdt(input, true);
-            attributeDelete.update(entity, null, function(err, entity) {
+            const data = MICS.pdt(input, true);
+            attributeDelete.update(data, null, function (err, entity) {
                 should(JSON.stringify(entity)).equal(JSON.stringify(cbEntity));
                 done();
             });

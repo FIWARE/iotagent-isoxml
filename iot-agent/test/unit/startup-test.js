@@ -24,9 +24,9 @@ const iotAgentConfig = require('../config-test.js');
 const fs = require('fs');
 const sinon = require('sinon');
 
-describe('Startup tests', function() {
-    describe('When the HTTP transport is started with environment variables', function() {
-        beforeEach(function() {
+describe('Startup tests', function () {
+    describe('When the HTTP transport is started with environment variables', function () {
+        beforeEach(function () {
             sinon.stub(fs, 'statSync');
             process.env.IOTA_HTTP_HOST = 'localhost';
             process.env.IOTA_HTTP_PORT = '2222';
@@ -35,7 +35,7 @@ describe('Startup tests', function() {
             process.env.IOTA_HTTP_CERT = '/http/bbb/cert.pem';
         });
 
-        afterEach(function() {
+        afterEach(function () {
             fs.statSync.restore();
             delete process.env.IOTA_HTTP_HOST;
             delete process.env.IOTA_HTTP_PORT;
@@ -44,7 +44,7 @@ describe('Startup tests', function() {
             delete process.env.IOTA_HTTP_CERT;
         });
 
-        it('should load the HTTP environment variables in the internal configuration', function(done) {
+        it('should load the HTTP environment variables in the internal configuration', function (done) {
             config.setConfig(iotAgentConfig);
             config.getConfig().http.host.should.equal('localhost');
             config.getConfig().http.port.should.equal('2222');
