@@ -33,6 +33,16 @@ const utils = require('../../utils');
 let contextBrokerUnprovMock;
 let contextBrokerMock;
 
+
+function addMock(id , type, code = 204){
+    contextBrokerMock
+    .matchHeader('fiware-service', 'isoxml')
+    .matchHeader('fiware-servicepath', '/')
+    .post('/v2/entities/urn:ngsi-ld:'+ type +':' +  id +'/attrs')
+    .query({ type })
+    .reply(code);
+}
+
 describe('Anonymous ISOXML measures', function () {
     beforeEach(function (done) {
         contextBrokerMock = nock('http://192.168.1.1:1026')
@@ -51,7 +61,7 @@ describe('Anonymous ISOXML measures', function () {
         async.series([iotAgentLib.clearAll, iotagentISOXML.stop], done);
     });
 
-    describe('When a single isoxml element arrives, via HTTP POST', function () {
+    describe('When a single isoxml <FRM> element arrives, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
             method: 'POST',
@@ -62,15 +72,7 @@ describe('Anonymous ISOXML measures', function () {
         };
 
         beforeEach(function () {
-            contextBrokerMock
-                .matchHeader('fiware-service', 'isoxml')
-                .matchHeader('fiware-servicepath', '/')
-                .post(
-                    '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/singleFarmMeasure.json')
-                )
-                .query({ type: 'Building' })
-                .reply(204);
+             addMock('FRM3' , 'Building');
         });
 
         it('should end up with a 200OK status code', function (done) {
@@ -88,7 +90,81 @@ describe('Anonymous ISOXML measures', function () {
         });
     });
 
-    describe('When multiple isoxml elements arrives, via HTTP POST', function () {
+
+    describe('When a single isoxml <DVC> element arrives, via HTTP POST', function () {
+        const getOptions = {
+            url: 'http://localhost:' + config.http.port + '/iot/isoxml',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+            body: utils.readISOXML('./test/isoxml/device1.xml')
+        };
+
+        beforeEach(function () {
+            addMock('DVC1', 'Device');
+        });
+
+        it('should end up with a 200OK status code', function (done) {
+            request(getOptions, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should send a new update context request to the Context Broker with just that entity', function (done) {
+            request(getOptions, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+
+    describe('When a single <TSK> with <PGP>. <PDT> and <VPN> elements arrives, via HTTP POST', function () {
+        const getOptions = {
+            url: 'http://localhost:' + config.http.port + '/iot/isoxml',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+            body: utils.readISOXML('./test/isoxml/task_PDT.xml')
+        };
+
+        beforeEach(function () {
+
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+            .matchHeader('fiware-service', 'isoxml')
+            .matchHeader('fiware-servicepath', '/')
+            .post('/v2/entities?options=upsert')
+            .times(5)
+            .reply(204);
+
+            addMock('TSK11', 'Activity');
+            addMock('PGP1', 'ProductGroup');
+            addMock('PDT1', 'Product'); 
+            addMock('PGP2' , 'ProductGroup');
+            addMock('PDT2' , 'Product');
+            addMock('VPN1' , 'Value');
+        });
+
+        it('should end up with a 200 OK status code', function (done) {
+            request(getOptions, function (error, response, body) {
+                should.not.exist(error);
+                console.error(body);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should send a new update context request to the Context Broker with just that entity', function (done) {
+            request(getOptions, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a <FRM> and <CTR> elements arrive, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
             method: 'POST',
@@ -106,33 +182,9 @@ describe('Anonymous ISOXML measures', function () {
                 .twice()
                 .reply(204);
 
-            contextBrokerMock
-                .matchHeader('fiware-service', 'isoxml')
-                .matchHeader('fiware-servicepath', '/')
-                .post(
-                    '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/singleFarmMeasure.json')
-                )
-                .query({ type: 'Building' })
-                .reply(204);
-            contextBrokerMock
-                .matchHeader('fiware-service', 'isoxml')
-                .matchHeader('fiware-servicepath', '/')
-                .post(
-                    '/v2/entities/urn:ngsi-ld:Person:CTR1/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/singleCustomerMeasure3.json')
-                )
-                .query({ type: 'Person' })
-                .reply(204);
-            contextBrokerMock
-                .matchHeader('fiware-service', 'isoxml')
-                .matchHeader('fiware-servicepath', '/')
-                .post(
-                    '/v2/entities/urn:ngsi-ld:Person:CTR2/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/singleCustomerMeasure4.json')
-                )
-                .query({ type: 'Person' })
-                .reply(204);
+            addMock('FRM3' , 'Building');
+            addMock('CTR1' , 'Person');
+            addMock('CTR2' , 'Person');
         });
 
         it('should end up with a 200OK status code', function (done) {

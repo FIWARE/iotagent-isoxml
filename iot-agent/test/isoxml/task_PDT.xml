@@ -6,5 +6,5 @@
 <PGP A="PGP1" B="Herbicides"/>
 <PDT A="PDT1" B="agent 1" C="PGP1"/> 
 <PGP A="PGP2" B="Potato" C="2" /> 
-<PDT A="PDT1" B="Asterix" C="PGP2"/>
+<PDT A="PDT2" B="Asterix" C="PGP2"/>
 <VPN A="VPN1" B="0.001" C="1.0" D="0" E="kg"/>
