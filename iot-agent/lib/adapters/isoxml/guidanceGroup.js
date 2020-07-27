@@ -57,7 +57,7 @@ function transformMICS(entity, normalized) {
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
 
     polygon.add(entity, 'boundary');
-    polygon.addData(entity, 'boundaryData', 'BoundaryData', normalized);
+    polygon.addData(entity, 'boundaryData', 'PolygonData', normalized);
     MICS.addArray(entity, guidancePattern, 'guidancePattern');
     return entity;
 }

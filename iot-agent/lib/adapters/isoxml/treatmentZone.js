@@ -61,7 +61,7 @@ function transformMICS(entity, normalized) {
     MICS.addProperty(entity, 'C', 'color', schema.TEXT, normalized);
 
     polygon.add(entity, 'zone', 'geo:json', normalized);
-    polygon.addData(entity, 'zoneData', 'Object', normalized);
+    polygon.addData(entity, 'zoneData', 'PolygonData', normalized);
 
     delete entity.pln;
 

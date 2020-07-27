@@ -140,9 +140,9 @@ function transformMICS(entity, normalized) {
     MICS.addInt(entity, 'O', 'numberOfSwathsRight', schema.NUMBER, normalized);
 
     lineString.add(entity, 'pattern', 'geo:json', normalized);
-    lineString.addData(entity, 'patternData', 'Object', normalized);
+    lineString.addData(entity, 'patternData', 'LineStringData', normalized);
     polygon.add(entity, 'boundary', 'geo:json', normalized);
-    polygon.addData(entity, 'boundaryData', 'Object', normalized);
+    polygon.addData(entity, 'boundaryData', 'PolygonData', normalized);
 
     delete entity.pln;
     delete entity.lsg;

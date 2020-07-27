@@ -81,10 +81,10 @@ function extractSingleLineStringGeoJSON(data, type, normalized) {
     return normalized ? {type, value}  : value;
 }
 
-function extractMultiLineStringData(data) {
+function extractMultiLineStringData(data, type, normalized) {
     const multilineString = [];
     data.forEach((lineString) => {
-        multilineString.push(extractSingleLineStringData(lineString, false));
+        multilineString.push(extractSingleLineStringData(lineString, type, false));
     });
     return multilineString;
 }
@@ -140,9 +140,9 @@ function addLineStringData(entity, to, type, normalized = false) {
             isoxmlData = [isoxmlData];
         }
         if (isoxmlData.length === 1) {
-            value =  extractSingleLineStringData(isoxmlData[0] );
+            value =  extractSingleLineStringData(isoxmlData[0], type, normalized );
         } else {
-            value = entity[to] = extractMultiLineStringData(isoxmlData);
+            value = entity[to] = extractMultiLineStringData(isoxmlData, type, normalized);
         }
         entity[to] = normalized ? {type, value}  : value;
     }

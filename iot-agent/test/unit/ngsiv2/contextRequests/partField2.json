@@ -45,8 +45,8 @@
       ]
     }
   },
-  "data": {
-    "type": "PartFieldData",
+  "locationData": {
+    "type": "PolygonData",
     "value": {
       "type": "Partfield Boundary",
       "name": "Field Boundary",
