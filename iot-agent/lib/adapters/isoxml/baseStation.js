@@ -37,8 +37,8 @@ E BaseStationUp
 
 */
 
-function getCoordinates(entity) {
-    const coordinates = [getFloat(entity.C), getFloat(entity.D)];
+function extractCoordinates(entity) {
+    const coordinates = [getFloat(entity.D), getFloat(entity.C)];
     if (entity.E) {
         coordinates.push(getFloat(entity.E) / 1000.0);
     }
@@ -77,7 +77,7 @@ function transformMICS(entity, normalized) {
             type: 'geo:json',
             value: {
                 type: 'Point',
-                coordinates: getCoordinates(entity)
+                coordinates: extractCoordinates(entity)
             }
         };
     }
