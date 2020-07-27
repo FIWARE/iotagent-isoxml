@@ -2,18 +2,16 @@
 
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: APGL](https://img.shields.io/github/license/jason-fox/iotagent-ADAPT.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Docker badge](https://img.shields.io/docker/pulls/fiware/iotagent-ul.svg)](https://hub.docker.com/r/fiware/iotagent-ul/)
+[![Docker badge](https://img.shields.io/docker/pulls/fiware/iotagent-isoxml.svg)](https://hub.docker.com/r/fiware/iotagent-isoxml/)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/fiware-iotagent-isoxml.svg)](http://fiware-iotagent-isoxml.readthedocs.io/en/latest/?badge=latest)
 [![Build badge](https://img.shields.io/travis/jason-fox/iotagent-ADAPT.svg)](https://travis-ci.org/jason-fox/iotagent-ADAPT/)
 [![Coverage Status](https://coveralls.io/repos/github/jason-fox/iotagent-ADAPT/badge.svg?branch=master)](https://coveralls.io/github/jason-fox/iotagent-ADAPT?branch=master)
-![Status](https://nexus.lab.fiware.org/static/badges/statuses/iot-ultralight.svg)
 
-An Internet of Things Agent for the Ultralight 2.0 protocol (with [AMQP](https://www.amqp.org/),
-[HTTP](https://www.w3.org/Protocols/) and [MQTT](https://mqtt.org/) transports). This IoT Agent is designed to be a
+An Internet of Things Agent for the ISO 11783 protocol (with [HTTP](https://www.w3.org/Protocols/)). This IoT Agent is designed to be a
 bridge between ISOXML/ADAPT and the
-[NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
+[NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/FIWARE/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 interface of a context broker.
 
 It is based on the [IoT Agent Node.js Library](https://github.com/telefonicaid/iotagent-node-lib). Further general
@@ -21,7 +19,7 @@ information about the FIWARE IoT Agents framework, its architecture and the comm
 library's GitHub repository.
 
 
-| :books: [Documentation](https://fiware-iotagent-isoxml.readthedocs.io)  | :whale: [Docker Hub](https://hub.docker.com/r/fiware/iotagent-ul/) | :dart: [Roadmap](https://github.com/jason-fox/iotagent-ADAPT/blob/master/docs/roadmap.md) |
+| :books: [Documentation](https://fiware-iotagent-isoxml.readthedocs.io)  | :whale: [Docker Hub](https://hub.docker.com/r/fiware/iotagent-isoxml/) | :dart: [Roadmap](https://github.com/jason-fox/iotagent-ADAPT/blob/master/docs/roadmap.md) |
 | ------------------------------------------------------------------ |  ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
 
 
@@ -66,7 +64,7 @@ Apiary reference for the Configuration API can be found
 [here](https://telefonicaiotiotagents.docs.apiary.io/#reference/configuration-api). More information about IoT Agents
 and their APIs can be found in the IoT Agent Library [documentation](https://iotagent-node-lib.readthedocs.io/).
 
-The latest IoT Agent for Ultralight documentation is also available on
+The latest IoT Agent for ISOXML/ADAPT documentation is also available on
 [ReadtheDocs](https://fiware-iotagent-isoxml.readthedocs.io/en/latest/)
 
 ## Testing
@@ -83,7 +81,7 @@ npm test
 
 ## License
 
-The IoT Agent for Ultralight is licensed under [Affero General Public License (GPL) version 3](./LICENSE).
+The IoT Agent for ISOXML/ADAPT is licensed under [Affero General Public License (GPL) version 3](./LICENSE).
 
 © 2020 FIWARE Foundation e.V.
 
