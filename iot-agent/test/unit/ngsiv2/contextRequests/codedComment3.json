@@ -1,0 +1,39 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "cct"
+  },
+  "name": {
+    "type": "Text",
+    "value": "Weeds"
+  },
+  "scope": {
+    "type": "Text",
+    "value": "global"
+  },
+  "codedCommentListValue": {
+    "type": "CodedCommentListValue",
+    "value": [
+      {
+        "id": "urn:ngsi-ld:CodedCommentListValue:CCL12",
+        "name": "no weeds"
+      },
+      {
+        "id": "urn:ngsi-ld:CodedCommentListValue:CCL13",
+        "name": "some small weeds"
+      },
+      {
+        "id": "urn:ngsi-ld:CodedCommentListValue:CCL14",
+        "name": "some large weeds"
+      },
+      {
+        "id": "urn:ngsi-ld:CodedCommentListValue:CCL15",
+        "name": "numerous small weeds"
+      },
+      {
+        "id": "urn:ngsi-ld:CodedCommentListValue:CCL16",
+        "name": "numerous large weeds"
+      }
+    ]
+  }
+}

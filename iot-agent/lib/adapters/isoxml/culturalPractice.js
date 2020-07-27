@@ -58,7 +58,7 @@ function transformMICS(entity, normalized) {
     }
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
 
-    MICS.addArray(entity, operationTechniqueReference, 'operationTechniqueReference', normalized);
+    operationTechniqueReference.addReferences(entity, 'operationTechniqueRef', normalized);
 
     return entity;
 }

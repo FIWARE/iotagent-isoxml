@@ -1,0 +1,10 @@
+{
+    "isoxml_type": {
+        "value": "ctp",
+        "type": "string"
+    },
+    "name": {
+        "type": "Text",
+        "value": "barley"
+    }
+}

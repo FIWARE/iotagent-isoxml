@@ -1,0 +1,40 @@
+{
+    "isoxml_type": {
+        "value": "cld",
+        "type": "string"
+    },
+    "defaultColour": {
+        "type": "Integer",
+        "value": 0
+    },
+    "colourRange": {
+        "type": "ColourRange",
+        "value": [
+            {
+                "minimumValue": 0,
+                "maximumValue": 9999,
+                "colour": 1
+            },
+            {
+                "minimumValue": 10000,
+                "maximumValue": 14999,
+                "colour": 2
+            },
+            {
+                "minimumValue": 15000,
+                "maximumValue": 19999,
+                "colour": 3
+            },
+            {
+                "minimumValue": 20000,
+                "maximumValue": 29999,
+                "colour": 4
+            },
+            {
+                "minimumValue": 30000,
+                "maximumValue": 99999,
+                "colour": 5
+            }
+        ]
+    }
+}

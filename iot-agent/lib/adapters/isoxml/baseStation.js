@@ -37,6 +37,18 @@ E BaseStationUp
 
 */
 
+function getCoordinates(entity) {
+    const coordinates = [getFloat(entity.C), getFloat(entity.D)];
+    if (entity.E) {
+        coordinates.push(getFloat(entity.E) / 1000.0);
+    }
+    return coordinates;
+}
+
+function getFloat(data) {
+    return parseFloat(Object.prototype.hasOwnProperty.call(data, 'value') ? data.value : data);
+}
+
 /**
  * This function maps an NGSI object to an ISOXML BSN
  */
@@ -60,13 +72,14 @@ function transformMICS(entity, normalized) {
         entity.id = transforms.generateURI(entity.A, isoxmlType);
     }
     MICS.addProperty(entity, 'B', 'name', schema.TEXT, normalized);
-
     if (entity.C && entity.D) {
-        const coordinates = [parseFloat(entity.C), parseFloat(entity.D)];
-        if (entity.E) {
-            coordinates.push(parseFloat(entity.E));
-        }
-        entity.location = { type: 'Point', coordinates };
+        entity.location = {
+            type: 'geo:json',
+            value: {
+                type: 'Point',
+                coordinates: getCoordinates(entity)
+            }
+        };
     }
     return entity;
 }

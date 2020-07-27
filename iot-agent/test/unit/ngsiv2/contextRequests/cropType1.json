@@ -1,0 +1,27 @@
+{
+    "isoxml_type": {
+        "value": "ctp",
+        "type": "string"
+    },
+    "name": {
+        "type": "Text",
+        "value": "wheat"
+    },
+    "cropVariety": {
+        "type": "CropVariety",
+        "value": [
+            {
+                "id": "urn:ngsi-ld:CropVariety:CVT1",
+                "name": "Ritmo B"
+            },
+            {
+                "id": "urn:ngsi-ld:CropVariety:CVT2",
+                "name": "Dekan B"
+            },
+            {
+                "id": "urn:ngsi-ld:CropVariety:CVT3",
+                "name": "Ares C"
+            }
+        ]
+    }
+}

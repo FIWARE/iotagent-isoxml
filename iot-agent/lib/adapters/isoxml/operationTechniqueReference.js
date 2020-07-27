@@ -24,6 +24,7 @@ const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
 const isoxmlType = 'OTR';
+const from = isoxmlType.toLowerCase();
 const ngsiType = 'OperationTechniqueReference';
 
 const operationTechnique = require('./operationTechnique');
@@ -31,6 +32,25 @@ const operationTechnique = require('./operationTechnique');
 /*
 A OperationTechniqueIdRef
 */
+
+
+function getValue(entity) {
+    return Object.prototype.hasOwnProperty.call(entity, 'value') ? entity.value : entity;
+}
+
+function nsgiAttribute(type, value, normalized = false) {
+    return normalized
+        ? {
+              type,
+              value
+          }
+        : value;
+}
+
+
+
+
+
 
 /**
  * This function maps an NGSI object to an ISOXML OTR
@@ -45,6 +65,21 @@ function transformFMIS(entity) {
     return xml;
 }
 
+function addReferences(entity, to, normalized){
+    const value = [];
+    if (Object.prototype.hasOwnProperty.call(entity, from)) {
+        let elements = getValue(entity[from]);
+        if (!Array.isArray(elements)) {
+            elements = [elements];
+        }
+        elements.forEach((element) => {
+            value.push(transforms.generateURI(element.A, ngsiType ));
+        });
+        entity[to] = nsgiAttribute('Relationship', value, normalized);
+        delete entity[from];
+    }
+}
+
 /**
  * This function maps an ISOXML OTR to an NGSI object
  */
@@ -55,13 +90,14 @@ function transformMICS(entity, normalized) {
 
 function relationships(entity) {
     const refs = [];
-    transforms.addReference(refs, entity, 'baseStationIdRef');
+    transforms.addReference(refs, entity, 'operationTechniqueIdRef');
     return refs;
 }
 
 module.exports = {
     transformFMIS,
     transformMICS,
+    addReferences,
     relationships,
     isoxmlType,
     ngsiType

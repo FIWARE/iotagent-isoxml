@@ -1,0 +1,123 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "dvc"
+  },
+  "name": {
+    "type": "Text",
+    "value": "Tiller"
+  },
+  "softwareVersion": {
+    "type": "Text",
+    "value": "1.02*"
+  },
+  "clientName": {
+    "type": "Text",
+    "value": "A00484000B2CAF13"
+  },
+  "structureLabel": {
+    "type": "Text",
+    "value": "32A0FE34A56F00"
+  },
+  "localizationLabel": {
+    "type": "Text",
+    "value": "FF000000006E65"
+  },
+  "deviceElement": {
+    "type": "DeviceElement",
+    "value": [
+      {
+        "id": "urn:ngsi-ld:DeviceElement:DET1",
+        "objectId": 1,
+        "elementType": "device",
+        "elementNumber": 0,
+        "parentObjectId": 0,
+        "objectReference": [
+          {
+            "objectId": 2
+          },
+          {
+            "objectId": 3
+          },
+          {
+            "objectId": 4
+          },
+          {
+            "objectId": 5
+          },
+          {
+            "objectId": 6
+          }
+        ]
+      }
+    ]
+  },
+  "deviceProcessData": {
+    "type": "DeviceProcessData",
+    "value": [
+      {
+        "objectId": 2,
+        "ddi": "0074",
+        "property": 2,
+        "triggerMethods": 16,
+        "name": "Area",
+        "presentationObjectId": 9
+      },
+      {
+        "objectId": 3,
+        "ddi": "0077",
+        "property": 2,
+        "triggerMethods": 16,
+        "name": "Time ON",
+        "presentationObjectId": 7
+      },
+      {
+        "objectId": 4,
+        "ddi": "008D",
+        "property": 1,
+        "triggerMethods": 3,
+        "name": "Work ON/OFF"
+      },
+      {
+        "objectId": 5,
+        "ddi": "0043",
+        "property": 1,
+        "triggerMethods": 3,
+        "name": "Width",
+        "presentationObjectId": 8
+      },
+      {
+        "objectId": 6,
+        "ddi": "DFFF",
+        "property": 0,
+        "triggerMethods": 31
+      }
+    ]
+  },
+  "deviceValuePresentation": {
+    "type": "DeviceValuePresentation",
+    "value": [
+      {
+        "objectId": 7,
+        "offset": 0,
+        "scale": 0.0002777778,
+        "numberOfDecimals": 2,
+        "unit": "hr"
+      },
+      {
+        "objectId": 8,
+        "offset": 0,
+        "scale": 0.001,
+        "numberOfDecimals": 1,
+        "unit": "m"
+      },
+      {
+        "objectId": 9,
+        "offset": 0,
+        "scale": 0.0001,
+        "numberOfDecimals": 2,
+        "unit": "ha"
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+	"isoxml_type": {
+        "value": "ccg",
+        "type": "string"
+    },
+    "name": {
+        "type": "Text",
+        "value": "Weeds"
+    }
+}

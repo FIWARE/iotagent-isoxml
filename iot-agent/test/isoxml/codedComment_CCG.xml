@@ -1,0 +1,6 @@
+<CCG A="CCG1" B="Weeds" />
+<CCT A="CCT6" B="Thistles" C="3" D="CCG1" > 
+	<CCL A="CCL37" B="10 P./sqm"/>
+	<CCL A="CCL38" B="20 P./sqm"/>
+	<CCL A="CCL39" B="30 P./sqm"/>
+</CCT>

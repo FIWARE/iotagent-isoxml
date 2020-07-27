@@ -26,7 +26,7 @@ config.http = {
 };
 
 config.iota = {
-    logLevel: 'FATAL',
+    logLevel: 'ERROR',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -40,56 +40,56 @@ config.iota = {
         type: 'memory'
     },
     types: {
-        AttachedFile : {apikey: "afe" },
-        BaseStation : { apikey: "bsn" },
-        CodedComment : { apikey: "cct" },
-        CodedCommentGroup : { apikey: "ccg" },
-        ColourLegend : {apikey: "cld" },
-        CropType : {apikey: "ctp"},
-        CulturalPractice : {apikey: "cpc"}, 
-        Customer : {
-            apikey: "ctr",
+        AttachedFile: { apikey: 'afe' },
+        BaseStation: { apikey: 'bsn' },
+        CodedComment: { apikey: 'cct' },
+        CodedCommentGroup: { apikey: 'ccg' },
+        ColourLegend: { apikey: 'cld' },
+        CropType: { apikey: 'ctp' },
+        CulturalPractice: { apikey: 'cpc' },
+        Customer: {
+            apikey: 'ctr',
             static_attributes: [
                 {
-                    name: "hasOccupation",
-                    type: "Occupation",
+                    name: 'hasOccupation',
+                    type: 'Occupation',
                     value: {
-                        name: "Customer"
+                        name: 'Customer'
                     }
                 }
             ]
         },
-        Device : { apikey: "dvc" },
-        Farm : {
-            apikey: "frm",
+        Device: { apikey: 'dvc' },
+        Farm: {
+            apikey: 'frm',
             static_attributes: [
                 {
-                    name: "category",
-                    type: "Text",
-                    value: "farm"
+                    name: 'category',
+                    type: 'Text',
+                    value: 'farm'
                 }
             ]
         },
-        OperationTechique : { apikey: "otq" },
-        PartField : { apikey: "pfd" },
-        Product : { apikey: "pdt" },
-        ProductGroup : { apikey: "pgp" },
-        TaskControllerCapabilities : { apikey: "tcc" },
-        Task : { apikey: "tsk" },
-        ValuePresentation : { apikey: "vpn" },
-        Worker : {
-            apikey: "wkr",
+        OperationTechique: { apikey: 'otq' },
+        PartField: { apikey: 'pfd' },
+        Product: { apikey: 'pdt' },
+        ProductGroup: { apikey: 'pgp' },
+        TaskControllerCapabilities: { apikey: 'tcc' },
+        Task: { apikey: 'tsk' },
+        ValuePresentation: { apikey: 'vpn' },
+        Worker: {
+            apikey: 'wkr',
             static_attributes: [
                 {
-                    name: "hasOccupation",
-                    type: "Occupation",
+                    name: 'hasOccupation',
+                    type: 'Occupation',
                     value: {
-                        name: "Worker"
+                        name: 'Worker'
                     }
                 }
             ]
         },
-        ExternalFileReference : {apikey: "xfr"}
+        ExternalFileReference: { apikey: 'xfr' }
     },
     service: 'isoxml',
     subservice: '/',

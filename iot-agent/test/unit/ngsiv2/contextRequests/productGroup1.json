@@ -1,0 +1,10 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "pgp"
+  },
+  "name": {
+    "type": "Property",
+    "value": "Herbicides"
+  }
+}

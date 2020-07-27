@@ -1,0 +1,16 @@
+{
+    "isoxml_type": {
+        "value": "cpc",
+        "type": "string"
+    },
+    "name": {
+        "type": "Text",
+        "value": "fertilization"
+    },
+    "operationTechniqueRef": {
+        "type": "Relationship",
+        "value": [
+            "urn:ngsi-ld:OperationTechniqueReference:OTQ1"
+        ]
+    }
+}

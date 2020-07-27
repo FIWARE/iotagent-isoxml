@@ -1,0 +1,21 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "bsn"
+  },
+  "name": {
+    "type": "Text",
+    "value": "RTK Reference 1"
+  },
+  "location": {
+    "type": "geo:json",
+    "value": {
+      "type": "Point",
+      "coordinates": [
+        54.588945,
+        9.989209,
+        523.867
+      ]
+    }
+  }
+}

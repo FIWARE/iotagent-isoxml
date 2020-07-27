@@ -25,6 +25,11 @@ function update(entity, typeInformation, callback) {
     attrs.forEach((attr) => {
         delete entity[attr];
     });
+
+    //console.error('');
+    //console.error(JSON.stringify(entity, null, 4));
+    //console.error('');
+
     return callback(null, entity, typeInformation);
 }
 

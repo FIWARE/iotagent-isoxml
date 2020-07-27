@@ -33,7 +33,7 @@ const utils = require('../../utils');
 let contextBrokerUnprovMock;
 let contextBrokerMock;
 
-describe('Explcitily configured ISOXML measures', function () {
+describe('Service Configuration', function () {
     beforeEach(function (done) {
         const provisionOptions = {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',

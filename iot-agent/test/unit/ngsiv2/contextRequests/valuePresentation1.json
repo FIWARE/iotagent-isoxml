@@ -1,0 +1,22 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "vpn"
+  },
+  "offset": {
+    "type": "Number",
+    "value": 0.001
+  },
+  "scale": {
+    "type": "Number",
+    "value": 1
+  },
+  "numberOfDecimals": {
+    "type": "Number",
+    "value": 0
+  },
+  "unit": {
+    "type": "Text",
+    "value": "kg"
+  }
+}

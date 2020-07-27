@@ -1,0 +1,14 @@
+{
+    "isoxml_type": {
+        "value": "pgp",
+        "type": "string"
+    },
+    "name": {
+        "type": "Property",
+        "value": "potato"
+    },
+    "groupType": {
+        "type": "Text",
+        "value": "crops"
+    }
+}

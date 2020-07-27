@@ -1,0 +1,14 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "cct"
+  },
+  "name": {
+    "type": "Text",
+    "value": "Field operation interrupted"
+  },
+  "scope": {
+    "type": "Text",
+    "value": "point"
+  }
+}

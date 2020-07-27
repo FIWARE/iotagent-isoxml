@@ -1,0 +1,35 @@
+{
+    "isoxml_type": {
+        "value": "cct",
+        "type": "string"
+    },
+    "name": {
+        "type": "Text",
+        "value": "Thistles"
+    },
+    "scope": {
+        "type": "Text",
+        "value": "continuous"
+    },
+    "codedCommentGroupIdRef": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:CodedCommentGroup:CCG1"
+    },
+    "codedCommentListValue": {
+        "type": "CodedCommentListValue",
+        "value": [
+            {
+                "id": "urn:ngsi-ld:CodedCommentListValue:CCL37",
+                "name": "10 P./sqm"
+            },
+            {
+                "id": "urn:ngsi-ld:CodedCommentListValue:CCL38",
+                "name": "20 P./sqm"
+            },
+            {
+                "id": "urn:ngsi-ld:CodedCommentListValue:CCL39",
+                "name": "30 P./sqm"
+            }
+        ]
+    }
+}

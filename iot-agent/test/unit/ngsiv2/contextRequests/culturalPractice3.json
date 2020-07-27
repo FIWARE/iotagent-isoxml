@@ -1,0 +1,10 @@
+{
+    "isoxml_type": {
+        "value": "cpc",
+        "type": "string"
+    },
+    "name": {
+        "type": "Text",
+        "value": "harvest"
+    }
+}

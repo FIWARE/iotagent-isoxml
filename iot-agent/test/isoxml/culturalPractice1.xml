@@ -1,0 +1,5 @@
+<CPC A="CPC1" B="fertilization">
+	<OTR A="OTQ1"/>
+</CPC>
+<CPC A="CPC2" B="seeding"/> 
+<CPC A="CPC3" B="harvest"/>

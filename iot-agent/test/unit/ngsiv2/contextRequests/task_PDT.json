@@ -1,0 +1,25 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "tsk"
+  },
+  "name": {
+    "type": "Text",
+    "value": "mass-based product allocation"
+  },
+  "productAllocation": {
+    "type": "ProductAllocation",
+    "value": [
+      {
+        "productIdRef": "urn:ngsi-ld:Product:PDT2",
+        "quantityDDI": "004B",
+        "quantityValue": 20000,
+        "transferMode": "Filling",
+        "deviceElementIdRef": "urn:ngsi-ld:DeviceElement:DET3",
+        "valuePresentationIdRef": "urn:ngsi-ld:Value:VPN1",
+        "startTime": "2003-11-12T08:00:00",
+        "status": "realized"
+      }
+    ]
+  }
+}

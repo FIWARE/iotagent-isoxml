@@ -1,0 +1,14 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "pdt"
+  },
+  "name": {
+    "type": "Text",
+    "value": "agent 1"
+  },
+  "productGroupIdRef": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:ProductGroup:PGP1"
+  }
+}

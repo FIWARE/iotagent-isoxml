@@ -1,0 +1,7 @@
+<CTP A="CTP1" B="wheat">
+	<CVT A="CVT1" B="Ritmo B"/> 
+	<CVT A="CVT2" B="Dekan B"/> 
+	<CVT A="CVT3" B="Ares C"/>
+</CTP>
+<CTP A="CTP2" B="barley"/>
+<CTP A="CTP3" B="oats"/>
