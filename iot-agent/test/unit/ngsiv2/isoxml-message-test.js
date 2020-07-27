@@ -207,7 +207,7 @@ describe('ISOXML measures', function () {
         });
     });
 
-    describe('When a two <CCT> elements arrive, via HTTP POST', function () {
+    describe('When two <CCT> elements arrive, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
             method: 'POST',
@@ -572,6 +572,43 @@ describe('ISOXML measures', function () {
             });
         });
         it('should send a new update context request to the Context Broker with just that entity', function (done) {
+            request(getOptions, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When two <WKR> elements arrive, via HTTP POST', function () {
+        const getOptions = {
+            url: 'http://localhost:' + config.http.port + '/iot/isoxml',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+            body: utils.readISOXML('./test/isoxml/worker.xml')
+        };
+
+        beforeEach(function () {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'isoxml')
+                .matchHeader('fiware-servicepath', '/')
+                .post('/v2/entities?options=upsert')
+                .times(1)
+                .reply(204);
+
+            addMock('WKR1', 'Person', 'worker1.json');
+            addMock('WKR2', 'Person', 'worker2.json');
+        });
+
+        it('should end up with a 200 OK status code', function (done) {
+            request(getOptions, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should send a new update context request to the Context Broker with two entities', function (done) {
             request(getOptions, function (error, response, body) {
                 contextBrokerMock.done();
                 done();

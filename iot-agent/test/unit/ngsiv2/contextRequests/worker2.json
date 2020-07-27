@@ -1,0 +1,20 @@
+{
+  "hasOccupation": {
+    "type": "Occupation",
+    "value": {
+      "name": "Worker"
+    }
+  },
+  "isoxml_type": {
+    "type": "string",
+    "value": "wkr"
+  },
+  "familyName": {
+    "type": "Text",
+    "value": "Miller"
+  },
+  "givenName": {
+    "type": "Text",
+    "value": "Karl"
+  }
+}
