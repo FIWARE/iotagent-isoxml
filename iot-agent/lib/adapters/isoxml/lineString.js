@@ -61,22 +61,24 @@ function extractSingleLineStringData(data) {
     const lineString = {};
     lineString.type = data.A ? LINE_STRING_TYPES[data.A] : undefined;
     lineString.name = data.B ? data.B : undefined;
-    lineString.width = data.C ? parseInt(data.C) : undefined;
-    lineString.length = data.D ? parseInt(data.D) : undefined;
+    lineString.width = data.C ? parseInt(data.C)/ 1000.0 : undefined;
+    lineString.length = data.D ? parseInt(data.D)/1000.0 : undefined;
     lineString.color = data.E ? parseInt(data.E) : undefined;
     lineString.id = data.F ? transforms.generateURI(data.F, ngsiType) : undefined;
     return lineString;
 }
 
-function extractSingleLineStringGeoJSON(data) {
+function extractSingleLineStringGeoJSON(data, type, normalized) {
     const coordinates = [];
-    data.lsg.pnt.forEach((point) => {
+    data.pnt.forEach((point) => {
         coordinates.push(extractCoordinates(point));
     });
-    return {
+    const value = {
         type: 'LineString',
         coordinates
     };
+
+    return normalized ? {type, value}  : value;
 }
 
 function extractMultiLineStringData(data) {
@@ -87,7 +89,7 @@ function extractMultiLineStringData(data) {
     return multilineString;
 }
 
-function extractMultiLineStringGeoJSON(data) {
+function extractMultiLineStringGeoJSON(data, type, normalized) {
     const lineStrings = [];
     data.lsg.forEach((lineString) => {
         const coordinates = [];
@@ -97,44 +99,58 @@ function extractMultiLineStringGeoJSON(data) {
         lineStrings.push(coordinates);
     });
 
-    return {
+    const value = {
         type: 'MultiLineString',
         coordinates: lineStrings
     };
+    return normalized ? {type, value}  : value;
 }
 
 function extractCoordinates(data) {
     const coordinates = [parseFloat(data.C), parseFloat(data.D)];
     if (data.E) {
-        coordinates.push(parseFloat(data.E));
+        coordinates.push(parseFloat(data.E) /1000.0);
     }
     return coordinates;
 }
 
-function addLineString(entity, to) {
+function addLineString(entity, to, type = 'GeoProperty', normalized = false) {
     if (entity[from]) {
-        const lineString = {};
+        let value;
         let isoxmlData = entity[from];
         if (!Array.isArray(isoxmlData)) {
             isoxmlData = [isoxmlData];
         }
 
         if (isoxmlData.length === 1) {
-            lineString.data = extractSingleLineStringData(isoxmlData[0]);
-            lineString.location = extractSingleLineStringGeoJSON(isoxmlData[0]);
+            value = extractSingleLineStringGeoJSON(isoxmlData[0], type, normalized);
         } else {
-            lineString.data = extractMultiLineStringData(isoxmlData);
-            lineString.location = extractMultiLineStringGeoJSON(isoxmlData);
+            value  = extractMultiLineStringGeoJSON(isoxmlData, type, normalized);
         }
 
-        entity[to] = lineString;
+        entity[to] = normalized ? {type, value}  : value;
+    }
+}
 
-        delete entity[from];
+function addLineStringData(entity, to, type, normalized = false) {
+    if (entity[from]) {
+        let isoxmlData = entity[from];
+        let value;
+        if (!Array.isArray(isoxmlData)) {
+            isoxmlData = [isoxmlData];
+        }
+        if (isoxmlData.length === 1) {
+            value =  extractSingleLineStringData(isoxmlData[0] );
+        } else {
+            value = entity[to] = extractMultiLineStringData(isoxmlData);
+        }
+        entity[to] = normalized ? {type, value}  : value;
     }
 }
 
 module.exports = {
     isoxmlType,
     ngsiType,
-    add: addLineString
+    add: addLineString,
+    addData: addLineStringData
 };

@@ -1,0 +1,122 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "pfd"
+  },
+  "name": {
+    "type": "Text",
+    "value": "hill"
+  },
+  "area": {
+    "type": "Number",
+    "value": 32000
+  },
+  "cropTypeIdRef": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:CropType:CTP3"
+  },
+  "location": {
+    "type": "geo:json",
+    "value": {
+      "type": "Polygon",
+      "coordinates": [
+        [
+          [
+            40.84982,
+            -96.596045,
+            150.234
+          ],
+          [
+            40.84982,
+            -96.592655,
+            148.987
+          ],
+          [
+            40.846573,
+            -96.592526,
+            148.284
+          ],
+          [
+            40.84982,
+            -96.596045,
+            150.234
+          ]
+        ]
+      ]
+    }
+  },
+  "data": {
+    "type": "PartFieldData",
+    "value": {
+      "type": "Partfield Boundary",
+      "name": "Field Boundary",
+      "area": 32000,
+      "color": 1
+    }
+  },
+  "guidanceGroup": {
+    "type": "GuidanceGroup",
+    "value": [
+      {
+        "id": "urn:ngsi-ld:GuidanceGroup:GGP1",
+        "guidancePattern": [
+          {
+            "id": "urn:ngsi-ld:GuidancePattern:GPN1",
+            "patternType": "AB",
+            "patternOptions": "Clockwise",
+            "pattern": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  40.84934,
+                  -96.593445,
+                  148.987
+                ],
+                [
+                  40.84683,
+                  -96.592225,
+                  150.234
+                ]
+              ]
+            },
+            "patternData": {
+              "type": "GuidancePattern",
+              "name": "Guidance1",
+              "width": 6,
+              "length": 1500,
+              "color": 1
+            }
+          },
+          {
+            "id": "urn:ngsi-ld:GuidancePattern:GPN2",
+            "patternType": "AB",
+            "patternOptions": "Clockwise",
+            "pattern": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  40.84934,
+                  -96.122322,
+                  123.506
+                ],
+                [
+                  40.84911,
+                  -96.591122,
+                  122.544
+                ]
+              ]
+            },
+            "patternData": {
+              "type": "GuidancePattern",
+              "name": "Guidance2",
+              "width": 18,
+              "length": 900,
+              "color": 1,
+              "id": "urn:ngsi-ld:LineString:LSG2"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+    "isoxml_type": {
+        "value": "pfd",
+        "type": "string"
+    },
+    "name": {
+        "type": "Text",
+        "value": "hill"
+    },
+    "area": {
+        "type": "Number",
+        "value": 32000
+    },
+    "cropTypeIdRef": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:CropType:CTP3"
+    }
+}

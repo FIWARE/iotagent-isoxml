@@ -72,8 +72,9 @@ function transformFMIS(entity) {
 function transformMICS(entity, normalized) {
     MICS.addProperty(entity, 'A', 'ddi', schema.TEXT, normalized);
     MICS.addInt(entity, 'B', 'method', schema.NUMBER, normalized);
-    MICS.addInt(entity, 'C', 'distanceInterval', schema.NUMBER, normalized);
-    MICS.addInt(entity, 'D', 'timeInterval', schema.NUMBER, normalized);
+    
+    MICS.addMilli(entity, 'C', 'distanceInterval', schema.NUMBER, normalized);
+    MICS.addMilli(entity, 'D', 'timeInterval', schema.NUMBER, normalized);
     MICS.addFloat(entity, 'E', 'thresholdMinimum', schema.NUMBER, normalized);
     MICS.addFloat(entity, 'F', 'thresholdMaximum', schema.NUMBER, normalized);
     MICS.addFloat(entity, 'G', 'thresholdChange', schema.NUMBER, normalized);

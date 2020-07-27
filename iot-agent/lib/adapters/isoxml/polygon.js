@@ -60,7 +60,19 @@ const POLYGON_TYPES = {
     '12': 'Windbreak'
 };
 
+function compareCoordinates(a, b){
+    if (a.length !== b.length){
+        return false;
+    }
+    return a.every((value, index) => { return value === b[index]});
+
+}
+
 function extractSinglePolygonData(data) {
+
+
+
+
     const polygon = {};
     polygon.type = data.A ? POLYGON_TYPES[data.A] : undefined;
     polygon.name = data.B ? data.B : undefined;
@@ -70,7 +82,7 @@ function extractSinglePolygonData(data) {
     return polygon;
 }
 
-function extractSinglePolygonGeoJSON(data) {
+function extractSinglePolygonGeoJSON(data, type, normalized) {
     const coordinates = [];
     const lsg = Array.isArray(data.lsg) ? data.lsg : [data.lsg];
     lsg.forEach((lineString) => {
@@ -78,24 +90,29 @@ function extractSinglePolygonGeoJSON(data) {
         lineString.pnt.forEach((point) => {
             boundary.push(extractCoordinates(point));
         });
+        // ensure Polygon is a GeoJSON linear ring.
+        if (!compareCoordinates(boundary[0], boundary[boundary.length -1])){
+            boundary.push(boundary[0]);
+        }
         coordinates.push(boundary);
     });
-
-    return {
+    const value =  {
         type: 'Polygon',
         coordinates
     };
+    return normalized ? {type, value}  : value;
 }
 
 function extractMultiPolygonData(data) {
     const multiPolygon = [];
     data.forEach((polygon) => {
-        multiPolygon.push(extractSinglePolygonData(polygon, false));
+        const value = polygon.value ? polygon.value : polygon;
+        multiPolygon.push(extractSinglePolygonData(value, false));
     });
     return multiPolygon;
 }
 
-function extractMultiPolygonGeoJSON(data) {
+function extractMultiPolygonGeoJSON(data, type, normalized) {
     const polygons = [];
     data.forEach((polygon) => {
         const coordinates = [];
@@ -110,44 +127,57 @@ function extractMultiPolygonGeoJSON(data) {
         polygons.push(coordinates);
     });
 
-    return {
+    const value = {
         type: 'MultiPolygon',
         coordinates: polygons
     };
+    return normalized ? {type, value}  : value;
 }
 
 function extractCoordinates(data) {
     const coordinates = [parseFloat(data.C), parseFloat(data.D)];
     if (data.E) {
-        coordinates.push(parseFloat(data.E));
+        coordinates.push(parseFloat(data.E)/ 1000.0);
     }
     return coordinates;
 }
 
-function addPolygon(entity, to) {
+function addPolygonGeoJSON(entity, to, type = 'GeoProperty', normalized = false) {
     if (entity[from]) {
-        const polygon = {};
         let isoxmlData = entity[from];
         if (!Array.isArray(isoxmlData)) {
             isoxmlData = [isoxmlData];
         }
 
         if (isoxmlData.length === 1) {
-            polygon.data = extractSinglePolygonData(isoxmlData[0]);
-            polygon.location = extractSinglePolygonGeoJSON(isoxmlData[0]);
+            const data = isoxmlData[0].value ? isoxmlData[0].value : isoxmlData[0];
+            entity[to] = extractSinglePolygonGeoJSON(data, type, normalized);
         } else {
-            polygon.data = extractMultiPolygonData(isoxmlData);
-            polygon.location = extractMultiPolygonGeoJSON(isoxmlData);
+            entity[to] = extractMultiPolygonGeoJSON(isoxmlData, type, normalized);
         }
+    }
+}
 
-        entity[to] = polygon;
-
-        delete entity[from];
+function addPolygonData(entity, to, type, normalized = false) {
+    if (entity[from]) {
+        let isoxmlData = entity[from];
+        let value;
+        if (!Array.isArray(isoxmlData)) {
+            isoxmlData = [isoxmlData];
+        }
+        if (isoxmlData.length === 1) {
+            const data = isoxmlData[0].value ? isoxmlData[0].value : isoxmlData[0];
+            value =  extractSinglePolygonData(data);
+        } else {
+            value = entity[to] = extractMultiPolygonData(isoxmlData);
+        }
+        entity[to] = normalized ? {type, value}  : value;
     }
 }
 
 module.exports = {
     isoxmlType,
     ngsiType,
-    add: addPolygon
+    add: addPolygonGeoJSON,
+    addData: addPolygonData
 };

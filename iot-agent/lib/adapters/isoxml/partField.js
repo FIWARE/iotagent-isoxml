@@ -88,11 +88,17 @@ function transformMICS(entity, normalized) {
     MICS.addRelationship(entity, 'H', 'cropVarietyIdRef', cropVariety.ngsiType, normalized);
     MICS.addRelationship(entity, 'I', 'parent', ngsiType, normalized);
 
-    lineString.add(entity, 'lineString');
-    polygon.add(entity, 'polygon');
-    point.add(entity, 'point');
+    lineString.add(entity, 'location', 'geo:json', normalized);
+    polygon.add(entity, 'location', 'geo:json', normalized);
+    point.add(entity, 'location', 'geo:json', normalized);
+    lineString.addData(entity, 'data', 'PartFieldData', normalized);
+    polygon.addData(entity, 'data', 'PartFieldData', normalized);
 
     MICS.addArray(entity, guidanceGroup, 'guidanceGroup', normalized);
+
+    delete entity.pln;
+    delete entity.lsg;
+    delete entity.pnt;
     return entity;
 }
 

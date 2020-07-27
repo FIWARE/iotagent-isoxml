@@ -1,0 +1,43 @@
+{
+    "isoxml_type": {
+        "value": "pdt",
+        "type": "string"
+    },
+    "name": {
+        "type": "Text",
+        "value": "liquid_mix_12"
+    },
+    "valuePresentationIdRef": {
+        "type": "Relationship",
+        "value": "urn:ngsi-ld:Value:VPN1"
+    },
+    "quantityDDI": {
+        "type": "Text",
+        "value": "0048"
+    },
+    "productType": {
+        "type": "Text",
+        "value": "Mixture"
+    },
+    "mixtureRecipeQuantity": {
+        "type": "Number",
+        "value": 505
+    },
+    "productRelation": {
+        "type": "ProductRelation",
+        "value": [
+            {
+                "productIdRef": "urn:ngsi-ld:undefined:PDT1",
+                "quantityValue": 400
+            },
+            {
+                "productIdRef": "urn:ngsi-ld:undefined:PDT2",
+                "quantityValue": 100
+            },
+            {
+                "productIdRef": "urn:ngsi-ld:undefined:PDT24",
+                "quantityValue": 5
+            }
+        ]
+    }
+}

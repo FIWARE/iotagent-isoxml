@@ -163,6 +163,14 @@ const MICS = {
         }
     },
 
+    addMilli(entity, from, to, type = 'Float', normalized = true) {
+        if (Object.prototype.hasOwnProperty.call(entity, from)) {
+            const value = parseFloat(getValue(entity[from]) / 1000.0);
+            entity[to] = nsgiAttribute(type, value, normalized);
+        }
+    },
+
+
     addInt(entity, from, to, type = 'Integer', normalized = true) {
         if (Object.prototype.hasOwnProperty.call(entity, from)) {
             const value = parseInt(getValue(entity[from]));

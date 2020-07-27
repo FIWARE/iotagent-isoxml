@@ -34,12 +34,8 @@ let contextBrokerUnprovMock;
 let contextBrokerMock;
 
 function addMock(id, type, payload, code = 204) {
-    //console.error(payload);
     if (payload) {
         const json = utils.readJSON('./test/unit/ngsiv2/contextRequests/' + payload);
-
-        //console.error(JSON.stringify(json));
-
         contextBrokerMock
             .matchHeader('fiware-service', 'isoxml')
             .matchHeader('fiware-servicepath', '/')
@@ -110,7 +106,7 @@ describe('ISOXML measures', function () {
             headers: {
                 'Content-Type': 'application/xml'
             },
-            body: utils.readISOXML('./test/isoxml/device1.xml')
+            body: utils.readISOXML('./test/isoxml/device.xml')
         };
 
         beforeEach(function () {
@@ -218,7 +214,7 @@ describe('ISOXML measures', function () {
             headers: {
                 'Content-Type': 'application/xml'
             },
-            body: utils.readISOXML('./test/isoxml/codedComment1.xml')
+            body: utils.readISOXML('./test/isoxml/codedComment.xml')
         };
 
         beforeEach(function () {
@@ -361,7 +357,7 @@ describe('ISOXML measures', function () {
             headers: {
                 'Content-Type': 'application/xml'
             },
-            body: utils.readISOXML('./test/isoxml/colourLegend1.xml')
+            body: utils.readISOXML('./test/isoxml/colourLegend.xml')
         };
 
         beforeEach(function () {
@@ -393,7 +389,7 @@ describe('ISOXML measures', function () {
             headers: {
                 'Content-Type': 'application/xml'
             },
-            body: utils.readISOXML('./test/isoxml/baseStation1.xml')
+            body: utils.readISOXML('./test/isoxml/baseStation.xml')
         };
 
         beforeEach(function () {
@@ -424,7 +420,7 @@ describe('ISOXML measures', function () {
             headers: {
                 'Content-Type': 'application/xml'
             },
-            body: utils.readISOXML('./test/isoxml/culturalPractice1.xml')
+            body: utils.readISOXML('./test/isoxml/culturalPractice.xml')
         };
 
         beforeEach(function () {
@@ -449,6 +445,133 @@ describe('ISOXML measures', function () {
             });
         });
         it('should send a new update context request to the Context Broker with multiple entity', function (done) {
+            request(getOptions, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+
+    describe('When multiple <OTQ> elements arrive, via HTTP POST', function () {
+        const getOptions = {
+            url: 'http://localhost:' + config.http.port + '/iot/isoxml',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+            body: utils.readISOXML('./test/isoxml/operationTechnique.xml')
+        };
+
+        beforeEach(function () {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'isoxml')
+                .matchHeader('fiware-servicepath', '/')
+                .post('/v2/entities?options=upsert')
+                .times(2)
+                .reply(204);
+
+
+            addMock('OTQ1', 'OperationTechnique', 'operationTechnique1.json');
+            addMock('OTQ2', 'OperationTechnique', 'operationTechnique2.json');
+            addMock('OTQ3', 'OperationTechnique', 'operationTechnique3.json');
+        });
+
+        it('should end up with a 200 OK status code', function (done) {
+            request(getOptions, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should send a new update context request to the Context Broker with multiple entity', function (done) {
+            request(getOptions, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a single isoxml <PDT> element arrives, via HTTP POST', function () {
+        const getOptions = {
+            url: 'http://localhost:' + config.http.port + '/iot/isoxml',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+            body: utils.readISOXML('./test/isoxml/product.xml')
+        };
+
+        beforeEach(function () {
+            addMock('PDT250', 'Product', 'product2.json');
+        });
+
+        it('should end up with a 200OK status code', function (done) {
+            request(getOptions, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should send a new update context request to the Context Broker with just that entity', function (done) {
+            request(getOptions, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a single isoxml <PFD> element arrives, via HTTP POST', function () {
+        const getOptions = {
+            url: 'http://localhost:' + config.http.port + '/iot/isoxml',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+            body: utils.readISOXML('./test/isoxml/partField.xml')
+        };
+
+        beforeEach(function () {
+            addMock('PFD3', 'PartField', 'partField1.json');
+        });
+
+        it('should end up with a 200OK status code', function (done) {
+            request(getOptions, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should send a new update context request to the Context Broker with just that entity', function (done) {
+            request(getOptions, function (error, response, body) {
+                contextBrokerMock.done();
+                done();
+            });
+        });
+    });
+
+    describe('When a single isoxml <PFD> containing a <GGP> element arrives, via HTTP POST', function () {
+        const getOptions = {
+            url: 'http://localhost:' + config.http.port + '/iot/isoxml',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml'
+            },
+            body: utils.readISOXML('./test/isoxml/partField_GGP.xml')
+        };
+
+        beforeEach(function () {
+            addMock('PFD3', 'PartField', 'partField2.json');
+        });
+
+        it('should end up with a 200OK status code', function (done) {
+            request(getOptions, function (error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+                done();
+            });
+        });
+        it('should send a new update context request to the Context Broker with just that entity', function (done) {
             request(getOptions, function (error, response, body) {
                 contextBrokerMock.done();
                 done();
