@@ -95,7 +95,7 @@ function extractMultiPointGeoJSON(data) {
 }
 
 function extractCoordinates(data) {
-    const coordinates = [parseFloat(data.C), parseFloat(data.D)];
+    const coordinates = [parseFloat(data.D), parseFloat(data.C)];
     if (data.E) {
         coordinates.push(parseFloat(data.E));
     }
