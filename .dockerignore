@@ -1,2 +1,8 @@
-node_modules
+node_modules/
 npm-debug.log
+coverage/
+docs/
+.nyc_output/
+node_modules/
+test/
+README.md

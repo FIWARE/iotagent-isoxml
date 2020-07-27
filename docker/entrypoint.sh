@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright 2019 Telefonica Investigación y Desarrollo, S.A.U
+# Copyright 2020 FIWARE Foundation e.V.
 #
 # This file is part of iotagent-isoxml
 #
@@ -13,12 +13,6 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 # See the GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with iotagent-isoxml. If not, see http://www.gnu.org/licenses/.
-#
-# For those usages not covered by the GNU Affero General Public License please contact
-# with iot_support at tid dot es
 #
 
 # usage: file_env VAR [DEFAULT]
