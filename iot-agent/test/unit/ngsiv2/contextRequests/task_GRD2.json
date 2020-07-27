@@ -1,0 +1,68 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "tsk"
+  },
+  "activityType": {
+    "type": "Text",
+    "value": "planned"
+  },
+  "defaultTreatment": {
+    "type": "Number",
+    "value": 0
+  },
+  "grid": {
+    "type": "Grid",
+    "value": {
+      "position": {
+        "coordinates": [
+          "4.284920",
+          "51.812025"
+        ],
+        "type": "Point"
+      },
+      "cellNorthSize": 0.0015,
+      "cellEastSize": 0.0014,
+      "maxColumn": 200,
+      "maxRow": 300,
+      "filename": "GRD00001",
+      "gridType": 2,
+      "treatmentZoneCode": 1
+    }
+  },
+  "treatmentZone": {
+    "type": "TreatmentZone",
+    "value": [
+      {
+        "code": "1",
+        "name": "Layer 1, Rate 1",
+        "color": "2",
+        "processDataVariable": [
+          {
+            "ddi": "0006",
+            "value": null,
+            "productIdRef": "urn:ngsi-ld:Product:PDT1",
+            "valuePresentationIdRef": "urn:ngsi-ld:Value:VPN1",
+            "actualCulturalPracticeValue": 1,
+            "elementTypeInstanceValue": 0
+          },
+          {
+            "ddi": "0006",
+            "value": null,
+            "productIdRef": "urn:ngsi-ld:Product:PDT2",
+            "valuePresentationIdRef": "urn:ngsi-ld:Value:VPN1",
+            "actualCulturalPracticeValue": 1,
+            "elementTypeInstanceValue": 1
+          },
+          {
+            "ddi": "0006",
+            "value": null,
+            "productIdRef": "urn:ngsi-ld:Product:PDT3",
+            "valuePresentationIdRef": "urn:ngsi-ld:Value:VPN1",
+            "actualCulturalPracticeValue": 2
+          }
+        ]
+      }
+    ]
+  }
+}

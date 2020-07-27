@@ -1,0 +1,12 @@
+<TSK A="TSK22" B="filling example" D="FRM1" E="PFD1" G="1" H="1" F="WKR1">
+    <PAN A="PDT250" B="0048" C="50000" D="1" E="DET3" F="VPN1">
+        <ASP A="2003-08-20T08:10:00" D="4">
+            <PTN A="54.588945" B="9.989209" D="3"/>
+        </ASP>
+    </PAN>
+</TSK>
+<TSK A="TSK1" F="WKR1" G="1">
+    <GAN A="GGP1">
+        <ASP A="2003-08-20T08:00:00" B="2003-08-20T17:00:00" D="1"/>
+    </GAN>
+</TSK>

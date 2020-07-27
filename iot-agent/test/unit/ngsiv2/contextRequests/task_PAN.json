@@ -1,0 +1,55 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "tsk"
+  },
+  "name": {
+    "type": "Text",
+    "value": "filling example"
+  },
+  "refTarget": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Building:FRM1"
+  },
+  "refObject": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:PartField:PFD1"
+  },
+  "refAgent": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Person:WKR1"
+  },
+  "activityType": {
+    "type": "Text",
+    "value": "planned"
+  },
+  "defaultTreatment": {
+    "type": "Number",
+    "value": 1
+  },
+  "productAllocation": {
+    "type": "ProductAllocation",
+    "value": [
+      {
+        "productIdRef": "urn:ngsi-ld:Product:PDT250",
+        "quantityDDI": "0048",
+        "quantityValue": 50000,
+        "transferMode": "Filling",
+        "deviceElementIdRef": "urn:ngsi-ld:DeviceElement:DET3",
+        "valuePresentationIdRef": "urn:ngsi-ld:Value:VPN1",
+        "startTime": "2003-08-20T08:10:00",
+        "status": "realized",
+        "startPoint": {
+          "location": {
+            "type": "Point",
+            "coordinates": [
+              54.588945,
+              9.989209
+            ]
+          },
+          "status": 3
+        }
+      }
+    ]
+  }
+}

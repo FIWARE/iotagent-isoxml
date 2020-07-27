@@ -76,7 +76,6 @@ function transformMICS(entity, normalized) {
     MICS.addInt(entity, 'H', 'fileLength', schema.NUMBER, normalized);
     MICS.addInt(entity, 'I', 'gridType', schema.NUMBER, normalized);
     MICS.addInt(entity, 'J', 'treatmentZoneCode', schema.NUMBER, normalized);
-
     return entity;
 }
 

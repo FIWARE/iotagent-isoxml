@@ -87,7 +87,7 @@ describe('Service Configuration', function () {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/singleFarmMeasure.json')
+                    utils.readJSON('./test/unit/ngsiv2/contextRequests/farm1.json')
                 )
                 .query({ type: 'Building' })
                 .reply(204);
@@ -131,7 +131,7 @@ describe('Service Configuration', function () {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/singleFarmMeasure.json')
+                    utils.readJSON('./test/unit/ngsiv2/contextRequests/farm1.json')
                 )
                 .query({ type: 'Building' })
                 .reply(204);
@@ -140,7 +140,7 @@ describe('Service Configuration', function () {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Person:CTR1/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/singleCustomerMeasure1.json')
+                    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer1.json')
                 )
                 .query({ type: 'Person' })
                 .reply(204);
@@ -149,7 +149,7 @@ describe('Service Configuration', function () {
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Person:CTR2/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/singleCustomerMeasure2.json')
+                    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer2.json')
                 )
                 .query({ type: 'Person' })
                 .reply(204);

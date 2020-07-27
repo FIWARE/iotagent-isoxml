@@ -27,6 +27,8 @@ const MICS = transforms.MICS;
 const isoxmlType = 'CAT';
 const ngsiType = 'ControlAssignment';
 
+const allocationStamp = require('./allocationStamp');
+
 /*
 A SourceClient
 B UserClient
@@ -66,6 +68,9 @@ function transformMICS(entity, normalized) {
     MICS.addProperty(entity, 'E', 'sourceDeviceElementNumber', schema.TEXT, normalized);
     MICS.addProperty(entity, 'F', 'userDeviceElementNumber', schema.TEXT, normalized);
     MICS.addProperty(entity, 'G', 'processDataDDI', schema.TEXT, normalized);
+    
+    allocationStamp.add(entity);
+
     return entity;
 }
 

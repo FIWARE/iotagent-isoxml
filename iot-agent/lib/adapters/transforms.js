@@ -101,11 +101,10 @@ const FMIS = {
 // MICS transform functions
 const MICS = {
     addAddressProperty(entity, from, to, type) {
-        const attrs = allAttrs.slice(allAttrs.indexOf(from), allAttrs.indexOf(from + 5));
-        let present = false;
-
+        const attrs = allAttrs.slice(allAttrs.indexOf(from), allAttrs.indexOf(from) + 6);
+        let present = true;
         attrs.forEach((attr) => {
-            present = present || entity[attr];
+            present = present && Object.prototype.hasOwnProperty.call(entity, attr)
         });
 
         if (present) {
@@ -123,22 +122,20 @@ const MICS = {
         }
     },
 
-    addGeoPointProperty(entity, from, to, type = 'GeoProperty') {
-        const attrs = allAttrs.slice(allAttrs.indexOf(from), allAttrs.indexOf(from + 1));
+    addGeoPointProperty(entity, from, to, type = 'GeoProperty', normalized = true) {
+        
+        const attrs = allAttrs.slice(allAttrs.indexOf(from), allAttrs.indexOf(from) + 2);
         let present = true;
-
         attrs.forEach((attr) => {
-            present = present && entity[attr];
+            present = present && Object.prototype.hasOwnProperty.call(entity, attr)
         });
 
+
         if (present) {
-            entity[to] = {
-                type,
-                value: {
-                    coordinates: [valueOf(entity, attrs[0]), valueOf(entity, attrs[1])],
-                    type: 'Point'
-                }
-            };
+            entity[to] = nsgiAttribute(type, {
+                coordinates: [entity[attrs[1]], entity[attrs[0]]],
+                type: 'Point'
+            }, normalized);
         }
     },
 

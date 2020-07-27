@@ -1,0 +1,36 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "pfd"
+  },
+  "name": {
+    "type": "Text",
+    "value": "hill"
+  },
+  "area": {
+    "type": "Number",
+    "value": 32000
+  },
+  "cropTypeIdRef": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:CropType:CTP3"
+  },
+  "location": {
+    "type": "geo:json",
+    "value": {
+      "type": "Point",
+      "coordinates": [
+        9.989209,
+        54.588945
+      ]
+    }
+  },
+  "locationData": {
+    "type": "PointData",
+    "value": {
+      "category": "storage",
+      "name": "point",
+      "colour": 3
+    }
+  }
+}

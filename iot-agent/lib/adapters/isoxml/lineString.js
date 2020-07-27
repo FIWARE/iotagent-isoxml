@@ -46,20 +46,20 @@ F LineStringId
 */
 
 const LINE_STRING_TYPES = {
-    '1': 'PolygonExterior',
-    '2': 'PolygonInterior',
-    '3': 'TramLine',
-    '4': 'SamplingRoute',
-    '5': 'GuidancePattern',
-    '6': 'Drainage',
-    '7': 'Fence',
-    '8': 'Flag',
-    '9': 'Obstacle'
+    '1': 'polygonExterior',
+    '2': 'polygonInterior',
+    '3': 'tramLine',
+    '4': 'samplingRoute',
+    '5': 'guidancePattern',
+    '6': 'drainage',
+    '7': 'fence',
+    '8': 'flag',
+    '9': 'obstacle'
 };
 
 function extractSingleLineStringData(data) {
     const lineString = {};
-    lineString.type = data.A ? LINE_STRING_TYPES[data.A] : undefined;
+    lineString.category = data.A ? LINE_STRING_TYPES[data.A] : undefined;
     lineString.name = data.B ? data.B : undefined;
     lineString.width = data.C ? parseInt(data.C)/ 1000.0 : undefined;
     lineString.length = data.D ? parseInt(data.D)/1000.0 : undefined;

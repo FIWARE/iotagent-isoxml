@@ -46,18 +46,18 @@ E PolygonId
 */
 
 const POLYGON_TYPES = {
-    '1': 'Partfield Boundary',
-    '2': 'TreatmentZone',
-    '3': 'WaterSurface',
-    '4': 'Building',
-    '5': 'Road',
-    '6': 'Obstacle',
-    '7': 'Flag',
-    '8': 'Other',
-    '9': 'Mainfield',
-    '10': 'Headland',
-    '11': 'BufferZone',
-    '12': 'Windbreak'
+    '1': 'partfieldBoundary',
+    '2': 'treatmentZone',
+    '3': 'waterSurface',
+    '4': 'building',
+    '5': 'road',
+    '6': 'obstacle',
+    '7': 'flag',
+    '8': 'other',
+    '9': 'mainfield',
+    '10': 'headland',
+    '11': 'bufferZone',
+    '12': 'windbreak'
 };
 
 function compareCoordinates(a, b){
@@ -70,11 +70,8 @@ function compareCoordinates(a, b){
 
 function extractSinglePolygonData(data) {
 
-
-
-
     const polygon = {};
-    polygon.type = data.A ? POLYGON_TYPES[data.A] : undefined;
+    polygon.category = data.A ? POLYGON_TYPES[data.A] : undefined;
     polygon.name = data.B ? data.B : undefined;
     polygon.area = data.C ? parseInt(data.C) : undefined;
     polygon.color = data.D ? parseInt(data.D) : undefined;

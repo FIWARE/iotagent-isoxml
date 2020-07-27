@@ -46,32 +46,33 @@ F PointColour
 */
 
 const POINT_TYPES = {
-    '1': 'Flag',
+    '1': 'flag',
     '2': 'other',
-    '3': 'Field Access',
-    '4': 'Storage',
-    '5': 'Obstacle',
-    '6': 'Start',
-    '7': 'End',
-    '8': 'Center',
-    '9': 'Guidance Point',
-    '10': 'Partfield Reference Point',
-    '11': 'Homebase'
+    '3': 'fieldAccess',
+    '4': 'storage',
+    '5': 'obstacle',
+    '6': 'start',
+    '7': 'end',
+    '8': 'center',
+    '9': 'guidancePoint',
+    '10': 'reference',
+    '11': 'homebase'
 };
 
 function extractSinglePointData(data) {
     const point = {};
-    point.type = data.A ? POINT_TYPES[data.A] : undefined;
+    point.category = data.A ? POINT_TYPES[data.A] : undefined;
     point.name = data.B ? data.B : undefined;
-    point.id = data.F ? parseInt(data.F) : undefined;
+    point.colour = data.F ? parseInt(data.F) : undefined;
     return point;
 }
 
-function extractSinglePointGeoJSON(data) {
-    return {
+function extractSinglePointGeoJSON(data, type, normalized) {
+    const value =  {
         type: 'Point',
         coordinates: extractCoordinates(data)
     };
+    return normalized ? {type, value}  : value;
 }
 
 function extractMultiPointData(data) {
@@ -82,16 +83,17 @@ function extractMultiPointData(data) {
     return multipoint;
 }
 
-function extractMultiPointGeoJSON(data) {
+function extractMultiPointGeoJSON(data, type, normalized) {
     const points = [];
     data.pnt.forEach((point) => {
         points.push(extractCoordinates(point));
     });
 
-    return {
+    const value = {
         type: 'MultiPoint',
         coordinates: points
     };
+    return normalized ? {type, value}  : value;
 }
 
 function extractCoordinates(data) {
@@ -102,30 +104,42 @@ function extractCoordinates(data) {
     return coordinates;
 }
 
-function addPoint(entity, to) {
+function addPoint(entity, to, type, normalized = false) {
     if (entity[from]) {
-        const point = {};
         let isoxmlData = entity[from];
         if (!Array.isArray(isoxmlData)) {
             isoxmlData = [isoxmlData];
         }
 
         if (isoxmlData.length === 1) {
-            point.data = extractSinglePointData(isoxmlData[0]);
-            point.location = extractSinglePointGeoJSON(isoxmlData[0]);
+            const data = isoxmlData[0].value ? isoxmlData[0].value : isoxmlData[0];
+            entity[to] = extractSinglePointGeoJSON(data, type, normalized);
         } else {
-            point.data = extractMultiPointData(isoxmlData);
-            point.location = extractMultiPointGeoJSON(isoxmlData);
+            entity[to] = extractMultiPointGeoJSON(isoxmlData, type, normalized);
         }
+    }
+}
 
-        entity[to] = point;
-
-        delete entity[from];
+function addPointData(entity, to, type, normalized = false) {
+    if (entity[from]) {
+        let isoxmlData = entity[from];
+        let value;
+        if (!Array.isArray(isoxmlData)) {
+            isoxmlData = [isoxmlData];
+        }
+        if (isoxmlData.length === 1) {
+            const data = isoxmlData[0].value ? isoxmlData[0].value : isoxmlData[0];
+            value =  extractSinglePointData(data);
+        } else {
+            value = entity[to] = extractMultiPointData(isoxmlData);
+        }
+        entity[to] = normalized ? {type, value}  : value;
     }
 }
 
 module.exports = {
     isoxmlType,
     ngsiType,
-    add: addPoint
+    add: addPoint,
+    addData: addPointData
 };

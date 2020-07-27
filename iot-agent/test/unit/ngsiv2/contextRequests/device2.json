@@ -1,0 +1,155 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "dvc"
+  },
+  "name": {
+    "type": "Text",
+    "value": "sprayer 4711"
+  },
+  "softwareVersion": {
+    "type": "Text",
+    "value": "1.0"
+  },
+  "clientName": {
+    "type": "Text",
+    "value": "A00C84000B20408B"
+  },
+  "structureLabel": {
+    "type": "Text",
+    "value": "30353035344042"
+  },
+  "localizationLabel": {
+    "type": "Text",
+    "value": "FF000000006C6E"
+  },
+  "deviceElement": {
+    "type": "DeviceElement",
+    "value": [
+      {
+        "id": "urn:ngsi-ld:DeviceElement:DET1",
+        "objectId": 1,
+        "elementType": "device",
+        "name": "all elements",
+        "elementNumber": 0,
+        "parentObjectId": 0,
+        "objectReference": [
+          {
+            "objectId": 3
+          },
+          {
+            "objectId": 4
+          },
+          {
+            "objectId": 8
+          },
+          {
+            "objectId": 9
+          },
+          {
+            "objectId": 10
+          },
+          {
+            "objectId": 11
+          }
+        ]
+      },
+      {
+        "id": "urn:ngsi-ld:DeviceElement:DET2",
+        "objectId": 2,
+        "elementType": "bin",
+        "name": "main tank",
+        "elementNumber": 1,
+        "parentObjectId": 1,
+        "objectReference": [
+          {
+            "objectId": 5
+          },
+          {
+            "objectId": 6
+          },
+          {
+            "objectId": 7
+          },
+          {
+            "objectId": 8
+          },
+          {
+            "objectId": 9
+          },
+          {
+            "objectId": 10
+          },
+          {
+            "objectId": 12
+          }
+        ]
+      }
+    ]
+  },
+  "deviceProcessData": {
+    "type": "DeviceProcessData",
+    "value": [
+      {
+        "objectId": 3,
+        "ddi": "1234",
+        "property": 3,
+        "triggerMethods": 1
+      },
+      {
+        "objectId": 4,
+        "ddi": "8765",
+        "property": 1,
+        "triggerMethods": 1
+      },
+      {
+        "objectId": 5,
+        "ddi": "1111",
+        "property": 3,
+        "triggerMethods": 1
+      },
+      {
+        "objectId": 6,
+        "ddi": "1112",
+        "property": 3,
+        "triggerMethods": 1
+      },
+      {
+        "objectId": 7,
+        "ddi": "1133",
+        "property": 1,
+        "triggerMethods": 2
+      }
+    ]
+  },
+  "deviceProperty": {
+    "type": "DeviceProperty",
+    "value": [
+      {
+        "objectId": 8,
+        "ddi": "4301",
+        "value": 0
+      },
+      {
+        "objectId": 9,
+        "ddi": "4302",
+        "value": 0
+      },
+      {
+        "objectId": 10,
+        "ddi": "4303",
+        "value": 0
+      },
+      {
+        "objectId": 11,
+        "ddi": "4305",
+        "value": 2700
+      },
+      {
+        "objectId": 12,
+        "ddi": "4304",
+        "value": 4500
+      }
+    ]
+  }
+}

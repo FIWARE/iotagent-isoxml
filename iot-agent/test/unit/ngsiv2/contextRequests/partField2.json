@@ -48,7 +48,7 @@
   "locationData": {
     "type": "PolygonData",
     "value": {
-      "type": "Partfield Boundary",
+      "category": "partfieldBoundary",
       "name": "Field Boundary",
       "area": 32000,
       "color": 1
@@ -80,7 +80,7 @@
               ]
             },
             "patternData": {
-              "type": "GuidancePattern",
+              "category": "guidancePattern",
               "name": "Guidance1",
               "width": 6,
               "length": 1500,
@@ -107,7 +107,7 @@
               ]
             },
             "patternData": {
-              "type": "GuidancePattern",
+              "category": "guidancePattern",
               "name": "Guidance2",
               "width": 18,
               "length": 900,

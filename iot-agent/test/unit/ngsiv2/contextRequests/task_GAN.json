@@ -1,0 +1,25 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "tsk"
+  },
+  "refAgent": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Person:WKR1"
+  },
+  "activityType": {
+    "type": "Text",
+    "value": "planned"
+  },
+  "guidanceAllocation": {
+    "type": "GuidanceAllocation",
+    "value": [
+      {
+        "groupIdRef": "urn:ngsi-ld:GuidanceGroup:GGP1",
+        "startTime": "2003-08-20T08:00:00",
+        "endTime": "2003-08-20T17:00:00",
+        "status": "planned"
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+<TSK A="TSK2" G="1" H="0">
+	<TZN A="1" B="Layer 1, Rate 1" C="2">
+		<PDV A="0006" B="" C="PDT1" E="VPN1" F="1" G="0"/>
+		<PDV A="0006" B="" C="PDT2" E="VPN1" F="1" G="1"/>
+		<PDV A="0006" B="" C="PDT3" E="VPN1" F="2"/>
+	</TZN>
+	<GRD A="51.812025" B="4.284920" C="1.5E-3" D="1.4E-3" E="200" F="300" G="GRD00001" I="2" J="1"/>
+</TSK>

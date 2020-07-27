@@ -1,0 +1,47 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "tsk"
+  },
+  "name": {
+    "type": "Text",
+    "value": "control assignment example"
+  },
+  "refTarget": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Building:FRM1"
+  },
+  "refObject": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:PartField:PFD1"
+  },
+  "refAgent": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Person:WKR1"
+  },
+  "activityType": {
+    "type": "Text",
+    "value": "planned"
+  },
+  "defaultTreatment": {
+    "type": "Number",
+    "value": 1
+  },
+  "controlAssignment": {
+    "type": "ControlAssignment",
+    "value": [
+      {
+        "sourceClient": "A02282000CE03039",
+        "userClient": "A00A84000B8131A3",
+        "sourceDeviceStructureLabel": "01020304050607",
+        "userDeviceStructureLabel": "07060504030201",
+        "sourceDeviceElementNumber": "0",
+        "userDeviceElementNumber": "0",
+        "processDataDDI": "0006",
+        "startTime": "2003-08-20T08:00:00",
+        "endTime": "2003-08-20T17:00:00",
+        "status": "realized"
+      }
+    ]
+  }
+}

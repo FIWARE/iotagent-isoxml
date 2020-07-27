@@ -1,0 +1,41 @@
+{
+  "isoxml_type": {
+    "type": "string",
+    "value": "tsk"
+  },
+  "name": {
+    "type": "Text",
+    "value": "Connection example"
+  },
+  "refTarget": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Building:FRM1"
+  },
+  "refObject": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:PartField:PFD1"
+  },
+  "refAgent": {
+    "type": "Relationship",
+    "value": "urn:ngsi-ld:Person:WKR1"
+  },
+  "activityType": {
+    "type": "Text",
+    "value": "planned"
+  },
+  "defaultTreatment": {
+    "type": "Number",
+    "value": 1
+  },
+  "connection": {
+    "type": "Connection",
+    "value": [
+      {
+        "deviceIdRef0": "urn:ngsi-ld:Device:DVC2",
+        "deviceElementIdRef0": "urn:ngsi-ld:DeviceElement:DET2",
+        "deviceIdRef1": "urn:ngsi-ld:Device:DVC1",
+        "deviceElementIdRef1": "urn:ngsi-ld:DeviceElement:DET1"
+      }
+    ]
+  }
+}

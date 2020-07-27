@@ -93,6 +93,7 @@ function transformMICS(entity, normalized) {
     point.add(entity, 'location', 'geo:json', normalized);
     lineString.addData(entity, 'locationData', 'LineStringData', normalized);
     polygon.addData(entity, 'locationData', 'PolygonData', normalized);
+    point.addData(entity, 'locationData', 'PointData', normalized);
 
     MICS.addArray(entity, guidanceGroup, 'guidanceGroup', normalized);
 

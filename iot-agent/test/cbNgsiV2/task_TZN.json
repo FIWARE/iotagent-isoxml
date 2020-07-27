@@ -195,11 +195,11 @@
         },
         "zoneData": [
           {
-            "type": "TreatmentZone",
+            "category": "treatmentZone",
             "name": "Polygon 1"
           },
           {
-            "type": "TreatmentZone",
+            "category": "treatmentZone",
             "name": "Polygon 3"
           }
         ],
@@ -348,11 +348,11 @@
         },
         "zoneData": [
           {
-            "type": "TreatmentZone",
+            "category": "treatmentZone",
             "name": "Polygon 2"
           },
           {
-            "type": "TreatmentZone",
+            "category": "treatmentZone",
             "name": "Polygon 4"
           }
         ],
@@ -426,7 +426,7 @@
           ]
         },
         "zoneData": {
-          "type": "TreatmentZone",
+          "category": "treatmentZone",
           "name": "Polygon 5"
         },
         "processDataVariable": [
@@ -495,7 +495,7 @@
           ]
         },
         "zoneData": {
-          "type": "TreatmentZone",
+          "category": "treatmentZone",
           "name": "Polygon 6"
         },
         "processDataVariable": [
@@ -647,11 +647,11 @@
         },
         "zoneData": [
           {
-            "type": "TreatmentZone",
+            "category": "treatmentZone",
             "name": "Polygon 7"
           },
           {
-            "type": "TreatmentZone",
+            "category": "treatmentZone",
             "name": "Polygon 9"
           }
         ],
@@ -745,7 +745,7 @@
           ]
         },
         "zoneData": {
-          "type": "TreatmentZone",
+          "category": "treatmentZone",
           "name": "Polygon 8"
         },
         "processDataVariable": [
