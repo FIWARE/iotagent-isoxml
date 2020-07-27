@@ -35,8 +35,11 @@ library's GitHub repository.
 ## Background
 
 
-[ISO 11783](https://www.iso.org/obp/ui/#iso:std:iso:11783:-10:ed-2:v1:en) is a standard for electronics communications protocol for agricultural equipment. This _Internet of Things Agent_ is a bridge that can be used to communicate devices using the ISO 11783 protocol
-and NGSI Context Brokers (like [Orion](https://github.com/telefonicaid/fiware-orion)). ISO 11783 is an XML file based protocol used to pass message data. This IoT Agent does note deal with ISO 11783 communications directly, it is assumed that a separate MICS (Mobile Implement control system) server is present which in turn sends files down to devices and receives uploaded files to be processed.
+[ISO 11783](https://www.iso.org/obp/ui/#iso:std:iso:11783:-10:ed-2:v1:en) is a standard for electronics communications protocol 
+for agricultural equipment. This _Internet of Things Agent_ is a bridge that can be used to communicate devices using the ISO 11783 
+protocol and NGSI Context Brokers (like [Orion](https://github.com/telefonicaid/fiware-orion)). ISO 11783 is an XML file based protocol 
+used to pass message data. This IoT Agent does not deal with ISO 11783 communications directly, it is assumed that a separate MICS 
+(Mobile Implement control system) server is present which in turn sends files down to devices and receives uploaded files to be processed.
 
 As is the case in any IoT Agent, this one follows the interaction model defined in the
 [Node.js IoT Agent Library](https://github.com/telefonicaid/iotagent-node-lib), that is used for the implementation of
