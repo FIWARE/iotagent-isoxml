@@ -19,15 +19,17 @@
     "url": "https://github.com/FIWARE/iotagent-isoxml/issues"
   },
   "scripts": {
+    "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",
+    "lint": "eslint bin/iotagent-isoxml lib/ test/ --cache --fix",
+    "lint:md": "remark  -f '*.md' 'docker/*.md' 'docs/*.md'",
+    "lint:text": "textlint 'README.md' 'docs/*.md'",
     "start": "node ./bin/iotagent-isoxml",
     "test": "nyc --reporter=text mocha -- --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit",
     "test:coverage": "nyc --reporter=lcov mocha -- --recursive 'test/**/*.js' ",
     "test:coveralls": "npm run test:coverage && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "test:single": "mocha --recursive 'test/**/*.js' --reporter spec --timeout 3000 --ui bdd --exit --bail --g 'ISOXML measures'",
     "prettier": "prettier --config .prettierrc.json --write **/**/*.js  **/*.js *.js",
-    "prettier:text": "prettier  --parser markdown '*.md' 'docker/*.md' 'docs/*.md' --tab-width 4 --print-width 120 --write --prose-wrap always",
-    "lint": "eslint bin/iotagent-isoxml lib/ test/ --cache --fix",
-    "lint:md": "remark  -f '*.md' 'docker/*.md' 'docs/*.md'"
+    "prettier:text": "prettier  --parser markdown '*.md' 'docker/*.md' 'docs/*.md' --tab-width 4 --print-width 120 --write --prose-wrap always"
   },
   "dependencies": {
     "async": "3.2.0",
@@ -52,8 +54,15 @@
     "eslint-plugin-prettier": "~3.1.2",
     "husky": "~4.2.5",
     "should": "13.2.3",
-    "nock": "13.0.2",
-    "sinon": "~9.0.1"
+    "nock": "13.0.3",
+    "remark-cli": "~8.0.1",
+    "remark-preset-lint-recommended": "~4.0.1",
+    "sinon": "~9.0.1",
+    "textlint": "~11.7.6",
+    "textlint-rule-common-misspellings": "~1.0.1",
+    "textlint-rule-no-dead-link": "~4.7.0",
+    "textlint-rule-terminology": "~2.1.4",
+    "textlint-rule-write-good": "~1.6.2"
   },
   "keywords": [
     "ADAPT",

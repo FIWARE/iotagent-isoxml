@@ -15,12 +15,13 @@ APIs concerning general IoTAgents, check the [API Reference section](#apireferen
 
 #### Description
 
-ISOXML is a standard for electronics communications protocol
-for agricultural equipment. It fully defined in [ISO 11783](https://www.iso.org/obp/ui/#iso:std:iso:11783:-10:ed-2:v1:en)
+ISOXML is a standard for electronics communications protocol for agricultural equipment. It fully defined in
+[ISO 11783](https://www.iso.org/obp/ui/#iso:std:iso:11783:-10:ed-2:v1:en)
 
 #### Measure Payload Syntax
 
-The payload for information update requests consists of a well defined `TASKFILE.XML` message - an XML format defined with the following [XML schema](http://dictionary.isobus.net/isobus/file/supportingDocuments)
+The payload for information update requests consists of a well defined `TASKFILE.XML` message - an XML format defined
+with the following [XML schema](https://www.isobus.net/isobus/file/supportingDocuments)
 
 E.g.:
 
@@ -42,25 +43,26 @@ E.g.:
 </ISO11783_TaskData>
 ```
 
-In this example, the message holds multiple entities within a single message.
-For example it holds a **Farm** `<FRM>`, a **Customer**  `<CTR>`, a **task** `<TSK>`, two **Product Groups**  `<PGP>`, two **Products**  `<PDT>` and a **Value**  `<VPN>`.
+In this example, the message holds multiple entities within a single message. For example it holds a **Farm** `<FRM>`, a
+**Customer** `<CTR>`, a **task** `<TSK>`, two **Product Groups** `<PGP>`, two **Products** `<PDT>` and a **Value**
+`<VPN>`.
 
-In English, the message is an _"Action Effected"_  `<ASP ... D="4"/>` request from a worker who has done the following:
+In English, the message is an _"Action Effected"_ `<ASP ... D="4"/>` request from a worker who has done the following:
 
-> On the **12th November**, **Herbicide Agent 1** was sprayed onto
-> the **Asterix Potatoes** for the customer **Napoleon the Pig** of
-> **Animal Farm**
+> On the **12th November**, **Herbicide Agent 1** was sprayed onto the **Asterix Potatoes** for the customer **Napoleon
+> the Pig** of **Animal Farm**
 
+Each XML element directly beneath `<ISO11783_TaskData>` can be translated directly into an NGSI entity. The attributes
+(`A`, `B`, `C` etc.) correspond to entity attributes. Sub elements (such as the **Product Allocation** `<PAN>` at a
+specific **Timestamp** `<ASP>`) can be translated into complex entity attributes of `type=StructuredValue`. `
 
-Each XML element directly beneath `<ISO11783_TaskData>` can be translated directly into an NGSI entity. The attributes (`A`, `B`, `C` etc.) correspond to entity attributes. Sub elements (such as the **Product Allocation** `<PAN>` at a specific **Timestamp** `<ASP>`) can be translated into complex entity attributes of `type=StructuredValue`.
-`
-
-The ISOXML will generate eight separate NGSI entities, one for each one of the XML elements found directly below `<ISO11783_TaskData>`. Each one of those requests can contain any number of attributes or complex sub-attributes.
-
+The ISOXML will generate eight separate NGSI entities, one for each one of the XML elements found directly below
+`<ISO11783_TaskData>`. Each one of those requests can contain any number of attributes or complex sub-attributes.
 
 #### Commands Syntax
 
-Commands are messages sent to the MICS from the IoT Agent. A command has the same syntax as a measure received. Typically a _planned_ task will hold a `<ASP ... D="1"/>` element with a future timestamp.
+Commands are messages sent to the MICS from the IoT Agent. A command has the same syntax as a measure received.
+Typically a _planned_ task will hold a `<ASP ... D="1"/>` element with a future timestamp.
 
 ```xml
 <ISO11783_TaskData>
@@ -72,10 +74,10 @@ Commands are messages sent to the MICS from the IoT Agent. A command has the sam
 </ISO11783_TaskData>
 ```
 
-This indicates that the device `DET3`, lying in field `PFD1` is to be filled with product `PDT250` by worker `WKR1` on the **5th February**
+This indicates that the device `DET3`, lying in field `PFD1` is to be filled with product `PDT250` by worker `WKR1` on
+the **5th February**
 
 Additional XML elements such comments may also be sent.
-
 
 ##### Commands
 
@@ -103,8 +105,8 @@ curl -L -X POST 'http://localhost:4041/iot/services' \
 }'
 ```
 
-Setting up a `send` command enables a use to send a specific task to the MICS,
-additional entities can be supplied in the payload:
+Setting up a `send` command enables a use to send a specific task to the MICS, additional entities can be supplied in
+the payload:
 
 ```bash
 curl -L -X POST 'http://localhost:4041/v2/op/update' \
@@ -164,8 +166,6 @@ Uses the provided `.eslintrc.json` flag file. To check source code style, type
 ```bash
 npm run lint
 ```
-
-
 
 If you want to continuously check also source code style, use instead:
 

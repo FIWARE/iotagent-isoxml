@@ -7,9 +7,9 @@
 
 ## Installation
 
-There are two ways of installing the ISOXML/ADAPT Agent: cloning the GitHub repository, or using Docker. Regardless of the installation method, there are some middlewares that must be present, as a prerequisite for
-the component installation (no installation instructions are provided for these middlewares):
-
+There are two ways of installing the ISOXML/ADAPT Agent: cloning the GitHub repository, or using Docker. Regardless of
+the installation method, there are some middlewares that must be present, as a prerequisite for the component
+installation (no installation instructions are provided for these middlewares):
 
 -   A [MongoDB](https://www.mongodb.com/) instance (v3.2+) is required for those IoT Agents configured to have
     persistent storage. An in-memory storage repository is also provided for testing purposes.
@@ -19,7 +19,8 @@ the component installation (no installation instructions are provided for these 
     [Orion](https://github.com/telefonicaid/fiware-orion)), so an accessible Context Broker is also required. IoT Agents
     were tested with v0.26.0 (higher versions should also work).
 
--   This IoT Agent is not standalone, but relies on a separate micro service to act as a MICS (Mobile Implement control system) The MICS would in turn send files down to devices and receive uploaded files to be processed.
+-   This IoT Agent is not standalone, but relies on a separate micro service to act as a MICS (Mobile Implement control
+    system) The MICS would in turn send files down to devices and receive uploaded files to be processed.
 
 Please, follow the links to the official Web Pages to find how can you install each of the middlewares in your
 environment.
@@ -45,11 +46,10 @@ This will download the dependencies for the project, and let it ready to the exe
 When the component is executed from a cloned GitHub repository, it takes the default config file that can be found in
 the root of the repository.
 
-
 #### Using Docker
 
-There are interminent builds of the development version of the IOT Agent published in Docker hub. In order to install using
-the docker version, just execute the following:
+There are interminent builds of the development version of the IoT Agent published in Docker hub. In order to install
+using the docker version, just execute the following:
 
 ```bash
 docker run -d --link orion:orion --link mongo:mongo -p 7896:7896 -p 4061:4061 fiware/iotagent-isoxml
@@ -59,7 +59,6 @@ As you can see, the ISOXML/ADAPT IoT Agent (as any other IoT Agent) requires som
 
 -   **mongo**: Mongo database instance (to store provisioning data).
 -   **orion**: Orion Context Broker.
-
 
 In order to link them, deploy them using docker and use the option `--link` as shown in the example. You may also want
 to map the external IoT Agent North and South ports, for external calls: 4061 (NGSI Interactions for traffic north of
@@ -94,12 +93,10 @@ bin/iotagent-isoxml [config file]
 
 The optional name of a config file is optional and described in the following section.
 
-
 #### Docker installation
 
 The Docker automatically starts listening in the API ports, so there is no need to execute any process in order to have
 the application running. The Docker image will automatically start.
-
 
 ## Configuration
 
@@ -109,8 +106,8 @@ JavaScript file, that contains the following sections:
 -   **config.iota**: general IoT Agent configuration. This group of attributes is common to all types of IoT Agents, and
     is described in the global
     [IoT Agent Library Documentation](https://github.com/telefonicaid/iotagent-node-lib#configuration).
-    -  **config.iota.types**: Lists the ISOXML messages which are to be processed.
-    -  **config.iota.isoxmlType**: Holds the name of the attribute designating the ISOXML message type.
+    -   **config.iota.types**: Lists the ISOXML messages which are to be processed.
+    -   **config.iota.isoxmlType**: Holds the name of the attribute designating the ISOXML message type.
 -   **config.http**: configuration for the HTTP transport protocol binding of the IoT Agent (described in the following
     subsections).
 -   **config.defaultKey**: default API Key, for devices lacking a provided Configuration.
@@ -119,19 +116,21 @@ JavaScript file, that contains the following sections:
 
 #### Message Types
 
-All ISOXML messages are anonymous and identified by `apikey` only - no individual devices are provisioned. The list of acceptable messages is defined within the **config.iota.types** configuration as shown:
+All ISOXML messages are anonymous and identified by `apikey` only - no individual devices are provisioned. The list of
+acceptable messages is defined within the **config.iota.types** configuration as shown:
 
 ```javascript
 const types = {
-        Customer : { apikey: "ctr" },
-        Device : { apikey: "dvc" },
-        Farm : { apikey: "frm" },
-        OperationTechnique : { apikey: "otq" },
-        PartField : { apikey: "pfd" }
+    Customer: { apikey: 'ctr' },
+    Device: { apikey: 'dvc' },
+    Farm: { apikey: 'frm' },
+    OperationTechnique: { apikey: 'otq' },
+    PartField: { apikey: 'pfd' }
 };
 ```
 
-Each `apikey` corresponds to a message type found in the `/lib/adapters/isoxml` directory. For example the ISOXML `<FRM>` message is mapped onto the **Building** NGSI Data model by exposing the following constants in `farm.js`
+Each `apikey` corresponds to a message type found in the `/lib/adapters/isoxml` directory. For example the ISOXML
+`<FRM>` message is mapped onto the **Building** NGSI Data model by exposing the following constants in `farm.js`
 
 ```javascript
 const isoxmlType = 'FRM';
@@ -168,8 +167,6 @@ transport protocol binding. The following options are accepted:
 -   **cert**: Path to your certificate for HTTPS binding
 -   **mics_endpoint** : Path to the MICS (Mobile Implement control system) server
 
-
-
 #### Configuration with environment variables
 
 Some of the more common variables can be configured using environment variables. The ones overriding general parameters
@@ -178,14 +175,14 @@ in the `config.iota` set are described in the
 
 The ones relating specific ISOXML/ADAPT bindings are described in the following table.
 
-| Environment variable             | Configuration attribute |
-| :------------------------------- | :---------------------- |
-| IOTA_HTTP_HOST                   | http.host               |
-| IOTA_HTTP_PORT                   | http.port               |
-| IOTA_HTTP_TIMEOUT                | http.timeout            |
-| IOTA_HTTP_KEY                    | http.key                |
-| IOTA_HTTP_CERT                   | http.cert               |
-| IOTA_HTTP_DEFAULT_MICS_ENDPOINT  | http.mics_endpoint      |
+| Environment variable            | Configuration attribute |
+| :------------------------------ | :---------------------- |
+| IOTA_HTTP_HOST                  | http.host               |
+| IOTA_HTTP_PORT                  | http.port               |
+| IOTA_HTTP_TIMEOUT               | http.timeout            |
+| IOTA_HTTP_KEY                   | http.key                |
+| IOTA_HTTP_CERT                  | http.cert               |
+| IOTA_HTTP_DEFAULT_MICS_ENDPOINT | http.mics_endpoint      |
 
 #### High performance configuration
 

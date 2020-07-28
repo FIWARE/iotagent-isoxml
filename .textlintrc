@@ -190,7 +190,8 @@
        "ignoreRedirects": true,
        "ignore": [
           "mailto:*",
-          "https://coveralls.io/**"
+          "https://coveralls.io/**",
+          "https://fiware-iotagent-isoxml.readthedocs.io"
       ]
     }
   }

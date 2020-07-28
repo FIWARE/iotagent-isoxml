@@ -5,12 +5,12 @@
 [![Docker badge](https://img.shields.io/docker/pulls/fiware/iotagent-isoxml.svg)](https://hub.docker.com/r/fiware/iotagent-isoxml/)
 [![Support badge](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
-[![Documentation badge](https://img.shields.io/readthedocs/fiware-iotagent-isoxml.svg)](http://fiware-iotagent-isoxml.readthedocs.io/en/latest/?badge=latest)
+[![Documentation badge](https://img.shields.io/readthedocs/fiware-iotagent-isoxml.svg)](https://fiware-iotagent-isoxml.readthedocs.io/en/latest/?badge=latest)
 [![Build badge](https://img.shields.io/travis/FIWARE/iotagent-isoxml.svg)](https://travis-ci.org/FIWARE/iotagent-isoxml/)
 [![Coverage Status](https://coveralls.io/repos/github/FIWARE/iotagent-isoxml/badge.svg?branch=master)](https://coveralls.io/github/FIWARE/iotagent-isoxml?branch=master)
 
-An Internet of Things Agent for the ISO 11783 protocol (with [HTTP](https://www.w3.org/Protocols/)). This IoT Agent is designed to be a
-bridge between ISOXML/ADAPT and the
+An Internet of Things Agent for the ISO 11783 protocol (with [HTTP](https://www.w3.org/Protocols/)). This IoT Agent is
+designed to be a bridge between ISOXML/ADAPT and the
 [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/FIWARE/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 interface of a context broker.
 
@@ -18,9 +18,8 @@ It is based on the [IoT Agent Node.js Library](https://github.com/telefonicaid/i
 information about the FIWARE IoT Agents framework, its architecture and the common interaction model can be found in the
 library's GitHub repository.
 
-
-| :books: [Documentation](https://fiware-iotagent-isoxml.readthedocs.io)  | :whale: [Docker Hub](https://hub.docker.com/r/fiware/iotagent-isoxml/) | :dart: [Roadmap](https://github.com/FIWARE/iotagent-isoxml/blob/master/docs/roadmap.md) |
-| ------------------------------------------------------------------ |  ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| :books: [Documentation](https://fiware-iotagent-isoxml.readthedocs.io) | :whale: [Docker Hub](https://hub.docker.com/r/fiware/iotagent-isoxml/) | :dart: [Roadmap](https://github.com/FIWARE/iotagent-isoxml/blob/master/docs/roadmap.md) |
+| ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 
 
 ## Contents
@@ -34,17 +33,18 @@ library's GitHub repository.
 
 ## Background
 
-
-[ISO 11783](https://www.iso.org/obp/ui/#iso:std:iso:11783:-10:ed-2:v1:en) is a standard for electronics communications protocol
-for agricultural equipment. This _Internet of Things Agent_ is a bridge that can be used to communicate devices using the ISO 11783
-protocol and NGSI Context Brokers (like [Orion](https://github.com/telefonicaid/fiware-orion)). ISO 11783 is an XML file based protocol
-used to pass message data. This IoT Agent does not deal with ISO 11783 communications directly, it is assumed that a separate MICS
-(Mobile Implement control system) server is present which in turn sends files down to devices and receives uploaded files to be processed.
+[ISO 11783](https://www.iso.org/obp/ui/#iso:std:iso:11783:-10:ed-2:v1:en) is a standard for electronics communications
+protocol for agricultural equipment. This _Internet of Things Agent_ is a bridge that can be used to communicate devices
+using the ISO 11783 protocol and NGSI Context Brokers (like [Orion](https://github.com/telefonicaid/fiware-orion)). ISO
+11783 is an XML file based protocol used to pass message data. This IoT Agent does not deal with ISO 11783
+communications directly, it is assumed that a separate MICS (Mobile Implement control system) server is present which in
+turn sends files down to devices and receives uploaded files to be processed.
 
 As is the case in any IoT Agent, this one follows the interaction model defined in the
 [Node.js IoT Agent Library](https://github.com/telefonicaid/iotagent-node-lib), that is used for the implementation of
 the APIs found on the IoT Agent's North Port. Information about the architecture of the IoT Agent can be found on that
-global repository. This documentation will only address those features and characteristics that are particular to ISO 11783
+global repository. This documentation will only address those features and characteristics that are particular to ISO
+11783
 
 Additional information about operating the component can be found in the
 [Operations: logs and alarms](docs/operations.md) document.
@@ -59,7 +59,6 @@ A `Dockerfile` is also available for your use - further information can be found
 ## Usage
 
 Information about how to use the IoT Agent can be found in the [User & Programmers Manual](docs/usermanual.md).
-
 
 ## API
 

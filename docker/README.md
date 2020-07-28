@@ -3,9 +3,8 @@
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![](https://nexus.lab.fiware.org/repository/raw/public/badges/stackoverflow/iot-agents.svg)](https://stackoverflow.com/questions/tagged/fiware+iot)
 
-An Internet of Things Agent for the ISOXML/ADAPT protocol (with an
-[HTTP](https://www.w3.org/Protocols/)). This IoT Agent is designed to be a
-bridge between ISOXML and the
+An Internet of Things Agent for the ISOXML/ADAPT protocol (with an [HTTP](https://www.w3.org/Protocols/)). This IoT
+Agent is designed to be a bridge between ISOXML and the
 [NGSI](https://swagger.lab.fiware.org/?url=https://raw.githubusercontent.com/Fiware/specifications/master/OpenAPI/ngsiv2/ngsiv2-openapi.json)
 interface of a context broker.
 
@@ -24,7 +23,7 @@ example below assumes that you have a `/data` directory in your hosting system i
 amend the attached volume to suit your own configuration.
 
 ```yml
-version: "3.1"
+version: '3.1'
 
 volumes:
     mongodb: ~
@@ -37,11 +36,11 @@ services:
         depends_on:
             - mongodb
         expose:
-            - "4061"
-            - "7896"
+            - '4061'
+            - '7896'
         ports:
-            - "4061:4061"
-            - "7896:7896"
+            - '4061:4061'
+            - '7896:7896'
         environment:
             - IOTA_CB_HOST=orion
             - IOTA_CB_PORT=1026
@@ -60,7 +59,7 @@ services:
         hostname: mongodb
         container_name: db-mongo
         ports:
-            - "27017:27017"
+            - '27017:27017'
         command: --bind_ip_all --smallfiles
         volumes:
             - mongodb:/data
@@ -72,9 +71,9 @@ services:
         depends_on:
             - mongodb
         expose:
-            - "1026"
+            - '1026'
         ports:
-            - "1026:1026"
+            - '1026:1026'
         command: -dbhost mongodb
 ```
 
@@ -98,7 +97,8 @@ environment variables such as those shown below:
 
 ### Architecture
 
-This IoT Agent is not standalone, but relies on a separate micro service to act as a MICS (Mobile Implement control system) The MICS would in turn send files down to devices and receive uploaded files to be processed.
+This IoT Agent is not standalone, but relies on a separate micro service to act as a MICS (Mobile Implement control
+system) The MICS would in turn send files down to devices and receive uploaded files to be processed.
 
 A minimal MICS would listen and forward ISOXML messages to the IoT Agent as shown
 
@@ -128,9 +128,6 @@ curl -L -X POST 'http://iotagent:7896/iot/isoxml' \
 </ISO11783_TaskData>'
 ```
 
-
-
-
 ### Further Information
 
 The full set of overrides for the general parameters applicable to all IoT Agents are described in the Configuration
@@ -143,8 +140,8 @@ found in the IoT Agent for Ultralight
 
 ## How to build an image
 
-The [Dockerfile](https://github.com/telefonicaid/iotagent-isoxml/blob/master/docker/Dockerfile) associated with this image
-can be used to build an image in several ways:
+The [Dockerfile](https://github.com/telefonicaid/iotagent-isoxml/blob/master/docker/Dockerfile) associated with this
+image can be used to build an image in several ways:
 
 -   By default, the `Dockerfile` retrieves the **latest** version of the codebase direct from GitHub (the `build-arg` is
     optional):
@@ -268,8 +265,8 @@ refer to the [Installation Guide](https://fiware-iotagent-isoxml.rtfd.io/en/late
 ### Set-up appropriate Database Indexes
 
 If using Mongo-DB as a data persistence mechanism (i.e. if `IOTA_REGISTRY_TYPE=mongodb`) the device and service group
-details are retrieved from a database. The default name of the IoT Agent database is `iotagentisoxml`. Database access can
-be optimized by creating appropriate indices.
+details are retrieved from a database. The default name of the IoT Agent database is `iotagentisoxml`. Database access
+can be optimized by creating appropriate indices.
 
 For example:
 

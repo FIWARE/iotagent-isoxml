@@ -1,7 +1,7 @@
 # IoT Agent for the ISOXML/ADAPT Roadmap
 
-This product is a candidate to become a FIWARE Generic Enabler. If you would like to learn about the overall Roadmap of FIWARE, please check
-"Roadmap" on the [FIWARE Catalogue](https://www.fiware.org/developers/catalogue/).
+This product is a candidate to become a FIWARE Generic Enabler. If you would like to learn about the overall Roadmap of
+FIWARE, please check "Roadmap" on the [FIWARE Catalogue](https://www.fiware.org/developers/catalogue/).
 
 ### Introduction
 
@@ -42,4 +42,5 @@ The following list of features are proposals regarding the longer-term evolution
 development of these features has not yet been scheduled for a release in the near future. Please feel free to contact
 us if you wish to get involved in the implementation or influence the roadmap:
 
--   Analyze move transport implementations (HTTP to iotagent-node-lib library (the agent could will only implement the payload)
+-   Analyze move transport implementations (HTTP to iotagent-node-lib library (the agent could will only implement the
+    payload)

@@ -18,9 +18,8 @@
  * If not, see http://www.gnu.org/licenses/.
  *
  */
- 
-let config = {};
 
+let config = {};
 
 /**
  * Configuration for the HTTP transport binding.
@@ -228,56 +227,56 @@ config.iota = {
      *      https://github.com/telefonicaid/iotagent-node-lib#type-configuration
      */
     types: {
-        AttachedFile : {apikey: "afe" },
-        BaseStation : { apikey: "bsn" },
-        CodedComment : { apikey: "cct" },
-        CodedCommentGroup : { apikey: "ccg" },
-        ColourLegend : {apikey: "cld" },
-        CropType : {apikey: "ctp"},
-        CulturalPractice : {apikey: "cpc"}, 
-        Customer : {
-            apikey: "ctr",
+        AttachedFile: { apikey: 'afe' },
+        BaseStation: { apikey: 'bsn' },
+        CodedComment: { apikey: 'cct' },
+        CodedCommentGroup: { apikey: 'ccg' },
+        ColourLegend: { apikey: 'cld' },
+        CropType: { apikey: 'ctp' },
+        CulturalPractice: { apikey: 'cpc' },
+        Customer: {
+            apikey: 'ctr',
             static_attributes: [
                 {
-                    name: "hasOccupation",
-                    type: "Occupation",
+                    name: 'hasOccupation',
+                    type: 'Occupation',
                     value: {
-                        name: "Customer"
+                        name: 'Customer'
                     }
                 }
             ]
         },
-        Device : { apikey: "dvc" },
-        Farm : {
-            apikey: "frm",
+        Device: { apikey: 'dvc' },
+        Farm: {
+            apikey: 'frm',
             static_attributes: [
                 {
-                    name: "category",
-                    type: "Text",
-                    value: "farm"
+                    name: 'category',
+                    type: 'Text',
+                    value: 'farm'
                 }
             ]
         },
-        OperationTechnique : { apikey: "otq" },
-        PartField : { apikey: "pfd" },
-        Product : { apikey: "pdt" },
-        ProductGroup : { apikey: "pgp" },
-        TaskControllerCapabilities : { apikey: "tcc" },
-        Task : { apikey: "tsk" },
-        ValuePresentation : { apikey: "vpn" },
-        Worker : {
-            apikey: "wkr",
+        OperationTechnique: { apikey: 'otq' },
+        PartField: { apikey: 'pfd' },
+        Product: { apikey: 'pdt' },
+        ProductGroup: { apikey: 'pgp' },
+        TaskControllerCapabilities: { apikey: 'tcc' },
+        Task: { apikey: 'tsk' },
+        ValuePresentation: { apikey: 'vpn' },
+        Worker: {
+            apikey: 'wkr',
             static_attributes: [
                 {
-                    name: "hasOccupation",
-                    type: "Occupation",
+                    name: 'hasOccupation',
+                    type: 'Occupation',
                     value: {
-                        name: "Worker"
+                        name: 'Worker'
                     }
                 }
             ]
         },
-        ExternalFileReference : {apikey: "xfr"}
+        ExternalFileReference: { apikey: 'xfr' }
     },
 
     /**

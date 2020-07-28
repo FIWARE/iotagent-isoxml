@@ -66,7 +66,6 @@ There was some communication error connecting with the Context Broker that made 
 this log appears frequently, it may be a signal of network problems between the IoTAgent and the Context Broker. Check
 the IoTAgent network connection, and the configured Context Broker port and host.
 
-
 #### MEASURES-006: Error before processing device measures \[%s\]
 
 ### Global errors
