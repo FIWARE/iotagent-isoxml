@@ -1,6 +1,6 @@
 site_name: IoT Agent ISOXML/ADAPT
 site_url: https://fiware-isoxml.readthedocs.org
-repo_url: https://github.com/FIWARE/isoxml
+repo_url: https://github.com/FIWARE/iotagent-isoxml
 site_description: IoT Agent for ISOXML/ADAPT Documentation
 docs_dir: docs
 site_dir: html
