@@ -244,7 +244,7 @@ describe('ISOXML measures', function () {
         });
     });
 
-     describe('When an isoxml <TSK> element with a <CNN>  element arrives, via HTTP POST', function () {
+    describe('When an isoxml <TSK> element with a <CNN>  element arrives, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
             method: 'POST',
@@ -314,7 +314,7 @@ describe('ISOXML measures', function () {
         });
     });
 
-     describe('When two isoxml <TSK> elements arrive with <ASP>, via HTTP POST', function () {
+    describe('When two isoxml <TSK> elements arrive with <ASP>, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
             method: 'POST',
@@ -349,7 +349,7 @@ describe('ISOXML measures', function () {
                 done();
             });
         });
-    })
+    });
 
     describe('When a <FRM> and <CTR> elements arrive, via HTTP POST', function () {
         const getOptions = {
@@ -473,7 +473,6 @@ describe('ISOXML measures', function () {
                 .times(2)
                 .reply(204);
 
-
             addMock('CTP1', 'CropType', 'cropType1.json');
             addMock('CTP2', 'CropType', 'cropType2.json');
             addMock('CTP3', 'CropType', 'cropType3.json');
@@ -511,7 +510,6 @@ describe('ISOXML measures', function () {
                 .post('/v2/entities?options=upsert')
                 .times(1)
                 .reply(204);
-
 
             addMock('CTP4', 'CropType', 'cropType4.json');
             addMock('PGP1', 'ProductGroup', 'productGroup2.json');
@@ -563,7 +561,6 @@ describe('ISOXML measures', function () {
         });
     });
 
-
     describe('When a single <BSN> element arrives, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
@@ -594,7 +591,6 @@ describe('ISOXML measures', function () {
         });
     });
 
-
     describe('When multiple <CPC> elements arrive, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
@@ -612,7 +608,6 @@ describe('ISOXML measures', function () {
                 .post('/v2/entities?options=upsert')
                 .times(2)
                 .reply(204);
-
 
             addMock('CPC1', 'CulturalPractice', 'culturalPractice1.json');
             addMock('CPC2', 'CulturalPractice', 'CulturalPractice2.json');
@@ -634,7 +629,6 @@ describe('ISOXML measures', function () {
         });
     });
 
-
     describe('When multiple <OTQ> elements arrive, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
@@ -652,7 +646,6 @@ describe('ISOXML measures', function () {
                 .post('/v2/entities?options=upsert')
                 .times(2)
                 .reply(204);
-
 
             addMock('OTQ1', 'OperationTechnique', 'operationTechnique1.json');
             addMock('OTQ2', 'OperationTechnique', 'operationTechnique2.json');
@@ -761,7 +754,7 @@ describe('ISOXML measures', function () {
         });
     });
 
-     describe('When a single isoxml <PFD> containing a <PNT> element arrives, via HTTP POST', function () {
+    describe('When a single isoxml <PFD> containing a <PNT> element arrives, via HTTP POST', function () {
         const getOptions = {
             url: 'http://localhost:' + config.http.port + '/iot/isoxml',
             method: 'POST',

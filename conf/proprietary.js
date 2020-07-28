@@ -19,8 +19,8 @@
  *
  */
 
-const transforms = require('../lib/adaptors/transforms');
-const transforms = require('../lib/adaptors/schema');
+const transforms = require('../lib/adapters/transforms');
+const schema = require('../lib/adapters/schema');
 const FMIS = transforms.FMIS;
 const MICS = transforms.MICS;
 
