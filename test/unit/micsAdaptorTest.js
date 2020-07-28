@@ -20,7 +20,7 @@
  */
 
 const MICS = require('../../lib/adapters/adapter').MICS;
-const attributeDelete = require('../../lib/plugins/AttributeDeletePlugin');
+const attributeDelete = require('../../lib/plugins/attributeDeletePlugin');
 const utils = require('../utils');
 const should = require('should');
 
