@@ -229,14 +229,10 @@ It means that we need to make some changes in the execution of node.js and in th
     high performance requirements. These are like maximum file handler count, maximum file locks, maximum process count
     etc.
 
-    You can see the limits of your system executing the command:
-
-    ```bash
-    ulimit -a
-    ```
+    You can see the limits of your system executing the command: `ulimit -a`
 
     You can detine the corresponding limits inside the file limits.conf. This description of the configuration file
-    syntax applies to the `/etc/security/limits.conf` file and \*.conf files in the `/etc/security/limits.d` directory.
+    syntax applies to the `/etc/security/limits.conf` file and `*.conf` files in the `/etc/security/limits.d` directory.
     You can get more information about the limits.conf in the
     [limits.conf - linux man pages](http://man7.org/linux/man-pages/man5/limits.conf.5.html). The recommended values to
     be changes are the following:
