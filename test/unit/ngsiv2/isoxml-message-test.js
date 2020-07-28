@@ -610,7 +610,7 @@ describe('ISOXML measures', function () {
                 .reply(204);
 
             addMock('CPC1', 'CulturalPractice', 'culturalPractice1.json');
-            addMock('CPC2', 'CulturalPractice', 'CulturalPractice2.json');
+            addMock('CPC2', 'CulturalPractice', 'culturalPractice2.json');
             addMock('CPC3', 'CulturalPractice', 'culturalPractice3.json');
         });
 
