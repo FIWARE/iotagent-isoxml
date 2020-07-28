@@ -38,7 +38,7 @@ config.http = {
     /**
      * HTTP Timeout for the http command endpoint (in milliseconds).
      */
-    //mics_endpoint; 'http://context-provider:3001/iot/bell001'
+    //mics_endpoint: 'http://context-provider'
 };
 
 config.iota = {
@@ -258,7 +258,7 @@ config.iota = {
                 }
             ]
         },
-        OperationTechique : { apikey: "otq" },
+        OperationTechnique : { apikey: "otq" },
         PartField : { apikey: "pfd" },
         Product : { apikey: "pdt" },
         ProductGroup : { apikey: "pgp" },

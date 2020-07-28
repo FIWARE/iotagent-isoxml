@@ -1,15 +1,22 @@
 {
   "name": "iotagent-isoxml",
   "license": "AGPL-3.0-only",
-  "description": "IoT Agent for ADAPT",
+  "description": "IoT Agent for ISOXML/ADAPT",
   "version": "0.0.1",
   "main": "lib/iotagent-isoxml",
+  "author": {
+    "name": "Jason Fox",
+    "email": "jason-fox@fiware.org"
+  },
   "engines": {
     "node": ">=10"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jason-fox/iotagent-ADAPT.git"
+    "url": "git://github.com/FIWARE/iotagent-isoxml.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FIWARE/iotagent-isoxml/issues"
   },
   "scripts": {
     "start": "node ./bin/iotagent-isoxml",
@@ -48,7 +55,13 @@
     "nock": "13.0.2",
     "sinon": "~9.0.1"
   },
-  "keywords": [],
+  "keywords": [
+    "ADAPT",
+    "isoxml",
+    "fiware",
+    "iso11783",
+    "ngsi"
+  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
