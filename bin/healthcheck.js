@@ -21,32 +21,33 @@
  *
  */
 
-const iotAgent = require('../lib/iotagent-isoxml');
-const iotAgentLib = require('iotagent-node-lib');
-const info = require('../package.json');
-const context = {
-    op: 'IOTA.ISOXML.Executable'
+const http = require('http');
+const port = process.env.IOTA_NORTH_PORT || '4041';
+const path = process.env.HEALTHCHECK_PATH || '/iot/about';
+const httpCode = process.env.HEALTHCHECK_CODE || 200;
+
+const options = {
+    host: 'localhost',
+    port,
+    timeout: 2000,
+    method: 'GET',
+    path
 };
-const logger = require('logops');
 
-function start() {
-    let config;
-
-    if (process.argv.length === 3) {
-        config = require('../' + process.argv[2]);
+const request = http.request(options, (result) => {
+    // eslint-disable-next-line no-console
+    console.info(`Performed health check, result ${result.statusCode}`);
+    if (result.statusCode === httpCode) {
+        process.exit(0);
     } else {
-        config = require('../config');
+        process.exit(1);
     }
+});
 
-    config.iota.iotaVersion = info.version;
+request.on('error', (err) => {
+    // eslint-disable-next-line no-console
+    console.error(`An error occurred while performing health check, error: ${err}`);
+    process.exit(1);
+});
 
-    iotAgentLib.startServer(config, iotAgent, function (error) {
-        if (error) {
-            logger.error(context, 'Error starting ISOXML IoT Agent: [%s] Exiting process', JSON.stringify(error));
-        } else {
-            logger.info(context, 'ISOXML IoT Agent started');
-        }
-    });
-}
-
-start();
+request.end();
