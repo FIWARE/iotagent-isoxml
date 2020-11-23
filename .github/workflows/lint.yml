@@ -1,0 +1,54 @@
+name: Lint CI
+'on':
+  push:
+    branches:
+      - $default-branch
+  pull_request:
+    branches:
+      - $default-branch
+jobs:
+
+  lint-dockerfile:
+    name: 'Hadolint'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+    - name: hadolint on pr
+      uses: burdzwastaken/hadolint-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        HADOLINT_ACTION_DOCKERFILE_FOLDER: docker
+
+  lint-markdown:
+    name: Lint Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: |
+          apt-get update -qq > /dev/null
+          apt-get install git -qq > /dev/null
+          npm install
+          npm run lint:md
+          npm run lint:text
+  
+  lint-code:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - run: |
+          apt-get update -qq > /dev/null
+          apt-get install git -qq > /dev/null
+          npm install
+          npm run lint

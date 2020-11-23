@@ -7,42 +7,29 @@ name: Node.js CI
     branches:
       - $default-branch
 jobs:
-  lint-docs:
-    name: Lint Documentation
+  test:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - run: npm i --only=dev
-      - run: 'npm run lint:md'
-      - run: 'npm run lint:text'
-  lint-code:
-    name: Lint Code
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: null
-      - run: npm i --only=dev
-      - run: npm run lint
-  build:
-    runs-on: ubuntu-latest
+
+    services:
+      mongodb:
+        image: mongo:3.6
+        ports:
+        - 27017:27017
+
     strategy:
       matrix:
         node-version:
           - 10.x
           - 12.x
-          - 14.x
     steps:
-      - uses: actions/checkout@v2
-      - name: 'Use Node.js ${{ matrix.node-version }}'
+      - name: Git checkout
+        uses: actions/checkout@v2
+      - name: 'Test with Node.js ${{ matrix.node-version }}'
         uses: actions/setup-node@v1
         with:
           node-version: '${{ matrix.node-version }}'
-      - run: npm ci
-      - run: npm test
+      - run: |
+          apt-get update -qq > /dev/null
+          apt-get install git -qq > /dev/null
+          npm install
+          npm test
