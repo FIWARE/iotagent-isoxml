@@ -45,4 +45,7 @@ jobs:
           node-version: 12.x
       - run: |
           npm install
-          npm run test:coveralls
+          npm run test:coverage
+      - uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
