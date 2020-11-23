@@ -9,25 +9,21 @@ name: Lint CI
 jobs:
 
   lint-dockerfile:
-    name: 'Hadolint'
+    name: Lint Dockerfile
     runs-on: ubuntu-latest
     steps:
-    - name: Git checkout
-      uses: actions/checkout@v2
-    - name: hadolint on pr
-      uses: burdzwastaken/hadolint-action@master
+    - uses: actions/checkout@v2
+    - uses: burdzwastaken/hadolint-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         HADOLINT_ACTION_DOCKERFILE_FOLDER: docker
 
   lint-markdown:
-    name: Lint Documentation
+    name: Lint Markdown
     runs-on: ubuntu-latest
     steps:
-      - name: Git checkout
-        uses: actions/checkout@v2
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
           node-version: 12.x
       - run: |
@@ -36,13 +32,11 @@ jobs:
           npm run lint:text
   
   lint-code:
-    name: Lint Code
+    name: Lint JavaScript
     runs-on: ubuntu-latest
     steps:
-      - name: Git checkout
-        uses: actions/checkout@v2
-      - name: Use Node.js 12.x
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
         with:
           node-version: 12.x
       - run: |
