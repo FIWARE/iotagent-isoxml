@@ -29,7 +29,5 @@ jobs:
         with:
           node-version: '${{ matrix.node-version }}'
       - run: |
-          apt-get update -qq > /dev/null
-          apt-get install git -qq > /dev/null
           npm install
           npm test

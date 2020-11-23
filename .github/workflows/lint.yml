@@ -31,8 +31,6 @@ jobs:
         with:
           node-version: 12.x
       - run: |
-          apt-get update -qq > /dev/null
-          apt-get install git -qq > /dev/null
           npm install
           npm run lint:md
           npm run lint:text
@@ -48,7 +46,5 @@ jobs:
         with:
           node-version: 12.x
       - run: |
-          apt-get update -qq > /dev/null
-          apt-get install git -qq > /dev/null
           npm install
           npm run lint
