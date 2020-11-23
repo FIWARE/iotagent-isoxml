@@ -12,8 +12,10 @@ jobs:
     name: Lint Dockerfile
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: burdzwastaken/hadolint-action@master
+    - name: Git checkout
+      uses: actions/checkout@v2
+    - name: Run Hadolint
+      uses: burdzwastaken/hadolint-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         HADOLINT_ACTION_DOCKERFILE_FOLDER: docker
@@ -22,23 +24,30 @@ jobs:
     name: Lint Markdown
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Git checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: |
+      - name: Run Remark
+        run: |
           npm install
           npm run lint:md
-          npm run lint:text
+      - name: Run Textlint
+        run: npm run lint:text
   
   lint-code:
     name: Lint JavaScript
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Git checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - run: |
+      - name: Run EsLint
+        run: |
           npm install
           npm run lint
