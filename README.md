@@ -6,7 +6,7 @@
 [![Support badge](https://img.shields.io/badge/tag-fiware+iot-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/fiware-iotagent-isoxml.svg)](https://fiware-iotagent-isoxml.readthedocs.io/en/latest/?badge=latest)
-[![Build badge](https://img.shields.io/travis/FIWARE/iotagent-isoxml.svg)](https://travis-ci.org/FIWARE/iotagent-isoxml/)
+![CI](https://github.com/FIWARE/iotagent-isoxml/workflows/CI/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/FIWARE/iotagent-isoxml/badge.svg?branch=master)](https://coveralls.io/github/FIWARE/iotagent-isoxml?branch=master)
 
 An Internet of Things Agent for the ISO 11783 protocol (with [HTTP](https://www.w3.org/Protocols/)). This IoT Agent is
