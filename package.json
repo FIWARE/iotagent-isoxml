@@ -2,7 +2,7 @@
   "name": "iotagent-isoxml",
   "license": "AGPL-3.0-only",
   "description": "IoT Agent for ISOXML/ADAPT",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "lib/iotagent-isoxml",
   "author": {
     "name": "Jason Fox",
@@ -39,7 +39,7 @@
     "dateformat": "3.0.3",
     "express": "~4.17.1",
     "express-xml-bodyparser": "^0.3.0",
-    "iotagent-node-lib": "git://github.com/telefonicaid/iotagent-node-lib.git#master",
+    "iotagent-node-lib": "2.15.0",
     "logops": "2.1.1",
     "nyc": "^15.1.0",
     "request": "2.88.2",
