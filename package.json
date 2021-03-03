@@ -9,7 +9,7 @@
     "email": "jason-fox@fiware.org"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "repository": {
     "type": "git",
