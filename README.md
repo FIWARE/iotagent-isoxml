@@ -8,6 +8,7 @@
 [![Documentation badge](https://img.shields.io/readthedocs/fiware-iotagent-isoxml.svg)](https://fiware-iotagent-isoxml.readthedocs.io/en/latest/?badge=latest)
 ![CI](https://github.com/FIWARE/iotagent-isoxml/workflows/CI/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/FIWARE/iotagent-isoxml/badge.svg?branch=master)](https://coveralls.io/github/FIWARE/iotagent-isoxml?branch=master)
+![Status](https://nexus.lab.fiware.org/repository/raw/public/badges/statuses/incubating.svg)
 
 An Internet of Things Agent for the ISO 11783 protocol (with [HTTP](https://www.w3.org/Protocols/)). This IoT Agent is
 designed to be a bridge between ISOXML/ADAPT and the
@@ -17,6 +18,9 @@ interface of a context broker.
 It is based on the [IoT Agent Node.js Library](https://github.com/telefonicaid/iotagent-node-lib). Further general
 information about the FIWARE IoT Agents framework, its architecture and the common interaction model can be found in the
 library's GitHub repository.
+
+This project is part of [FIWARE](https://www.fiware.org/). For more information check the FIWARE Catalogue entry for the
+[IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
 | :books: [Documentation](https://fiware-iotagent-isoxml.readthedocs.io) | :whale: [Docker Hub](https://hub.docker.com/r/fiware/iotagent-isoxml/) | :dart: [Roadmap](https://github.com/FIWARE/iotagent-isoxml/blob/master/docs/roadmap.md) |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
