@@ -33,7 +33,6 @@
     "prettier:text": "prettier  --parser markdown '*.md' 'docker/*.md' 'docs/*.md' --tab-width 4 --print-width 120 --write --prose-wrap always"
   },
   "dependencies": {
-    "@cloudreach/docker-secrets": "^1.0.3",
     "async": "3.2.0",
     "dateformat": "4.5.1",
     "express": "~4.17.1",
