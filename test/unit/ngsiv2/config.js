@@ -26,7 +26,7 @@ config.http = {
 };
 
 config.iota = {
-    logLevel: 'FATAL',
+    logLevel: 'DEBUG',
     contextBroker: {
         host: '192.168.1.1',
         port: '1026',
@@ -39,9 +39,33 @@ config.iota = {
     deviceRegistry: {
         type: 'memory'
     },
-    types: {},
-    service: 'howtoService',
-    subservice: '/howto',
+    types: {
+        Customer: {
+            apikey: 'ctr',
+            static_attributes: [
+                {
+                    name: 'hasOccupation',
+                    type: 'Occupation',
+                    value: {
+                        name: 'Customer'
+                    }
+                }
+            ]
+        },
+        Device: { apikey: 'dvc' },
+        Farm: {
+            apikey: 'frm',
+            static_attributes: [
+                {
+                    name: 'category',
+                    type: 'Text',
+                    value: 'farm'
+                }
+            ]
+        }
+    },
+    service: 'smartgondor',
+    subservice: '/gardens',
     providerUrl: 'http://localhost:4061',
     deviceRegistrationDuration: 'P1M',
     defaultType: 'Thing',

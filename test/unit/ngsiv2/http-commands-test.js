@@ -39,7 +39,7 @@ describe('HTTP: Commands', function () {
             method: 'POST',
             json: utils.readJSON('./test/unit/ngsiv2/groupProvisioning/provisionISOXML.json'),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -55,13 +55,13 @@ describe('HTTP: Commands', function () {
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
             .post('/v2/registrations')
             .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
             .post(
                 '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
@@ -70,7 +70,7 @@ describe('HTTP: Commands', function () {
             .query({ type: 'Building' })
             .reply(204);
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
             .post(
                 '/v2/entities/urn:ngsi-ld:Person:CTR1/attrs',
@@ -79,7 +79,7 @@ describe('HTTP: Commands', function () {
             .query({ type: 'Person' })
             .reply(204);
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
             .post(
                 '/v2/entities/urn:ngsi-ld:Person:CTR2/attrs',
@@ -89,7 +89,7 @@ describe('HTTP: Commands', function () {
             .reply(204);
 
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
             .post('/v2/entities?options=upsert')
             .thrice()
@@ -115,25 +115,25 @@ describe('HTTP: Commands', function () {
             method: 'POST',
             json: utils.readJSON('./test/unit/ngsiv2/contextRequests/updateCommand1.json'),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
 
         beforeEach(function () {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .get('/v2/entities/urn:ngsi-ld:Building:FRM3?options=keyValues')
                 .reply(200, utils.readJSON('./test/cbKeyValues/farm1.json'));
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .get('/v2/entities/urn:ngsi-ld:Person:CTR2?options=keyValues')
                 .reply(200, utils.readJSON('./test/cbKeyValues/customer2.json'));
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs?type=Building',
@@ -142,7 +142,7 @@ describe('HTTP: Commands', function () {
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs?type=Building',

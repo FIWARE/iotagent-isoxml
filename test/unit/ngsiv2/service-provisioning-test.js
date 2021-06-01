@@ -40,7 +40,7 @@ describe('Service Configuration', function () {
             method: 'POST',
             json: utils.readJSON('./test/unit/ngsiv2/groupProvisioning/provisionISOXML.json'),
             headers: {
-                'fiware-service': 'smartGondor',
+                'fiware-service': 'smartgondor',
                 'fiware-servicepath': '/gardens'
             }
         };
@@ -48,13 +48,13 @@ describe('Service Configuration', function () {
         nock.cleanAll();
 
         contextBrokerMock = nock('http://192.168.1.1:1026')
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
             .post('/v2/registrations')
             .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
 
         contextBrokerMock
-            .matchHeader('fiware-service', 'smartGondor')
+            .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
             .post('/v2/entities?options=upsert')
             .reply(204);
@@ -83,7 +83,7 @@ describe('Service Configuration', function () {
 
         beforeEach(function () {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
@@ -120,14 +120,14 @@ describe('Service Configuration', function () {
 
         beforeEach(function () {
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
                 .twice()
                 .reply(204);
 
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
@@ -136,7 +136,7 @@ describe('Service Configuration', function () {
                 .query({ type: 'Building' })
                 .reply(204);
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Person:CTR1/attrs',
@@ -145,7 +145,7 @@ describe('Service Configuration', function () {
                 .query({ type: 'Person' })
                 .reply(204);
             contextBrokerMock
-                .matchHeader('fiware-service', 'smartGondor')
+                .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
                     '/v2/entities/urn:ngsi-ld:Person:CTR2/attrs',
