@@ -1,10 +1,20 @@
 {
+  "hasOccupation": {
+    "type": "Occupation",
+    "value": {
+      "name": "Customer"
+    }
+  },
   "isoxml_type": {
     "type": "string",
     "value": "ctr"
   },
+  "category":{"type":"Text","value":"farm"},
   "familyName": {
     "type": "Text",
     "value": "Mr. Jones"
   }
 }
+
+
+
