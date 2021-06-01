@@ -119,6 +119,15 @@ describe('Service Configuration', function () {
         };
 
         beforeEach(function () {
+            contextBrokerMock = nock('http://192.168.1.1:1026')
+                .matchHeader('fiware-service', 'smartgondor')
+                .matchHeader('fiware-servicepath', '/gardens')
+                .post('/v2/registrations')
+                .twice()
+                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
+
+
+
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
@@ -139,8 +148,8 @@ describe('Service Configuration', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities/urn:ngsi-ld:Person:CTR1/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer1.json')
+                    '/v2/entities/urn:ngsi-ld:Person:CTR1/attrs'
+                //    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer1.json')
                 )
                 .query({ type: 'Person' })
                 .reply(204);
@@ -148,8 +157,8 @@ describe('Service Configuration', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post(
-                    '/v2/entities/urn:ngsi-ld:Person:CTR2/attrs',
-                    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer2.json')
+                    '/v2/entities/urn:ngsi-ld:Person:CTR2/attrs'
+                //    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer2.json')
                 )
                 .query({ type: 'Person' })
                 .reply(204);
