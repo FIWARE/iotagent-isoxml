@@ -6,7 +6,7 @@ on:
     types: [published]
 
 env:
-  IMAGE_NAME: fiware/iotagent-isoxml:latest
+  IMAGE_NAME: fiware/iotagent-isoxml
 
 jobs:
   deploy:
@@ -53,7 +53,7 @@ jobs:
             ${{ env.IMAGE_NAME }}-pm2
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=semver,pattern={{version}}
+            type=semver,pattern={{version}}-pm2
           labels: |
             org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol with PM2
             org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
@@ -74,7 +74,7 @@ jobs:
             ${{ env.IMAGE_NAME }}-distroless
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=semver,pattern={{version}}
+            type=semver,pattern={{version}}-distroless
           labels: |
             org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol (Distroless)
             org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
