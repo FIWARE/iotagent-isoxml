@@ -20,6 +20,24 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ${{ env.IMAGE_NAME }}
+            ${{ env.IMAGE_NAME }}-pm2
+            ${{ env.IMAGE_NAME }}-distroless
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -35,6 +53,7 @@ jobs:
           push: true
           tags: ${{ env.IMAGE_NAME }}
           file: docker/Dockerfile
+          labels: ${{ steps.meta.outputs.labels }}
       - name: Build and push PM2
         uses: docker/build-push-action@v2
         with:
@@ -42,6 +61,7 @@ jobs:
           tags: ${{ env.IMAGE_NAME }}-pm2
           file: docker/Dockerfile
           target: pm2
+          labels: ${{ steps.meta.outputs.labels }}
       - name: Build and push Distroless
         uses: docker/build-push-action@v2
         with:
@@ -49,4 +69,4 @@ jobs:
           tags: ${{ env.IMAGE_NAME }}-distroless
           file: docker/Dockerfile
           target: distroless
-          labels: org.opencontainers.image.created"=$(date +%Y-%m-%d)
+          labels: ${{ steps.meta.outputs.labels }}
