@@ -32,7 +32,7 @@ const utils = require('../../utils');
 let mockedClientServer;
 let contextBrokerMock;
 
-xdescribe('HTTP: Commands', function () {
+describe('HTTP: Commands', function () {
     beforeEach(function (done) {
         const provisionOptions = {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
@@ -63,7 +63,7 @@ xdescribe('HTTP: Commands', function () {
         contextBrokerMock
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
-            .post(
+            .patch(
                 '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs',
                 utils.readJSON('./test/unit/ngsiv2/contextRequests/farm1.json')
             )
@@ -72,7 +72,7 @@ xdescribe('HTTP: Commands', function () {
         contextBrokerMock
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
-            .post(
+            .patch(
                 '/v2/entities/urn:ngsi-ld:Person:CTR1/attrs',
                 utils.readJSON('./test/unit/ngsiv2/contextRequests/customer1.json')
             )
@@ -81,7 +81,7 @@ xdescribe('HTTP: Commands', function () {
         contextBrokerMock
             .matchHeader('fiware-service', 'smartgondor')
             .matchHeader('fiware-servicepath', '/gardens')
-            .post(
+            .patch(
                 '/v2/entities/urn:ngsi-ld:Person:CTR2/attrs',
                 utils.readJSON('./test/unit/ngsiv2/contextRequests/customer2.json')
             )
@@ -135,7 +135,7 @@ xdescribe('HTTP: Commands', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post(
+                .patch(
                     '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs?type=Building',
                     utils.readJSON('./test/unit/ngsiv2/contextRequests/updateFarmStatusPending.json')
                 )
@@ -144,7 +144,7 @@ xdescribe('HTTP: Commands', function () {
             contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
-                .post(
+                .patch(
                     '/v2/entities/urn:ngsi-ld:Building:FRM3/attrs?type=Building',
                     utils.readJSON('./test/unit/ngsiv2/contextRequests/updateFarmStatusSuccess.json')
                 )

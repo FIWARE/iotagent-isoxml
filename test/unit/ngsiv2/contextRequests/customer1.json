@@ -1,4 +1,10 @@
 {
+  "hasOccupation": {
+    "type": "Occupation",
+    "value": {
+      "name": "Customer"
+    }
+  },
   "isoxml_type": {
     "type": "string",
     "value": "ctr"

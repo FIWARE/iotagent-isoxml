@@ -139,8 +139,8 @@ describe('Service Configuration', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .patch(
-                    '/v2/entities/urn:ngsi-ld:Person:CTR1/attrs'
-                    //    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer1.json')
+                    '/v2/entities/urn:ngsi-ld:Person:CTR1/attrs',
+                    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer1.json')
                 )
                 .query({ type: 'Person' })
                 .reply(204);
@@ -148,8 +148,8 @@ describe('Service Configuration', function () {
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .patch(
-                    '/v2/entities/urn:ngsi-ld:Person:CTR2/attrs'
-                    //    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer2.json')
+                    '/v2/entities/urn:ngsi-ld:Person:CTR2/attrs',
+                    utils.readJSON('./test/unit/ngsiv2/contextRequests/customer2.json')
                 )
                 .query({ type: 'Person' })
                 .reply(204);
