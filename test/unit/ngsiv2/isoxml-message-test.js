@@ -39,14 +39,14 @@ function addMock(id, type, payload, code = 204) {
         contextBrokerMock
             .matchHeader('fiware-service', 'isoxml')
             .matchHeader('fiware-servicepath', '/')
-            .post('/v2/entities/urn:ngsi-ld:' + type + ':' + id + '/attrs', json)
+            .patch('/v2/entities/urn:ngsi-ld:' + type + ':' + id + '/attrs', json)
             .query({ type })
             .reply(code);
     } else {
         contextBrokerMock
             .matchHeader('fiware-service', 'isoxml')
             .matchHeader('fiware-servicepath', '/')
-            .post('/v2/entities/urn:ngsi-ld:' + type + ':' + id + '/attrs')
+            .patch('/v2/entities/urn:ngsi-ld:' + type + ':' + id + '/attrs')
             .query({ type })
             .reply(code);
     }

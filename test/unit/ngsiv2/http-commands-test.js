@@ -32,7 +32,7 @@ const utils = require('../../utils');
 let mockedClientServer;
 let contextBrokerMock;
 
-describe('HTTP: Commands', function () {
+xdescribe('HTTP: Commands', function () {
     beforeEach(function (done) {
         const provisionOptions = {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',

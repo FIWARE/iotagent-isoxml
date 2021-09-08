@@ -44,7 +44,7 @@ config.iota = {
     /**
      * Configures the log level. Appropriate values are: FATAL, ERROR, INFO, WARN and DEBUG.
      */
-    logLevel: 'DEBUG',
+    logLevel: 'FATAL',
 
     /**
      * When this flag is active, the IoTAgent will add the TimeInstant attribute to every entity created, as well
