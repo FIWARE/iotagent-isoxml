@@ -1,4 +1,3 @@
-
 name: Release to DockerHub
 
 on:
@@ -10,7 +9,6 @@ env:
 
 jobs:
   deploy:
-
     runs-on: ubuntu-18.04
 
     steps:
@@ -24,26 +22,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          # list of Docker images to use as base name for tags
-          images: |
-            ${{ env.IMAGE_NAME }}
-          # generate Docker tags based on the following events/attributes
-          tags: |
-            type=semver,pattern={{version}}
-          labels: |
-            org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol with PM2
-            org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          file: docker/Dockerfile
-          labels: ${{ steps.meta.outputs.labels }}
       - name: Docker meta (PM2)
         id: meta-pm2
         uses: docker/metadata-action@v3
@@ -86,3 +64,23 @@ jobs:
           file: docker/Dockerfile
           target: distroless
           labels: ${{ steps.meta-distroless.outputs.labels }}
+      - name: Docker meta (Slim)
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            ${{ env.IMAGE_NAME }}
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=semver,pattern={{version}}
+          labels: |
+            org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol with PM2
+            org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
+      - name: Build and push (Slim)
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          file: docker/Dockerfile
+          labels: ${{ steps.meta.outputs.labels }}
