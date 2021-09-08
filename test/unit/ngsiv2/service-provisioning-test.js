@@ -33,7 +33,7 @@ const utils = require('../../utils');
 let contextBrokerUnprovMock;
 let contextBrokerMock;
 
-xdescribe('Service Configuration', function () {
+describe('Service Configuration', function () {
     beforeEach(function (done) {
         const provisionOptions = {
             url: 'http://localhost:' + config.iota.server.port + '/iot/services',
@@ -120,13 +120,6 @@ xdescribe('Service Configuration', function () {
 
         beforeEach(function () {
             contextBrokerMock = nock('http://192.168.1.1:1026')
-                .matchHeader('fiware-service', 'smartgondor')
-                .matchHeader('fiware-servicepath', '/gardens')
-                .post('/v2/registrations')
-                .twice()
-                .reply(201, null, { Location: '/v2/registrations/6319a7f5254b05844116584d' });
-
-            contextBrokerMock
                 .matchHeader('fiware-service', 'smartgondor')
                 .matchHeader('fiware-servicepath', '/gardens')
                 .post('/v2/entities?options=upsert')
