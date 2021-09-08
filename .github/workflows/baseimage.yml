@@ -7,8 +7,8 @@ name: Deploy Baseimage
 
 on:
   push:
-    paths:
-      - docker/**
+    branches:
+      - master
   workflow_dispatch:
 
 env:
@@ -37,15 +37,6 @@ jobs:
           # list of Docker images to use as base name for tags
           images: |
             ${{ env.IMAGE_NAME }}
-          # generate Docker tags based on the following events/attributes
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
           labels: |
             org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol with PM2
             org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
@@ -64,14 +55,6 @@ jobs:
           images: |
             ${{ env.IMAGE_NAME }}-pm2
           # generate Docker tags based on the following events/attributes
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
           labels: |
             org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol with PM2
             org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
@@ -90,15 +73,6 @@ jobs:
           # list of Docker images to use as base name for tags
           images: |
             ${{ env.IMAGE_NAME }}-distroless
-          # generate Docker tags based on the following events/attributes
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
           labels: |
             org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol (Distroless)
             org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
