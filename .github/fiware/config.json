@@ -1,0 +1,19 @@
+{
+    "enabler": "IoT Agent for the ISOXML/ADAPT protocol",
+    "chapter": "iot-agents",
+    "academy": "",
+    "readthedocs": "fiware-iotagent-isoxml",
+    "helpdesk": "Orion-LD",
+    "coveralls": "",
+    "github": ["FIWARE/iotagent-isoxml"],
+    "dockerregistry": ["hub.docker.com"],
+    "docker": ["fiware/iotagent-isoxml"],
+    "email": "jason.fox@fiware.org",
+    "status": "incubating",
+    "compose": "",
+    "exclude": [],
+    "stackexchange": ["https://stackoverflow.com/questions/tagged/fiware+iot"],
+    "unit-test": "",
+    "smoke-test": "",
+    "dockerfile": ""
+}
