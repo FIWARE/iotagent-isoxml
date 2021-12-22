@@ -19,7 +19,7 @@ jobs:
       - name: Run Hadolint Dockerfile Linter
         uses: burdzwastaken/hadolint-action@master
         with:
-          dockerfile: extras/docker
+          dockerfile: docker
           ignore: DL3006 DL3008 DL3033 
   lint-markdown:
     name: Lint Markdown
