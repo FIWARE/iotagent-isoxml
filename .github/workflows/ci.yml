@@ -8,6 +8,7 @@ name: CI
       - master
   repository_dispatch:
     types: [lib-update]
+  workflow_dispatch:
 jobs:
   lint-dockerfile:
     name: Lint Dockerfile
@@ -16,11 +17,10 @@ jobs:
       - name: Git checkout
         uses: actions/checkout@v2
       - name: Run Hadolint Dockerfile Linter
-        uses: burdzwastaken/hadolint-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HADOLINT_ACTION_DOCKERFILE_FOLDER: docker
-
+        uses: hadolint/hadolint-action@master
+        with:
+          dockerfile: docker/Dockerfile
+          ignore: DL3006 DL3008 DL3033
   lint-markdown:
     name: Lint Markdown
     runs-on: ubuntu-latest
