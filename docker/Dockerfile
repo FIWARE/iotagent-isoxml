@@ -37,15 +37,9 @@ ARG PACKAGE_MANAGER
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# As an Alternative for local development, just copy this Dockerfile into file the root of 
-# the repository and replace the whole RUN statement below by the following COPY statement 
-# in your local source using :
-#
-# COPY . /opt/iotISOXML/
-#
-
 # hadolint ignore=DL3002
 USER root
+# hadolint ignore=DL3059
 RUN \
 	# Ensure that the chosen package manger is supported by this Dockerfile
 	# also ensure that unzip is installed prior to downloading sources
@@ -61,6 +55,12 @@ RUN \
 	 	exit 1; \
 	fi
 
+# As an Alternative for local development, just copy this Dockerfile into file the root of 
+# the repository and replace the whole RUN statement below by the following COPY statement 
+# in your local source using :
+#
+# COPY . /opt/iotISOXML/
+#
 # hadolint ignore=DL3008
 RUN \
 	if [ "${DOWNLOAD}" = "latest" ] ; \
