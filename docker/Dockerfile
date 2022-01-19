@@ -84,7 +84,8 @@ RUN \
 WORKDIR /opt/iotISOXML
 
 RUN \
-	echo "INFO: npm install --production..." && \
+	echo "INFO: npm install --production..."; \
+	npm update -g; \
 	npm install --only=prod --no-package-lock --no-optional
 
 ########################################################################################
@@ -103,6 +104,10 @@ ARG NODE_VERSION
 ARG USER
 
 LABEL "maintainer"="FIWARE Foundation e.V."
+LABEL "description"="An Internet of Things Agent for the ISO 11783 protocol (with HTTP). This IoT Agent is designed to be a bridge between ISOXML/ADAPT and the NGSI interface of a context broker. It is based on the IoT Agent Node.js Library. This project is part of FIWARE. For more information check the FIWARE Catalogue entry for the IoT Agents."
+LABEL "name"="iotagent-isoxml"
+LABEL "summary"="IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery"
+
 LABEL "org.opencontainers.image.authors"=""
 LABEL "org.opencontainers.image.documentation"="https://iotagent-isoxml.readthedocs.io/"
 LABEL "org.opencontainers.image.vendor"="Telefónica Investigación y Desarrollo, S.A.U"
@@ -152,6 +157,10 @@ ARG GITHUB_REPOSITORY
 ARG NODE_VERSION
 
 LABEL "maintainer"="FIWARE Foundation e.V."
+LABEL "description"="An Internet of Things Agent for the ISO 11783 protocol (with HTTP). This IoT Agent is designed to be a bridge between ISOXML/ADAPT and the NGSI interface of a context broker. It is based on the IoT Agent Node.js Library. This project is part of FIWARE. For more information check the FIWARE Catalogue entry for the IoT Agents."
+LABEL "name"="iotagent-isoxml"
+LABEL "summary"="IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery"
+
 LABEL "org.opencontainers.image.authors"=""
 LABEL "org.opencontainers.image.documentation"="https://iotagent-isoxml.readthedocs.io/"
 LABEL "org.opencontainers.image.vendor"="Telefónica Investigación y Desarrollo, S.A.U"
@@ -192,6 +201,10 @@ ARG NODE_VERSION
 ARG USER
 
 LABEL "maintainer"="FIWARE Foundation e.V."
+LABEL "description"="An Internet of Things Agent for the ISO 11783 protocol (with HTTP). This IoT Agent is designed to be a bridge between ISOXML/ADAPT and the NGSI interface of a context broker. It is based on the IoT Agent Node.js Library. This project is part of FIWARE. For more information check the FIWARE Catalogue entry for the IoT Agents."
+LABEL "name"="iotagent-isoxml"
+LABEL "summary"="IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery"
+
 LABEL "org.opencontainers.image.authors"=""
 LABEL "org.opencontainers.image.documentation"="https://iotagent-isoxml.readthedocs.io/"
 LABEL "org.opencontainers.image.vendor"="Telefónica Investigación y Desarrollo, S.A.U"
@@ -211,5 +224,4 @@ EXPOSE ${IOTA_NORTH_PORT:-4041} ${IOTA_HTTP_PORT:-7896}
 CMD ["node", "/opt/iotISOXML/bin/iotagent-isoxml", "-- ", "config.js"]
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
    CMD npm run healthcheck
-
 
