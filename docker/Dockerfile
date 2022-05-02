@@ -39,7 +39,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3002
 USER root
-# hadolint ignore=DL3059
+# hadolint ignore=DL3059, DL3033
 RUN \
 	# Ensure that the chosen package manger is supported by this Dockerfile
 	# also ensure that unzip is installed prior to downloading sources
