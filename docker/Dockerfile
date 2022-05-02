@@ -28,6 +28,7 @@ ARG USER=node
 # --target=builder
 #
 ######################################################################################## 
+# hadolint ignore=DL3006
 FROM ${BUILDER} AS builder
 ARG GITHUB_ACCOUNT
 ARG GITHUB_REPOSITORY
@@ -39,7 +40,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # hadolint ignore=DL3002
 USER root
-# hadolint ignore=DL3059, DL3033
+# hadolint ignore=DL3006,DL3008,DL3059,DL3033
 RUN \
 	# Ensure that the chosen package manger is supported by this Dockerfile
 	# also ensure that unzip is installed prior to downloading sources
@@ -97,6 +98,7 @@ RUN \
 # --target=pm2-install
 #
 ########################################################################################
+# hadolint ignore=DL3006
 FROM ${DISTRO} AS pm2
 ARG GITHUB_ACCOUNT
 ARG GITHUB_REPOSITORY
@@ -133,6 +135,7 @@ HEALTHCHECK NONE
 # as defined below.
 #
 ########################################################################################
+# hadolint ignore=DL3006
 FROM ${DISTRO} AS anon-user
 # hadolint ignore=DL3002
 USER root
@@ -151,6 +154,7 @@ RUN sed -i -r "/^(root|nobody)/!d" /etc/passwd /etc/shadow /etc/group \
 # - IOTA_AUTH_CLIENT_ID, IOTA_AUTH_CLIENT_SECRET - when using OAuth2 Security
 #
 ########################################################################################
+# hadolint ignore=DL3006
 FROM ${DISTROLESS} AS distroless
 ARG GITHUB_ACCOUNT
 ARG GITHUB_REPOSITORY
@@ -194,6 +198,7 @@ HEALTHCHECK  --interval=30s --timeout=3s --start-period=10s \
 # - IOTA_AUTH_CLIENT_ID, IOTA_AUTH_CLIENT_SECRET - when using OAuth2 Security
 #
 ########################################################################################
+# hadolint ignore=DL3006
 FROM ${DISTRO} AS slim
 ARG GITHUB_ACCOUNT
 ARG GITHUB_REPOSITORY
