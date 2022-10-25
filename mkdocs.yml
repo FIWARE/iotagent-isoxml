@@ -16,7 +16,7 @@ extra_css:
 google_analytics:
   - G-F7W5QKSTK1
   - fiware-iotagent-isoxml.readthedocs.io
-pages:
+nav:
   - Home: index.md
   - User & Programmers Manual:
       - API Walkthrough & Development intro: usermanual.md

@@ -25,7 +25,6 @@ This project is part of [FIWARE](https://www.fiware.org/). For more information 
 | :books: [Documentation](https://fiware-iotagent-isoxml.readthedocs.io) | :whale: [Docker Hub](https://hub.docker.com/r/fiware/iotagent-isoxml/) | :dart: [Roadmap](https://github.com/FIWARE/iotagent-isoxml/blob/master/docs/roadmap.md) |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 
-
 ## Contents
 
 -   [Background](#background)
