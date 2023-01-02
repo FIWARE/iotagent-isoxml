@@ -46,7 +46,7 @@ jobs:
             org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol with PM2
             org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
       - name: Build and push (PM2)
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           tags: |
@@ -66,7 +66,7 @@ jobs:
             org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol (Distroless)
             org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
       - name: Build and push (Distroless)
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           tags: |
@@ -86,7 +86,7 @@ jobs:
             org.opencontainers.image.title=IoT Agent for the ISOXML/ADAPT protocol with PM2
             org.opencontainers.image.description=IoT Agent for the ISOXML/ADAPT protocol for agricultural machinery (over an HTTP transport)
       - name: Build and push (Slim)
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           push: true
           tags: |
