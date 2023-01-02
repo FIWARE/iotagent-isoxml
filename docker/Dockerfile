@@ -1,4 +1,4 @@
-ARG NODE_VERSION=14
+ARG NODE_VERSION=16
 ARG GITHUB_ACCOUNT=FIWARE
 ARG GITHUB_REPOSITORY=iotagent-isoxml
 ARG DOWNLOAD=latest
@@ -86,7 +86,6 @@ WORKDIR /opt/iotISOXML
 
 RUN \
 	echo "INFO: npm install --production..."; \
-	npm update -g; \
 	npm install --only=prod --no-package-lock --no-optional
 
 ########################################################################################
