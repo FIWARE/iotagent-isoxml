@@ -88,7 +88,7 @@ npm test
 
 The IoT Agent for ISOXML/ADAPT is licensed under [Affero General Public License (GPL) version 3](./LICENSE).
 
-© 2020 FIWARE Foundation e.V.
+© 2020-2023 FIWARE Foundation e.V.
 
 ### Are there any legal issues with AGPL 3.0? Is it safe for me to use?
 
