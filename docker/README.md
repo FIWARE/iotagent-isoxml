@@ -30,7 +30,7 @@ volumes:
 
 services:
     iot-agent:
-        image: fiware/iotagent-isoxml
+        image: quay.io/fiware/iotagent-isoxml
         hostname: iot-agent
         container_name: fiware-iot-agent
         depends_on:
