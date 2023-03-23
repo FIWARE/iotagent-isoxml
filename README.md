@@ -2,7 +2,7 @@
 
 [![FIWARE IoT Agents](https://nexus.lab.fiware.org/static/badges/chapters/iot-agents.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: APGL](https://img.shields.io/github/license/FIWARE/iotagent-isoxml.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Docker badge](https://img.shields.io/docker/pulls/fiware/iotagent-isoxml.svg)](https://hub.docker.com/r/fiware/iotagent-isoxml/)
+[![Docker badge](https://img.shields.io/badge/quay.io-fiware%2Fiotagent--xml-grey?logo=red%20hat&labelColor=EE0000)](https://quay.io/repository/fiware/iotagent-isoxml)
 [![Support badge](https://img.shields.io/badge/tag-fiware+iot-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
 [![Documentation badge](https://img.shields.io/readthedocs/fiware-iotagent-isoxml.svg)](https://fiware-iotagent-isoxml.readthedocs.io/en/latest/?badge=latest)
@@ -22,7 +22,7 @@ library's GitHub repository.
 This project is part of [FIWARE](https://www.fiware.org/). For more information check the FIWARE Catalogue entry for the
 [IoT Agents](https://github.com/Fiware/catalogue/tree/master/iot-agents).
 
-| :books: [Documentation](https://fiware-iotagent-isoxml.readthedocs.io) | :whale: [Docker Hub](https://hub.docker.com/r/fiware/iotagent-isoxml/) | :dart: [Roadmap](https://github.com/FIWARE/iotagent-isoxml/blob/master/docs/roadmap.md) |
+| :books: [Documentation](https://fiware-iotagent-isoxml.readthedocs.io) | <img style="height:1em" src="https://quay.io/static/img/quay_favicon.png"/> [quay.io](https://quay.io/repository/fiware/iotagent-isoxml) | :dart: [Roadmap](https://github.com/FIWARE/iotagent-isoxml/blob/master/docs/roadmap.md) |
 | ---------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 
 ## Contents
