@@ -52,7 +52,7 @@ There are interminent builds of the development version of the IoT Agent publish
 using the docker version, just execute the following:
 
 ```bash
-docker run -d --link orion:orion --link mongo:mongo -p 7896:7896 -p 4061:4061 fiware/iotagent-isoxml
+docker run -d --link orion:orion --link mongo:mongo -p 7896:7896 -p 4061:4061 quay.io/fiware/iotagent-isoxml
 ```
 
 As you can see, the ISOXML/ADAPT IoT Agent (as any other IoT Agent) requires some docker dependencies to work:
