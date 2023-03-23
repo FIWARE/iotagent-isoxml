@@ -6,7 +6,7 @@
     "helpdesk": "",
     "coveralls": "https://coveralls.io/github/FIWARE/iotagent-isoxml",
     "github": ["FIWARE/iotagent-isoxml"],
-    "dockerregistry": ["hub.docker.com"],
+    "dockerregistry": ["quay.io"],
     "docker": ["fiware/iotagent-isoxml"],
     "email": "jason.fox@fiware.org",
     "status": "incubating",
