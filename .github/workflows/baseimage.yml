@@ -58,6 +58,7 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}-pm2
             ghcr.io/${{ env.IMAGE_NAME }}-pm2
+            quay.io/${{ env.IMAGE_NAME }}-pm2
           file: docker/Dockerfile
           target: pm2
           labels: ${{ steps.meta-pm2.outputs.labels }}
@@ -78,6 +79,7 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}-distroless
             ghcr.io/${{ env.IMAGE_NAME }}-distroless
+            quay.io/${{ env.IMAGE_NAME }}-distroless
           file: docker/Dockerfile
           target: distroless
           labels: ${{ steps.meta-distroless.outputs.labels }}
@@ -98,5 +100,6 @@ jobs:
           tags: |
             ${{ env.IMAGE_NAME }}
             ghcr.io/${{ env.IMAGE_NAME }}
+            quay.io/${{ env.IMAGE_NAME }}
           file: docker/Dockerfile
           labels: ${{ steps.meta.outputs.labels }}
