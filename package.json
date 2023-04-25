@@ -2,14 +2,14 @@
   "name": "iotagent-isoxml",
   "license": "AGPL-3.0-only",
   "description": "IoT Agent for ISOXML/ADAPT",
-  "version": "1.3.0",
+  "version": "1.0.0-next",
   "main": "lib/iotagent-isoxml",
   "author": {
     "name": "Jason Fox",
     "email": "jason-fox@fiware.org"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=14"
   },
   "repository": {
     "type": "git",
@@ -37,7 +37,7 @@
     "dateformat": "5.0.3",
     "express": "~4.18.2",
     "express-xml-bodyparser": "^0.3.0",
-    "iotagent-node-lib": "3.1.0",
+    "iotagent-node-lib": "2.26.0",
     "logops": "2.1.2",
     "request": "2.88.2",
     "underscore": "1.13.6",
