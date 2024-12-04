@@ -90,8 +90,8 @@ The IoT Agent for ISOXML/ADAPT is licensed under [Affero General Public License 
 
 © 2020-2023 FIWARE Foundation e.V.
 
-### Are there any legal issues with AGPL 3.0? Is it safe for me to use?
-
+<details>
+<summary><strong>Are there any legal issues with AGPL 3.0? Is it safe for me to use?</strong></summary>
 There is absolutely no problem in using a product licensed under AGPL 3.0. Issues with GPL (or AGPL) licenses are mostly
 related with the fact that different people assign different interpretations on the meaning of the term “derivate work”
 used in these licenses. Due to this, some people believe that there is a risk in just _using_ software under GPL or AGPL
@@ -104,3 +104,5 @@ public statement as follows:
 > incorporate enhancements is considered a derivative work of the product. Software that merely uses or aggregates (i.e.
 > links to) an otherwise unmodified version of existing software is not considered a derivative work, and therefore it
 > does not need to be released as under the same license, or even released as open source.
+
+</summary>
