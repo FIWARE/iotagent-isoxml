@@ -5,10 +5,17 @@
 [![Docker badge](https://img.shields.io/badge/quay.io-fiware%2Fiotagent--xml-grey?logo=red%20hat&labelColor=EE0000)](https://quay.io/repository/fiware/iotagent-isoxml)
 [![Support badge](https://img.shields.io/badge/tag-fiware+iot-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware+iot)
 <br/>
+![Status](https://nexus.lab.fiware.org/repository/raw/public/badges/statuses/deprecated.svg)
+<!--
 [![Documentation badge](https://img.shields.io/readthedocs/fiware-iotagent-isoxml.svg)](https://fiware-iotagent-isoxml.readthedocs.io/en/latest/?badge=latest)
 ![CI](https://github.com/FIWARE/iotagent-isoxml/workflows/CI/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/FIWARE/iotagent-isoxml/badge.svg?branch=master)](https://coveralls.io/github/FIWARE/iotagent-isoxml?branch=master)
-![Status](https://nexus.lab.fiware.org/repository/raw/public/badges/statuses/deprecated.svg)
+-->
+
+>
+> This repository is now archived. The IoT Agent uses an obsolete version of the IoT Agent node library, and further development is not
+> envisaged. 
+>
 
 An Internet of Things Agent for the ISO 11783 protocol (with [HTTP](https://www.w3.org/Protocols/)). This IoT Agent is
 designed to be a bridge between ISOXML/ADAPT and the
